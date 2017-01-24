@@ -1,0 +1,102 @@
+<template>
+    <main-page></main-page>
+</template>
+
+<script>
+import newStore from './components/newStore'
+import mainPage from './components/mainPage'
+export default {
+  name: 'app',
+  components: {
+    newStore,
+    mainPage
+  }
+}
+</script>
+
+<style>
+#app{
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+body,
+html{
+  margin:0;
+  padding:0;
+  height:100%;
+}
+@media only screen and (max-width:1080px), only screen and (max-device-width:1080px) {
+  html,body {
+    font-size:54px;
+  }
+}
+@media only screen and (max-width: 960px), only screen and (max-device-width: 960px) {
+  html,body {
+    font-size:48px;
+  }
+}
+@media only screen and (max-width: 800px), only screen and (max-device-width: 800px) {
+  html,body {
+    font-size:40px;
+  }
+}
+@media only screen and (max-width: 720px), only screen and (max-device-width: 720px) {
+  html,body {
+    font-size:36px;
+  }
+}
+@media only screen and (max-width: 640px), only screen and (max-device-width: 640px) {
+  html,body {
+    font-size:32px;
+  }
+}
+@media only screen and (max-width: 600px), only screen and (max-device-width: 600px) {
+  html,body {
+    font-size:30px;
+  }
+}
+@media only screen and (max-width: 480px), only screen and (max-device-width: 480px) {
+  html,body {
+    font-size:24px;
+  }
+}
+@media only screen and (max-width: 414px), only screen and (max-device-width: 414px) {
+  html,body {
+    font-size:20.7px;
+  }
+}
+@media only screen and (max-width: 400px), only screen and (max-device-width: 400px) {
+  html,body {
+    font-size:20px;
+  }
+}
+@media only screen and (max-width: 375px), only screen and (max-device-width: 375px) {
+  html,body {
+    font-size:18.75px;
+  }
+}
+@media only screen and (max-width: 360px), only screen and (max-device-width: 360px) {
+  html,body {
+    font-size:18px;
+  }
+}
+@media only screen and (max-width: 320px), only screen and (max-device-width: 320px) {
+  html,body {
+    font-size:16px;
+  }
+}
+@media only screen and (max-width: 240px), only screen and (max-device-width: 240px) {
+  html,body {
+    font-size:12px;
+  }
+}
+*{
+  -webkit-text-size-adjust: none;
+}
+*{
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+</style>

@@ -13,16 +13,28 @@
     </div>
     <div class="mainpage-body">
       <div class="classify">
-        <h2>- 分类 -</h2>
+        <h2>分类</h2>
         <div class="column">
-          <div class="column-block" v-for="(item1,index) in data.list1">
-              <div class="img-div" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px 0'}"></div>
-              <h3>{{item1.title}}</h3>
+          <div class="column-block" v-for="(item1,index) in data.list1" v-on:click="buttonClick">
+            <div class="back">
+              <ul>
+                <li v-for="item2 in item1.subTitle"><a>{{item2}}</a></li>
+              </ul>
+              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -205px'}"></div>
+            </div>
+            <div class="img-div" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px 0'}"></div>
+            <h3>{{item1.title}}</h3>
           </div>
         </div>
       </div>
-      <div class="hot-store">
-        <h2>- 热门商家 -</h2>
+    </div>
+    <div class="hot-store">
+      <h2>热门商家</h2>
+      <div>
+        <div class="back"></div>
+        <div class="mainpage-bottom">
+          <a v-for="item3 in data.list2" v-bind:href="'index.html#' + item3">{{item3}}</a>
+        </div>
       </div>
     </div>
   </div>
@@ -31,13 +43,20 @@
 div.mainpage-root{
   min-height: 100%;
   opacity: 0;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
   transition: opacity 0.5s;
+  display: flex;
+  flex-direction: column;
 }
 div.mainpage-root.show{
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
   opacity: 1;
 }
 div.mainpage-header{
   position: relative;
+  /*height:10rem;*/
 }
 div.mainpage-header>h1{
   display: block;
@@ -104,13 +123,14 @@ div.mainpage-header.active>div>input{
 }
 div.mainpage-body{
   width:100%;
+  flex-grow: 1;
 }
-
 div.mainpage-body div.img-div{
   background:url("../assets/mainpage/columns.png");
   height:205px;
   width:181px;
   transform-origin: 0 0;
+  z-index: 11;
 }
 div.mainpage-body h3{
   font-size: 0.8rem;
@@ -120,11 +140,13 @@ div.mainpage-body h3{
   width:5rem;
   font-weight: 600;
   color:#FFF;
+  z-index: 11;
 }
 div.mainpage-body div.column{
   width:100%;
   text-align: center;
   font-size: 0;
+  margin-bottom: 0.5rem;
 }
 div.mainpage-body div.column-block{
   height:5.663rem;
@@ -132,6 +154,7 @@ div.mainpage-body div.column-block{
   display: inline-block;
   position: relative;
   padding:0.5rem;
+  border:none;
 }
 div.topic>p::after{
   content: "";
@@ -164,6 +187,25 @@ div.topic{
   width:100%;
 
 }
+div.mainpage-root h2::before{
+  content: "";
+  width: 1rem;
+  height: 0.2rem;
+  margin:0.25rem;
+  background: url("../assets/mainpage/left.png") no-repeat;
+  background-size: 100%;
+  display: inline-block;
+}
+div.mainpage-root h2::after{
+  content: "";
+  width: 1rem;
+  height: 0.2rem;
+  margin:0.25rem;
+  background: url("../assets/mainpage/left.png") no-repeat;
+  background-size: 100%;
+  display: inline-block;
+  transform: rotate(180deg);
+}
 div.mainpage-root h2{
   text-align: center;
   margin:0 0 0.6rem 0;
@@ -171,8 +213,115 @@ div.mainpage-root h2{
   font-weight: 300;
   font-size: 1rem;
 }
+div.mainpage-body div.column-block>*{
+  transition: all 0.5s ease-in-out;
+  opacity: 1;
+  -moz-opacity: 1;
+  -webkit-opacity: 1;
+}
+div.mainpage-body div.column-block{
+  border-radius:0.5rem;
+}
+div.mainpage-body div.column-block.active{
 
+}
+div.mainpage-body div.column-block.active>div.img-div,
+div.mainpage-body div.column-block.active>h3{
+  opacity: 0;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+}
+div.mainpage-body div.column-block.active>div.back{
+  transform-origin: 50% 50%;
+  transform: scale(1.2);
+}
 
+div.column-block div.back{
+  width:5rem;
+  height:5.663rem;
+  position: absolute;
+  bottom: 0.5rem;
+}
+div.column-block div.back>div.img-div-a{
+  background:url("../assets/mainpage/columns.png");
+  height:205px;
+  width:181px;
+  transform-origin: 0 0;
+  position: absolute;
+  top:0;
+}
+div.column-block.active div.back ul{
+  display: flex;
+}
+div.column-block div.back ul{
+  list-style: none;
+  padding:0.5rem;
+  margin: 0;
+  width:100%;
+  height:100%;
+  flex-direction: column;
+  flex-wrap: wrap;
+  display: none;
+}
+div.column-block div.back li{
+  font-size: 0.7rem;
+  color:#FFF;
+  position: relative;
+  z-index: 10;
+  width:2rem;
+  margin:0.35rem 0;
+  text-align: left;
+}
+div.hot-store img{
+  width:100%;
+  height:auto;
+}
+div.hot-store>div{
+  position: relative;
+}
+div.hot-store{
+  /*position: absolute;
+  bottom:0;*/
+  width:100%;
+  position: relative;
+}
+div.hot-store  div.back{
+  width:100%;
+  padding:24% 0 0 0;
+  background: url("../assets/mainpage/bottom.png");
+  background-size: 100% 100%;
+}
+div.hot-store  div.mainpage-bottom{
+  width:100%;
+  height:100% ;
+  position: absolute;
+  top:0;
+  padding:0.5rem;
+  margin:0;
+  box-sizing: border-box;
+  text-align: center;
+}
+div.hot-store  div.mainpage-bottom>a:focus{
+  background: #FFFFFF;
+  color:#6c77c9;
+  border:transparent 1px solid;
+}
+div.hot-store  div.mainpage-bottom>a{
+  display:inline-block;
+  border: solid 1px #FFF;
+  border-radius: 0.5rem;
+  width:3rem;
+  height:1.2rem;
+  font-size: 0.7rem;
+  color:#FFF;
+  text-align: center;
+  line-height: 1.2rem;
+  margin: 0.3rem 0.5rem;
+  text-decoration: none;
+  transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+}
 </style>
 <script>
 var axios = require("axios");
@@ -310,6 +459,12 @@ export default{
         }else{
           window.location.href="main.html";
         }
+      },
+      buttonClick:function(a){
+        if(document.querySelectorAll(".active").length != 0){
+          document.querySelector(".active").classList.remove("active");
+        }
+        a.target.parentNode.classList.add("active");
       }
     },
   mounted:function(){
@@ -349,7 +504,15 @@ export default{
           "title":"\u751f\u6d3b\u670d\u52a1",
           "subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]
         },
-        {"title":"\u559d\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u73a9\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u5065\u8eab","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]}],"list2":["\u6c27\u6c14\u5382","\u6c27\u6c14\u5382","\u6c27\u6c14\u5382","\u6c27\u6c14\u5382","SB\u9a7e\u6821","\u7ec5\u5b9d"]};
+        {"title":"\u559d\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u73a9\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u5065\u8eab","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]}],
+      "list2":[
+          "\u6c27\u6c14\u5382",
+        "\u6c27\u6c14\u5382",
+        "\u6c27\u6c14\u5382",
+        "\u6c27\u6c14\u5382",
+        "SB\u9a7e\u6821",
+        "\u7ec5\u5b9d"]
+    };
     vue_this.loaded = true;
     for(var i=0;i<vue_this.data.list1;i++){
       vue_this.data.list1[i].n=i;

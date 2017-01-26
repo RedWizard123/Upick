@@ -1,17 +1,12 @@
 <template>
-    <main-page></main-page>
+  <router-view></router-view>
 </template>
-
 <script>
-import newStore from './components/newStore'
-import mainPage from './components/mainPage'
-export default {
+export default{
   name: 'app',
   components: {
-    newStore,
-    mainPage
   }
-}
+};
 </script>
 
 <style>

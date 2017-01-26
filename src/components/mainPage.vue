@@ -18,7 +18,7 @@
           <div class="column-block" v-for="(item1,index) in data.list1" v-on:click="buttonClick">
             <div class="back">
               <ul>
-                <li v-for="item2 in item1.subTitle"><a>{{item2}}</a></li>
+                <li v-for="item2 in item1.subTitle"><router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link></li>
               </ul>
               <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -205px'}"></div>
             </div>
@@ -33,7 +33,7 @@
       <div>
         <div class="back"></div>
         <div class="mainpage-bottom">
-          <a v-for="item3 in data.list2" v-bind:href="'index.html#' + item3">{{item3}}</a>
+          <router-link v-for="item3 in data.list2" v-bind:to="'storeList/' + item3">{{item3}}</router-link>
         </div>
       </div>
     </div>
@@ -230,17 +230,23 @@ div.mainpage-body div.column-block.active>h3{
   opacity: 0;
   -webkit-opacity: 0;
   -moz-opacity: 0;
+  z-index: 1;
 }
 div.mainpage-body div.column-block.active>div.back{
   transform-origin: 50% 50%;
   transform: scale(1.2);
 }
-
 div.column-block div.back{
   width:5rem;
   height:5.663rem;
   position: absolute;
   bottom: 0.5rem;
+  z-index: 8;
+}
+div.column-block div.back a{
+  text-decoration: none;
+  color: #FFF;
+
 }
 div.column-block div.back>div.img-div-a{
   background:url("../assets/mainpage/columns.png");
@@ -285,13 +291,13 @@ div.hot-store{
   width:100%;
   position: relative;
 }
-div.hot-store  div.back{
+div.hot-store div.back{
   width:100%;
   padding:24% 0 0 0;
   background: url("../assets/mainpage/bottom.png");
   background-size: 100% 100%;
 }
-div.hot-store  div.mainpage-bottom{
+div.hot-store div.mainpage-bottom{
   width:100%;
   height:100% ;
   position: absolute;
@@ -301,12 +307,12 @@ div.hot-store  div.mainpage-bottom{
   box-sizing: border-box;
   text-align: center;
 }
-div.hot-store  div.mainpage-bottom>a:focus{
+div.hot-store div.mainpage-bottom>a:focus{
   background: #FFFFFF;
   color:#6c77c9;
   border:transparent 1px solid;
 }
-div.hot-store  div.mainpage-bottom>a{
+div.hot-store div.mainpage-bottom>a{
   display:inline-block;
   border: solid 1px #FFF;
   border-radius: 0.5rem;
@@ -343,101 +349,7 @@ window.requestAnimFrame = (function(){
       window.setTimeout(callback, 1000 / 60);
     };
 })();
-function loop(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="#343856";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-  step+=2;
-  var dd=canvas.width/50;
-  for(var j=0;j<stars.length;j++){
-    var grd = ctx.createRadialGradient(stars[j].x,stars[j].y, 1, stars[j].x, stars[j].y, dd/2);
-    grd.addColorStop(0, "rgba(255,255,255,0.3)");
-    grd.addColorStop(1, "rgba(0,0,0,0)");
-    ctx.fillStyle = grd;
-    ctx.fillRect(stars[j].x-dd/4, stars[j].y-dd/4, dd/2, dd/2);
-  }
-  for(j=0;j<meteor.length;j++){
-    if(meteor[j].position.x-meteor[j].length/Math.SQRT2>canvas.width||meteor[j].position.y-meteor[j].length/Math.SQRT2>canvas.height){
-        meteor.splice(j,1);
-        meteor.push({position:{x:Math.random()*canvas.width*0.75,y:0},color:"",length:Math.random()*2*d_+d_});
-      }else{
-        meteor[j].position.x+=dd/2;
-        meteor[j].position.y+=dd/2;
-        grd = ctx.createRadialGradient(meteor[j].position.x,meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd);
-        grd.addColorStop(0, "rgba(255,255,255,0.3)");
-        grd.addColorStop(1, "rgba(0,0,0,0)");
-        ctx.fillStyle = grd;
-        ctx.fillRect(meteor[j].position.x-dd/2, meteor[j].position.y-dd/2, dd, dd);
-        ctx.moveTo(meteor[j].position.x,meteor[j].position.y);
-        ctx.lineTo(meteor[j].position.x-meteor[j].length/Math.SQRT2,meteor[j].position.y-meteor[j].length/Math.SQRT2);
-        ctx.strokeStyle="rgba(255,255,255,0.2)";
-        ctx.stroke();
-      }
-    }
-    for(j = lines.length - 1; j >= 0; j--) {
-      ctx.fillStyle = lines[j];
-      var angle = (step+j*90)*Math.PI/180;
-      var deltaHeight   = Math.sin(angle) * d_;
-      var deltaHeightRight   = Math.cos(angle) * d_;
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height/3*2+deltaHeight);
-      ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_, canvas.width, canvas.height/3*2+deltaHeightRight);
-      ctx.lineTo(canvas.width, canvas.height);
-      ctx.lineTo(0, canvas.height);
-      ctx.lineTo(0, canvas.height/3*2+deltaHeight);
-      ctx.closePath();
-      ctx.fill();
-    }
 
-
-    /*
-    j=2;
-    ctx.fillStyle = lines[j];
-    var angle = (step+j*135)*Math.PI/180;
-    var deltaHeight   = Math.sin(angle) * d_;
-    var deltaHeightRight   = Math.cos(angle) * d_;
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height/3*2+deltaHeight);
-    ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_, canvas.width, canvas.height/3*2+deltaHeightRight);
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(0, canvas.height);
-    ctx.lineTo(0, canvas.height/3*2+deltaHeight);
-    ctx.closePath();
-    ctx.fill();
-
-
-    j=1;
-    ctx.fillStyle = lines[j];
-    angle = (step+j*135)*Math.PI/180;
-    deltaHeight   = Math.sin(angle) * d_/0.8;
-    deltaHeightRight   = Math.cos(angle) * d_/0.8;
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height/3*2+deltaHeight);
-    ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_/0.8, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_/0.8, canvas.width, canvas.height/3*2+deltaHeightRight);
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(0, canvas.height);
-    ctx.lineTo(0, canvas.height/3*2+deltaHeight);
-    ctx.closePath();
-    ctx.fill();
-
-
-    j=0;
-    ctx.fillStyle = lines[j];
-    angle = (step+j*135)*Math.PI/180;
-    deltaHeight   = Math.sin(angle) * d_*0.8;
-    deltaHeightRight   = Math.cos(angle) * d_*0.8;
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height/3*2+deltaHeight);
-    ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_*0.8, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_*0.8, canvas.width, canvas.height/3*2+deltaHeightRight);
-    ctx.lineTo(canvas.width, canvas.height);
-    ctx.lineTo(0, canvas.height);
-    ctx.lineTo(0, canvas.height/3*2+deltaHeight);
-    ctx.closePath();
-    ctx.fill();
-*/
-
-    requestAnimFrame(loop);
-  }
 export default{
   data:function(){
     return({
@@ -465,19 +377,71 @@ export default{
           document.querySelector(".active").classList.remove("active");
         }
         a.target.parentNode.classList.add("active");
+      },
+      loop:function(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle="#343856";
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+        step+=2;
+        var dd=canvas.width/50;
+        for(var j=0;j<stars.length;j++){
+          var grd = ctx.createRadialGradient(stars[j].x,stars[j].y, 1, stars[j].x, stars[j].y, dd/2);
+          grd.addColorStop(0, "rgba(255,255,255,0.3)");
+          grd.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = grd;
+          ctx.fillRect(stars[j].x-dd/4, stars[j].y-dd/4, dd/2, dd/2);
+        }
+        for(j=0;j<meteor.length;j++){
+          if(meteor[j].position.x-meteor[j].length/Math.SQRT2>canvas.width||meteor[j].position.y-meteor[j].length/Math.SQRT2>canvas.height){
+            meteor.splice(j,1);
+            meteor.push({position:{x:Math.random()*canvas.width*0.75,y:0},color:"",length:Math.random()*2*d_+d_});
+          }else{
+            meteor[j].position.x+=dd/2;
+            meteor[j].position.y+=dd/2;
+            grd = ctx.createRadialGradient(meteor[j].position.x,meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd);
+            grd.addColorStop(0, "rgba(255,255,255,0.3)");
+            grd.addColorStop(1, "rgba(0,0,0,0)");
+            ctx.fillStyle = grd;
+            ctx.fillRect(meteor[j].position.x-dd/2, meteor[j].position.y-dd/2, dd, dd);
+            ctx.moveTo(meteor[j].position.x,meteor[j].position.y);
+            ctx.lineTo(meteor[j].position.x-meteor[j].length/Math.SQRT2,meteor[j].position.y-meteor[j].length/Math.SQRT2);
+            ctx.strokeStyle="rgba(255,255,255,0.2)";
+            ctx.stroke();
+          }
+        }
+        for(j = lines.length - 1; j >= 0; j--) {
+          ctx.fillStyle = lines[j];
+          var angle = (step+j*90)*Math.PI/180;
+          var deltaHeight   = Math.sin(angle) * d_;
+          var deltaHeightRight   = Math.cos(angle) * d_;
+          ctx.beginPath();
+          ctx.moveTo(0, canvas.height/3*2+deltaHeight);
+          ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_, canvas.width, canvas.height/3*2+deltaHeightRight);
+          ctx.lineTo(canvas.width, canvas.height);
+          ctx.lineTo(0, canvas.height);
+          ctx.lineTo(0, canvas.height/3*2+deltaHeight);
+          ctx.closePath();
+          ctx.fill();
+        }
+        requestAnimFrame(this.loop);
       }
     },
   mounted:function(){
+
     canvas = document.querySelector("canvas");
     ctx = document.querySelector("canvas").getContext("2d");
     d_=canvas.width*0.08;
+    meteor=[];
+    stars=[];
     for(var i=0;i<2;i++){
       meteor.push({position:{x:-10*d_+Math.random()*30*d_,y:-5*d_-Math.random()*d_},color:"",length:d_/2});
     }
     for(i = 0;i<10;i++){
       stars.push({x:d_+Math.random()*10*d_,y:d_+Math.random()*5*d_});
     }
-    loop();
+    if(this.$route.params.type!="noAnim"){
+      this.loop();
+    }
     var vue_this = this;
     /*axios.get('mainPageData.php')
       .then(function (response) {
@@ -514,10 +478,6 @@ export default{
         "\u7ec5\u5b9d"]
     };
     vue_this.loaded = true;
-    for(var i=0;i<vue_this.data.list1;i++){
-      vue_this.data.list1[i].n=i;
-    }
-    console.log(vue_this.data.list1);
   }
 }
 </script>

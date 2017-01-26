@@ -131,6 +131,7 @@ div.mainpage-body div.img-div{
   width:181px;
   transform-origin: 0 0;
   z-index: 11;
+  position: relative;
 }
 div.mainpage-body h3{
   font-size: 0.8rem;
@@ -225,12 +226,17 @@ div.mainpage-body div.column-block{
 div.mainpage-body div.column-block.active{
 
 }
-div.mainpage-body div.column-block.active>div.img-div,
+div.mainpage-body div.column-block.active>div.img-div{
+  opacity: 0;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  z-index: 7;
+}
 div.mainpage-body div.column-block.active>h3{
   opacity: 0;
   -webkit-opacity: 0;
   -moz-opacity: 0;
-  z-index: 1;
+  z-index: 7;
 }
 div.mainpage-body div.column-block.active>div.back{
   transform-origin: 50% 50%;
@@ -427,7 +433,6 @@ export default{
       }
     },
   mounted:function(){
-
     canvas = document.querySelector("canvas");
     ctx = document.querySelector("canvas").getContext("2d");
     d_=canvas.width*0.08;
@@ -443,7 +448,8 @@ export default{
       this.loop();
     }
     var vue_this = this;
-    /*axios.get('mainPageData.php')
+    vue_this.rem =parseInt( window.getComputedStyle(document.documentElement)["fontSize"]);
+    axios.get('mainPageData.php')
       .then(function (response) {
         console.log(response);
         response=response.data;
@@ -454,10 +460,8 @@ export default{
         console.log(error);
         if(error)alert("主页加载失败！");
         vue_this.loaded = true;
-      });*/
-    vue_this.rem =parseInt( window.getComputedStyle(document.documentElement)["fontSize"]);
-    console.log(vue_this.rem);
-    vue_this.data={
+      });
+    /*vue_this.data={
       "topic":"这是头条推文这是头条推文",
       "list1":[
         {
@@ -476,8 +480,12 @@ export default{
         "\u6c27\u6c14\u5382",
         "SB\u9a7e\u6821",
         "\u7ec5\u5b9d"]
-    };
-    vue_this.loaded = true;
+    };*/
+
+  },
+  updated:function(){
+    this.loaded = true;
+    console.log("aaa");
   }
 }
 </script>

@@ -3,6 +3,20 @@
     <div class="store-list-header">
       <router-link class="store-list-return" to="/noAnim"><span></span></router-link>
       <h1>{{$route.params.type}}</h1>
+      <div class="search" v-bind:class="{'active':isSearchActive}" v-on:click="searchActive">
+        <button>搜索</button>
+        <input type="text" placeholder="输入搜索内容">
+      </div>
+      <div class="menu" v-bind:class="{'active':isMenuActive}" v-on:click="menuActive">
+        <button>菜单</button>
+        <ul class="menu">
+          <li><button v-on:click="sort1">综合排序</button></li>
+          <li></li>
+          <li><button v-on:click="sort2">高分排序</button></li>
+          <li></li>
+          <li><button v-on:click="sort3">低分排序</button></li>
+        </ul>
+      </div>
     </div>
     <div class="store-list-body">
       <ul>
@@ -39,10 +53,145 @@ div.store-list-root.show{
   -webkit-opacity: 1;
   -moz-opacity: 1;
 }
+div.store-list-root div.store-list-header a{
+  vertical-align: top;
+}
 div.store-list-root div.store-list-header{
   height: 3.2rem;
   width:100%;
   background: linear-gradient(90deg,#343856,#4F5E93);
+  position: relative;
+  z-index: 99;
+}
+div.store-list-header div.search{
+  width:9rem;
+  height:1.4rem;
+  display: inline-block;
+  font-size: 0;
+  margin:0.95rem 0;
+  position: absolute;
+  right:2rem;
+}
+div.store-list-header div.search>button{
+  width:1rem;
+  height:1rem;
+  display: inline-block;
+  border:0;
+  background: url("../assets/storeList/search.png") ;
+  background-size: 100% 100%;
+  font-size: 0;
+  padding:0;
+  margin:0.1rem 0.2rem;
+  vertical-align: top;
+  float: right;
+}
+div.store-list-header div.search.active>input{
+  width:7rem;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+div.store-list-header div.search>input{
+  width:1.2rem;
+  height:1.2rem;
+  border:0;
+  border-radius: 0.6rem;
+  padding-left: 0.5rem;
+  background: #E3E3E5;
+  font-size: 0.8rem;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  float: right;
+}
+div.store-list-header div.menu{
+  display: inline-block;
+  vertical-align: middle;
+  position: absolute;
+  right:0;
+  text-align: right;
+  width:1.5rem;
+}
+div.store-list-header div.menu>ul>li:nth-child(2n-1){
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+}
+div.store-list-header div.menu>ul>li:nth-child(2n){
+  height:1px;
+
+  margin:0 0.5rem;
+  background: #bbb;
+}
+div.store-list-header div.menu>ul>li>button:focus{
+  background: #5d77b9;
+  color:#FFF;
+}
+div.store-list-header div.menu>ul>li>button{
+  border:0;
+  width:100%;
+  height:100%;
+  background: transparent;
+  padding:0;
+  -webkit-transition:all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  outline: none;
+}
+div.store-list-header div.menu.active>ul{
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+}
+div.store-list-header div.menu>ul{
+  background: #FFF;
+  width:6rem;
+  text-align: center;
+  box-shadow: 0 0 1rem 0.1rem rgba(160,160,160,0.3);
+  z-index: 66;
+  border-radius: 0.2rem;
+  font-size: 0.8rem;
+  position:absolute;
+  right:0;
+  -webkit-transform-origin:100% 0;
+  -moz-transform-origin:100% 0;
+  -ms-transform-origin:100% 0;
+  -o-transform-origin:100% 0;
+  transform-origin:100% 0;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  -webkit-transition:all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+div.store-list-header div.menu>button{
+  font-size: 0;
+  background: url("../assets/storeList/menu.png");
+  background-size: 100% 100%;
+  width:0.33rem;
+  height:1rem;
+  border:0;
+  display:inline-block;
+  padding:0;
+  margin:1.1rem 0.8rem 1.1rem 0;
 }
 div.store-list-root div.store-list-body{
   height:calc(100% - 6.4rem);
@@ -68,6 +217,10 @@ div.store-list-root h1{
   margin:1rem 0;
   vertical-align: top;
   line-height: 1rem;
+  width:5rem;
+  height:1rem;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+
 }
 div.store-list-root a.store-list-return{
   display: inline-block;
@@ -83,13 +236,11 @@ div.store-list-root a.store-list-return>span{
   width:100%;
 
 }
-
 div.store-list-root ul{
   padding:0;
   margin:0;
   list-style: none;
 }
-
 div.store-list-body{
   overflow: auto;
 }
@@ -122,7 +273,6 @@ div.store-list-body>ul ul.pic,
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;
 }
-
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){
   background: #5D77B9;
 }
@@ -135,7 +285,6 @@ div.store-list-body>ul ul.tags>li:nth-child(4n+3){
 div.store-list-body>ul ul.tags>li:nth-child(4n+4){
   background: #38C4AF;
 }
-
 div.store-list-body>ul ul.tags>li{
   display: inline-block;
   height:1.2rem;
@@ -169,6 +318,8 @@ export default{
     return({
       loaded:false,
       data:[],
+      isMenuActive:false,
+      isSearchActive:false
     });
   },
   methods:{
@@ -181,7 +332,29 @@ export default{
         }else{
             return(a+".0");
         }
-    }
+    },
+    menuActive:function(a){
+      this.isMenuActive = !this.isMenuActive;
+    },
+    searchActive:function(a){
+      this.isSearchActive = !this.isSearchActive;
+    },
+    sort1:function(){
+        this.data.sort(function(a,b){
+          return b.overall - a.overall;
+        });
+
+    },
+    sort2:function(){
+      this.data.sort(function(a,b){
+        return b.score - a.score;
+      });
+    },
+    sort3:function(){
+      this.data.sort(function(a,b){
+        return a.score - b.score;
+      });
+    },
   },
   mounted:function(){
     var vue_this = this;

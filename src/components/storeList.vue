@@ -5,7 +5,7 @@
       <h1>{{$route.params.type}}</h1>
       <div class="search" v-bind:class="{'active':isSearchActive}" v-on:click="searchActive">
         <button>搜索</button>
-        <input type="text" placeholder="输入搜索内容">
+        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick">
       </div>
       <div class="menu" v-bind:class="{'active':isMenuActive}" v-on:click="menuActive">
         <button>菜单</button>
@@ -308,8 +308,6 @@ div.store-list-body>ul ul.pic>li{
   margin:0 0.3rem 0.6rem 0;
 }
 </style>
-
-
 <script>
 var axios = require("axios");
 
@@ -343,18 +341,24 @@ export default{
         this.data.sort(function(a,b){
           return b.overall - a.overall;
         });
+        this.isMenuActive = !this.isMenuActive;
 
     },
     sort2:function(){
       this.data.sort(function(a,b){
         return b.score - a.score;
       });
+      this.isMenuActive = !this.isMenuActive;
     },
     sort3:function(){
       this.data.sort(function(a,b){
         return a.score - b.score;
       });
+      this.isMenuActive = !this.isMenuActive;
     },
+    inputClick:function(){
+      this.isSearchActive = !this.isSearchActive;
+    }
   },
   mounted:function(){
     var vue_this = this;

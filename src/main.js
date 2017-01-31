@@ -18,10 +18,10 @@ const routes = [
   { path: '/', component: mainPage },
   { path: '/storeDetail/:id', component: storeDetail },
   { path: '/storeList/:type', component: storeList },
+  { path: '/storeList/search/noStore', component: noStore},
   { path: '/storeList/search/:keyword', component: storeList },
   { path: '/newStore', component: newStore },
   { path: '/newStore/addSuccess', component: addSuccess},
-  { path: '/newStore/noStore', component: noStore},
   { path: '/:type', component: mainPage }
 ];
 

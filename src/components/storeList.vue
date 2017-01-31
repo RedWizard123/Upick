@@ -21,8 +21,7 @@
     </div>
     <div class="store-list-body">
       <ul>
-
-        <li v-for="item in data">
+        <li v-for="item in data" v-on:click="$router.push('/storeDetail/'+item.id);">
           <div class="title-container">
             <h2>{{item.name}}</h2>
             <span>{{convertToFloat(item.score)}}</span>
@@ -141,7 +140,6 @@ div.store-list-header div.menu>ul>li:nth-child(2n-1){
 }
 div.store-list-header div.menu>ul>li:nth-child(2n){
   height:1px;
-
   margin:0 0.5rem;
   background: #bbb;
 }
@@ -368,7 +366,7 @@ export default{
          .then(function (response) {
          response=response.data;
          if(response.data.length===0){
-           vue_this.$router.push("noStore");
+           vue_this.$router.replace("noStore");
          }
          vue_this.data=response.data;
 

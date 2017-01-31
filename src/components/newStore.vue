@@ -174,7 +174,7 @@ button.submit{
   width:10.625rem;
   height:2.5rem;
   border-radius: 1.5625rem;
-  background: url("../assets/newStore/button.png");
+  background: url("../assets/newStore/new_button.png");
   background-size: 100% 100%;
   font-size: 1.1rem;
   color:#fff;

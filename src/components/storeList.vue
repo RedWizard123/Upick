@@ -367,13 +367,12 @@ export default{
         axios.get('storeListSearchData.php?keyword='+vue_this.$route.params.keyword)
          .then(function (response) {
          response=response.data;
+         if(response.data.length===0){
+           vue_this.$router.push("noStore");
+         }
          vue_this.data=response.data;
 
-         console.log(vue_this.$route.path);
-
          //vue_this.$router.push("");
-
-
          vue_this.loaded = true;
          })
          .catch(function (error) {

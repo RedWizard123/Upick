@@ -1,6 +1,6 @@
 <template>
   <div class="add-success-root" v-bind:class="{'show':loaded}">
-    <img src="../assets/addSuccess/icon.png" v-on:load="loadPlus"/>
+    <img src="../assets/addSuccess/avatar.png" v-on:load="loadPlus"/>
     <h1>感谢您提供的数据</h1>
     <p>您添加的新店将在审核通过后火速上线哦～</p>
     <button v-on:click="back">返回首页</button>
@@ -51,6 +51,8 @@ div.add-success-root button{
   border:0;
   font-size: 0;
   margin:0 auto;
+  box-shadow: 0 0 1rem 0.2rem rgba(93,119,185,0.3);
+  border-radius: 1.5rem;
 }
 div.add-success-root.show{
   opacity: 1;

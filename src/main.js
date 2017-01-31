@@ -7,17 +7,21 @@ import App from './App'
 import newStore from './components/newStore'
 import mainPage from './components/mainPage'
 import addSuccess from './components/addSuccess'
+import noStore from './components/noStore'
 import storeList from './components/storeList'
+import storeDetail from './components/storeDetail'
 
 Vue.use(VueRouter);
 
 
 const routes = [
   { path: '/', component: mainPage },
+  { path: '/storeDetail/:id', component: storeDetail },
   { path: '/storeList/:type', component: storeList },
   { path: '/storeList/search/:keyword', component: storeList },
   { path: '/newStore', component: newStore },
   { path: '/newStore/addSuccess', component: addSuccess},
+  { path: '/newStore/noStore', component: noStore},
   { path: '/:type', component: mainPage }
 ];
 

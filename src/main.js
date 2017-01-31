@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import App from './App'
 import newStore from './components/newStore'
 import mainPage from './components/mainPage'
+import addSuccess from './components/addSuccess'
 import storeList from './components/storeList'
 
 Vue.use(VueRouter);
@@ -14,9 +15,9 @@ Vue.use(VueRouter);
 const routes = [
   { path: '/', component: mainPage },
   { path: '/storeList/:type', component: storeList },
+  { path: '/storeList/search/:keyword', component: storeList },
   { path: '/newStore', component: newStore },
-
-
+  { path: '/newStore/addSuccess', component: addSuccess},
   { path: '/:type', component: mainPage }
 ];
 

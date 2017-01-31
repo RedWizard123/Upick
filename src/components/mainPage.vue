@@ -4,7 +4,7 @@
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
-        <input class="search-input" placeholder="输入搜索内容"/>
+        <input class="search-input" placeholder="输入搜索内容" v-model="keyword"/>
         <button class="search-button" v-on:click="searchClick"><span class="search-button-icon">搜索</span></button>
       </div>
       <div class="topic">
@@ -363,7 +363,8 @@ export default{
       canvasHeight:document.body.clientWidth*0.5,
       data:{topic:"这是头条推文这是头条推文",list1:[],list2:[]},
       loaded:false,
-      rem:18
+      rem:18,
+      keyword:""
     });
   },
   methods:{
@@ -375,7 +376,7 @@ export default{
         }else if(!parentDiv.classList.contains("active")){
           parentDiv.classList.add("active");
         }else{
-          window.location.href="main.html";
+          this.$router.push("/storeList/search/"+this.keyword);
         }
       },
       buttonClick:function(a){
@@ -431,7 +432,15 @@ export default{
         }
         requestAnimFrame(this.loop);
       }
-    },
+  },
+
+  created:function(){
+    /*var img =new Image();
+    //img.src = "../assets/mainpage/columns.png";
+    img.onload = function(){
+      alert("loaded");
+    }*/
+  },
   mounted:function(){
     canvas = document.querySelector("canvas");
     ctx = document.querySelector("canvas").getContext("2d");

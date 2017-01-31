@@ -2,13 +2,14 @@
   <div class="store-list-root" v-bind:class="{'show':loaded}">
     <div class="store-list-header">
       <router-link class="store-list-return" to="/noAnim"><span></span></router-link>
-      <h1>{{$route.params.type}}</h1>
+      <h1>{{title}}</h1>
+      <div class="tip"></div>
       <div class="search" v-bind:class="{'active':isSearchActive}" v-on:click="searchActive">
-        <button>搜索</button>
-        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick">
+        <button v-on:click="search">搜索</button>
+        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword">
       </div>
       <div class="menu" v-bind:class="{'active':isMenuActive}" v-on:click="menuActive">
-        <button>菜单</button>
+        <button v-on:blur="menuActive">菜单</button>
         <ul class="menu">
           <li><button v-on:click="sort1">综合排序</button></li>
           <li></li>
@@ -20,6 +21,7 @@
     </div>
     <div class="store-list-body">
       <ul>
+
         <li v-for="item in data">
           <div class="title-container">
             <h2>{{item.name}}</h2>
@@ -36,7 +38,9 @@
         </li>
       </ul>
     </div>
-    <div class="store-list-footer"></div>
+    <div class="store-list-footer">
+      <router-link to="/newStore"><span></span>添加新店</router-link>
+    </div>
   </div>
 </template>
 
@@ -62,6 +66,15 @@ div.store-list-root div.store-list-header{
   background: linear-gradient(90deg,#343856,#4F5E93);
   position: relative;
   z-index: 99;
+}
+div.store-list-header div.tip{
+  background: url("../assets/storeList/tip.png");
+  background-size: 100% 100%;
+  height:0.8rem;
+  width:4rem;
+  position: absolute;
+  bottom: 0;
+  left:2rem;
 }
 div.store-list-header div.search{
   width:9rem;
@@ -132,21 +145,13 @@ div.store-list-header div.menu>ul>li:nth-child(2n){
   margin:0 0.5rem;
   background: #bbb;
 }
-div.store-list-header div.menu>ul>li>button:focus{
-  background: #5d77b9;
-  color:#FFF;
-}
+div.store-list-header div.menu>ul>li>button:focus{}
 div.store-list-header div.menu>ul>li>button{
   border:0;
   width:100%;
   height:100%;
   background: transparent;
   padding:0;
-  -webkit-transition:all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s;
   outline: none;
 }
 div.store-list-header div.menu.active>ul{
@@ -176,11 +181,11 @@ div.store-list-header div.menu>ul{
   -ms-transform: scale(0);
   -o-transform: scale(0);
   transform: scale(0);
-  -webkit-transition:all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s;
+  -webkit-transition:all 0.25s;
+  -moz-transition: all 0.25s;
+  -ms-transition:all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;
 }
 div.store-list-header div.menu>button{
   font-size: 0;
@@ -307,6 +312,35 @@ div.store-list-body>ul ul.pic>li{
   line-height: 1.2rem;
   margin:0 0.3rem 0.6rem 0;
 }
+div.store-list-footer>a{
+  line-height: 100%;
+  height:1rem;
+  width: 10rem;
+  background: transparent;
+  border: 0;
+  color:#FFF;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto auto;
+  text-decoration: none;
+}
+div.store-list-footer{
+  font-size: 1rem;
+  text-align: center;
+  position: relative;
+}
+div.store-list-footer>a>span {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background: url("../assets/storeList/button.png");
+  background-size: 6rem 1rem;
+  vertical-align:middle;
+  margin:0 0.5rem
+}
 </style>
 <script>
 var axios = require("axios");
@@ -317,8 +351,59 @@ export default{
       loaded:false,
       data:[],
       isMenuActive:false,
-      isSearchActive:false
+      isSearchActive:false,
+      title:"",
+      keyword:""
     });
+  },
+  watch:{
+    "$route":function(){
+      var vue_this = this;
+
+      if(vue_this.$route.path.includes("storeList") && vue_this.$route.path.includes("search")){
+        vue_this.title = "搜索: "+vue_this.$route.params.keyword;
+        /*vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
+        vue_this.loaded=true;*/
+        axios.get('storeListSearchData.php?keyword='+vue_this.$route.params.keyword)
+         .then(function (response) {
+         response=response.data;
+         vue_this.data=response.data;
+
+         console.log(vue_this.$route.path);
+
+         //vue_this.$router.push("");
+
+
+         vue_this.loaded = true;
+         })
+         .catch(function (error) {
+         if(error)alert("加载失败！");
+         vue_this.loaded = true;
+         });
+
+      }else{
+        vue_this.title = vue_this.$route.params.type;
+        axios.get('storeListData.php?type='+vue_this.$route.params.type)
+         .then(function (response) {
+         response=response.data;
+         vue_this.data=response.data;
+
+         console.log(vue_this.$route.path);
+
+         //vue_this.$router.push("");
+
+
+         vue_this.loaded = true;
+         })
+         .catch(function (error) {
+         if(error)alert("加载失败！");
+         vue_this.loaded = true;
+         });
+
+        /*vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
+        vue_this.loaded=true;*/
+      }
+    }
   },
   methods:{
     convertToFloat:function(a){
@@ -338,10 +423,10 @@ export default{
       this.isSearchActive = !this.isSearchActive;
     },
     sort1:function(){
-        this.data.sort(function(a,b){
-          return b.overall - a.overall;
-        });
-        this.isMenuActive = !this.isMenuActive;
+      this.data.sort(function(a,b){
+        return b.overall - a.overall;
+      });
+      this.isMenuActive = !this.isMenuActive;
 
     },
     sort2:function(){
@@ -349,6 +434,7 @@ export default{
         return b.score - a.score;
       });
       this.isMenuActive = !this.isMenuActive;
+
     },
     sort3:function(){
       this.data.sort(function(a,b){
@@ -358,26 +444,63 @@ export default{
     },
     inputClick:function(){
       this.isSearchActive = !this.isSearchActive;
+    },
+    addNewStore:function(){
+
+    },
+    search:function(){
+      if(this.keyword!=""){
+        this.$router.push("/storeList/search/"+this.keyword);
+      }
+      //this.$router.replace("/");
     }
   },
   mounted:function(){
     var vue_this = this;
-    /*axios.get('storeListData.php?type='+vue_this.$route.params.type)
-      .then(function (response) {
-        response=response.data;
-        vue_this.data=response.data;
-        vue_this.loaded = true;
-      })
-      .catch(function (error) {
-        if(error)alert("加载失败！");
-        vue_this.loaded = true;
-      });*/
-    vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
-    vue_this.loaded=true;
+    if(vue_this.$route.path.includes("storeList") && vue_this.$route.path.includes("search")){
+      vue_this.title = "搜索: "+vue_this.$route.params.keyword;
+      /*vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
+      vue_this.loaded=true;*/
+      axios.get('storeListSearchData.php?keyword='+vue_this.$route.params.keyword)
+        .then(function (response) {
+          response=response.data;
+          vue_this.data=response.data;
+
+          console.log(vue_this.$route.path);
+
+          //vue_this.$router.push("");
+
+
+          vue_this.loaded = true;
+        })
+        .catch(function (error) {
+          if(error)alert("加载失败！");
+          vue_this.loaded = true;
+        });
+
+    }else{
+      vue_this.title = vue_this.$route.params.type;
+      axios.get('storeListData.php?type='+vue_this.$route.params.type)
+        .then(function (response) {
+          response=response.data;
+          vue_this.data=response.data;
+
+          console.log(vue_this.$route.path);
+
+          //vue_this.$router.push("");
+
+
+          vue_this.loaded = true;
+        })
+        .catch(function (error) {
+          if(error)alert("加载失败！");
+          vue_this.loaded = true;
+        });
+
+      /*vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
+      vue_this.loaded=true;*/
+    }
+
   }
 }
-
-
-//#4F5E93
-  //#343856
 </script>

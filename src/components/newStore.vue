@@ -2,7 +2,7 @@
   <div class="new-store-root" v-bind:class="{'show':loaded}">
     <div class="new-store-header">
       <div class="new-store-alert"></div>
-      <img src="../assets/newStore/header.png" v-on:load=""/>
+      <img src="../assets/newStore/header.png" v-on:load="n++;checkLoad()"/>
       <h1><span></span><span>添加新店</span></h1>
     </div>
     <div class="new-store-input">
@@ -32,7 +32,8 @@
 </template>
 <style scoped>
 div.new-store-root{
-  background-color: #EEF1FA;min-height:100%;padding-bottom: 1.25rem;
+  background-color: #EEF1FA;min-height:100%;
+  box-sizing: border-box;
   opacity: 0;
   transition: opacity 0.5s;
 }
@@ -287,6 +288,8 @@ div.new-store-alert.show{
     data:()=>{
       return({
         items:form,
+        loaded:false,
+        n:0,
       })
     },
     methods:{
@@ -294,6 +297,7 @@ div.new-store-alert.show{
         if(0){
           alert("请完整填写！");
         }else{
+          var vue_this=this;
           var datas=[];
           var list_item = document.querySelectorAll("div.input-item");
           for(var i=0;i<list_item.length;i++){
@@ -346,9 +350,11 @@ div.new-store-alert.show{
             .then(function (response) {
               response=response.data;
               if(!response.error){
-                alert_("提交成功",3000,"GREEN",function(){
+                /*alert_("提交成功",3000,"GREEN",function(){
                   //window.location.href="main.html";
-                });
+
+                });*/
+                vue_this.$router.push("/newStore/addSuccess");
               }else{
                 alert_("提交失败：服务器拒绝您的数据！");
               }
@@ -370,12 +376,18 @@ div.new-store-alert.show{
           .then(function (response) {
             response=response.data;
             vue_this.items=response.data;
-            vue_this.loaded = true;
+            vue_this.n++;
+            vue_this.checkLoad();
           })
           .catch(function (error) {
             console.log(error);
             if(error)alert_("加载表单失败！");
           });
+      },
+      checkLoad:function(){
+        if(this.n===2){
+          this.loaded = true;
+        }
       }
     },
     mounted:function(){

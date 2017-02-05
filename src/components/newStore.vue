@@ -36,6 +36,7 @@ div.new-store-root{
   box-sizing: border-box;
   opacity: 0;
   transition: opacity 0.5s;
+  padding-bottom: 1.5rem;
 }
 div.new-store-root.show{
   opacity: 1;
@@ -178,7 +179,7 @@ button.submit{
   background-size: 100% 100%;
   font-size: 1.1rem;
   color:#fff;
-  margin:1.5625rem auto;
+  margin:1.5625rem auto 0 auto;
   display: block;
   -webkit-transition: all 1s;
   transition: all 1s;

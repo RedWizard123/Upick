@@ -462,8 +462,9 @@ export default{
         .then(function (response) {
           response=response.data;
           vue_this.data=response.data;
-
-          console.log(vue_this.$route.path);
+          if(response.data.length < 1){
+            vue_this.$router.replace("/storeList/search/noStore");
+          }
 
           //vue_this.$router.push("");
 

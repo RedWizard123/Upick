@@ -6,7 +6,7 @@
       <div class="tip"></div>
     </div>
     <div class="store-detail-body">
-      <div class="body-top">
+      <div class="body-top"  v-bind:class="{'low':low && detail.comments.length>=5}">
         <div class="addr-time">
           <h2 class="time"><span class="icon-time">营业时间:</span>{{detail.openTime}}</h2>
           <h2 class="addr"><span class="icon-addr">地址:</span>{{detail.address}}</h2>
@@ -25,10 +25,25 @@
         </div>
       </div>
       <div class="body-bottom">
-
+        <div class="tabs">
+          <span v-bind:class="{'chosen':firstChosen}" v-on:click="firstChosen!=true?firstChosen=!firstChosen:0;">最热评论</span>
+          <span v-bind:class="{'chosen':!firstChosen}" v-on:click="firstChosen==true?firstChosen=!firstChosen:0;">最新评论</span>
+        </div>
+        <ul class="comments-list" id="comments-list">
+          <li v-for="item2 in detail.comments">
+            <div>
+              <span class="date">{{(new Date(item2.date*1000)).toLocaleDateString()}}</span>
+              <span v-bind:data-id="item2.id" class="dislike" v-bind:class="{'black':item2.disliked}" v-on:click="item2.disliked ? disliked = false : (liked = false , disliked = true); changeLikeStatus(liked,disliked,item2);"><span>{{item2.dislike}}</span></span>
+              <span v-bind:data-id="item2.id" class="like" v-bind:class="{'black':item2.liked}" v-on:click="item2.liked ? liked = false : (disliked = false , liked = true); changeLikeStatus(liked,disliked,item2);"><span>{{item2.like}}</span></span>
+            </div>
+            <p>{{item2.value}}</p>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="store-detail-footer"></div>
+    <div class="store-detail-footer">
+      <router-link to="/storeComment"><span></span>我要评价</router-link>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -42,6 +57,7 @@ div.store-detail-root{
   -o-transition: all 0.5s;
   transition: all 0.5s;
   opacity: 0;
+  height:100%;
 }
 div.store-detail-header{
   background: linear-gradient(90deg,#343856,#4F5E93);
@@ -90,19 +106,25 @@ div.store-detail-header>h1{
 }
 div.store-detail-body{
   height:calc(100% - 6.4rem);
-
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 div.store-detail-footer{
   height: 3.2rem;
   width:100%;
   background: linear-gradient(90deg,#343856,#4F5E93);
-  position: absolute;
-  bottom:0;
 }
 div.store-detail-body>div.body-top{
   padding:0 1.5rem;
   width:100%;
   box-sizing: border-box;
+  height: 12.5rem;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
 }
 div.store-detail-body>div.body-top>div.addr-time{
   padding:1.5rem 0 0.5rem 0;
@@ -150,11 +172,11 @@ div.store-detail-body>div.body-top span.score{
   top:2rem;
   right:0;
 }
-div.store-detail-body div.tags{
+div.store-detail-body div.body-top div.tags{
   margin-bottom: 0.7rem;
   position: relative;
 }
-div.store-detail-body div.tags>span{
+div.store-detail-body div.body-top div.tags>span{
   display: inline-block;
   font-size: 0.7rem;
   border-radius: 0.3rem;
@@ -162,25 +184,25 @@ div.store-detail-body div.tags>span{
   padding:0.2rem 0.3rem;
   margin:0 0.2rem;
 }
-div.store-detail-body div.tags>span:nth-child(4n+1){
+div.store-detail-body div.body-top div.tags>span:nth-child(4n+1){
   background: #5D77B9;
 }
-div.store-detail-body div.tags>span:nth-child(4n+2){
+div.store-detail-body div.body-top div.tags>span:nth-child(4n+2){
   background: #44A3BF;
 }
-div.store-detail-body div.tags>span:nth-child(4n+3){
+div.store-detail-body div.body-top div.tags>span:nth-child(4n+3){
   background: #568AD0;
 }
-div.store-detail-body div.tags>span:nth-child(4n+4){
+div.store-detail-body div.body-top div.tags>span:nth-child(4n+4){
   background: #38C4AF;
 }
-div.store-detail-body div.pics{
+div.store-detail-body div.body-top div.pics{
   position: relative;
 }
-div.store-detail-body div.pics>div>span{
+div.store-detail-body div.body-top div.pics>div>span{
 
 }
-div.store-detail-body div.pics>div.img-con{
+div.store-detail-body div.body-top div.pics>div.img-con{
   height:3.2rem;
   width:100%;
   display: flex;
@@ -190,8 +212,9 @@ div.store-detail-body div.pics>div.img-con{
   position: relative;
   text-align: center;
   color:#FFF;
+  margin-bottom: 1rem;
 }
-div.store-detail-body div.pics>div.mask{
+div.store-detail-body div.body-top div.pics>div.mask{
   position: absolute;
   right:0;
   top:0;
@@ -203,7 +226,7 @@ div.store-detail-body div.pics>div.mask{
   font-size: 1.5rem;
   color: #FFF;
 }
-div.store-detail-body div.pics>div>img{
+div.store-detail-body div.body-top div.pics>div>img{
   background: #AAAAAA;
   width:5.2rem;
   height:3.2rem;
@@ -211,13 +234,13 @@ div.store-detail-body div.pics>div>img{
   margin:0;
   box-sizing: border-box;
 }
-div.store-detail-body div.container{
-  -webkit-transition: all 0.25s;
-  -moz-transition: all 0.25s;
-  -ms-transition: all 0.25s;
-  -o-transition: all 0.25s;
-  transition: all 0.25s;
-  opacity: 1;
+div.store-detail-body div.body-top div.container{
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -ms-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
@@ -229,7 +252,10 @@ div.store-detail-body div.container{
   -o-transform-origin:0 0;
   transform-origin:0 0;
 }
-div.store-detail-body div.container.low{
+div.store-detail-body div.body-top.low{
+  height:6rem;
+}
+div.store-detail-body div.body-top.low div.container{
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   -ms-transform: scale(0);
@@ -237,9 +263,144 @@ div.store-detail-body div.container.low{
   transform: scale(0);
   opacity: 0;
 }
+div.store-detail-body div.body-bottom{
+  width:100%;
+  /*height:calc(100% - 12.5rem);*/
+  flex:1;
+  overflow: hidden;
+  /*-webkit-transition: all 0.25s;
+  -moz-transition: all 0.25s;
+  -ms-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;*/
+}
+div.store-detail-body ul.comments-list>li>div{
+  color:#666666;
+}
+div.store-detail-body ul.comments-list>li>div>span{
+  display: inline-block;
+  height:1rem;
+  line-height: 1rem;
+}
+div.store-detail-body ul.comments-list>li>div>span.dislike::before{
+  content:"";
+  background: url("../assets/storeDetail/like.png");
+  height:1rem;
+  width: 1rem;
+  display: inline-block;
+  background-size: 1rem 1rem;
+  margin-right: 0.3rem;
+  -webkit-transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  -ms-transform: rotateX(180deg);
+  -o-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+div.store-detail-body ul.comments-list>li>div>span.dislike.black::before{
+  content:"";
+  background: url("../assets/storeDetail/liked.png");
+  height:1rem;
+  width: 1rem;
+  display: inline-block;
+  background-size: 1rem 1rem;
+  -webkit-transform: rotateX(180deg);
+  -moz-transform: rotateX(180deg);
+  -ms-transform: rotateX(180deg);
+  -o-transform: rotateX(180deg);
+  transform: rotateX(180deg);
+}
+div.store-detail-body ul.comments-list>li>div>span.like::before{
+  content:"";
+  background: url("../assets/storeDetail/like.png");
+  height:1rem;
+  width: 1rem;
+  display: inline-block;
+  background-size: 1rem 1rem;
+  margin-right: 0.3rem;
+}
+div.store-detail-body ul.comments-list>li>div>span.like.black::before{
+  content:"";
+  background: url("../assets/storeDetail/liked.png");
+  height:1rem;
+  width: 1rem;
+  display: inline-block;
+  background-size: 1rem 1rem;
+}
+div.store-detail-body ul.comments-list>li>div>span>span{
+  font-size: 0.6rem;
+  vertical-align: top;
+}
+div.store-detail-body ul.comments-list>li>div>span.dislike,
+div.store-detail-body ul.comments-list>li>div>span.like{
+  float:right;
+  margin:0 0.3rem;
+}
+div.store-detail-body ul.comments-list>li{
+  padding:0.5rem 1.5rem;
+  border-bottom: solid 1px #B6b6b6;
+}
+div.store-detail-body ul.comments-list{
+  height:calc(100% - 1rem);
+  overflow: auto;
+  margin:0;
+  padding:0;
+  list-style: none;
+  font-size: 0.7rem;
+}
+div.store-detail-body div.tabs>span.chosen{
+  color:#5D77B9;
+  border-bottom: solid 2px #5D77B9;
+}
+div.store-detail-body div.tabs>span{
+  padding:0.2rem 0.2rem;
+  box-sizing: border-box;
+  display: inline-block;
+  margin-right: 1rem;
+  -webkit-transition: all 0.25s;
+  -moz-transition: all 0.25s;
+  -ms-transition: all 0.25s;
+  -o-transition: all 0.25s;
+  transition: all 0.25s;
+}
+div.store-detail-body div.tabs{
+  border-bottom: 1px solid #B6b6b6;
+  height:1.4rem;
+  padding:0 1.5rem;
+  font-size: 0.8rem;
+}
+div.store-detail-footer>a{
+  line-height: 100%;
+  height:1rem;
+  width: 10rem;
+  background: transparent;
+  border: 0;
+  color:#FFF;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  margin:auto auto;
+  text-decoration: none;
+}
+div.store-detail-footer{
+  font-size: 1rem;
+  text-align: center;
+  position: relative;
+}
+div.store-detail-footer>a>span {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  background: url("../assets/storeDetail/comment.png") no-repeat;
+  background-size: 1rem auto;
+  vertical-align:middle;
+  margin:0 0.5rem
+}
 </style>
 <script>
-export default{
+  var axios = require("axios");
+  export default{
   data:function(){
     return({
       loaded:false,
@@ -250,8 +411,11 @@ export default{
         picURLs:[],
         picURLs_:[],
         tags:[],
-        score:""
-      }
+        score:"",
+        comments:[],
+      },
+      low:false,
+      firstChosen:""
     });
   },
   methods:{
@@ -264,19 +428,94 @@ export default{
       }else{
         return(a+".0");
       }
+    },
+    changeLikeStatus:function(liked,disliked,item){
+      var temp = [item.liked,item.disliked];
+      item.liked = liked;
+      item.disliked = disliked;
+      axios.get('changeLikeStatus.php?id='+item.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
+        .then(function (response) {
+          var result = response.data.data.result;
+          item.liked = result.liked;
+          item.disliked = result.disliked;
+        })
+        .catch(function (error) {
+          if(error)alert("操作失败！");
+          item.liked = temp[0];
+          item.disliked = temp[1];
+        });
+    }
+  },
+  watch:{
+    "firstChosen":function(from,to){
+      if(to != false){
+        this.detail.comments.sort(function(a,b){
+          return(b.date - a.date);
+        });
+      }else{
+        this.detail.comments.sort(function(a,b){
+          return(b.like - a.like);
+        });
+      }
     }
   },
   mounted:function(){
-    this.detail = {
+    var vue_this = this;
+    document.querySelector("ul#comments-list").addEventListener("scroll",function(){
+      vue_this.low = this.scrollTop >= 10;
+    });
+    /*this.detail = {
       name:"地址",
       openTime:"9:00 - 21:00",
       address:"地址地址地址地址地址地址",
       picURLs:["","","","","","","","","","","",""],
       tags:[["地址A",5],["地址",5],["A地址",5],["地A址",5]],
-      score:"9"
+      score:"9",
+      comments:[
+        {
+          "id": 512,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～01",
+          "date": 1476619910,
+          "like": 618,
+          "dislike": 1,
+          "liked": true,
+          "disliked": false
+        },
+        {
+          "id": 513,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～02",
+          "date": 1409618479,
+          "like": 213,
+          "dislike": 1,
+          "liked": false,
+          "disliked": true
+        },
+        {
+          "id": 514,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～03",
+          "date": 1464101473,
+          "like": 970,
+          "dislike": 1,
+          "liked": false,
+          "disliked": true
+        }
+      ]
     };
     this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
-    this.loaded = true;
+    this.loaded = true;*/
+    axios.get('storeDetail.php?id='+vue_this.$route.params.id)
+     .then(function (response) {
+     response=response.data;
+     vue_this.detail=response.data;
+     vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
+     vue_this.firstChosen = true;
+     vue_this.loaded = true;
+     })
+     .catch(function (error) {
+     if(error)alert("加载失败！");
+     vue_this.loaded = true;
+     });
+
   }
 }
 </script>

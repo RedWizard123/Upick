@@ -336,6 +336,7 @@ div.hot-store div.mainpage-bottom>a{
 }
 </style>
 <script>
+var handle;
 var axios = require("axios");
 var ctx;
 var canvas;
@@ -347,15 +348,27 @@ var lines = ["rgba(255,255,255,1)",
 ];
 var meteor = [];
 var stars = [];
+var n= 0;
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.mozRequestAnimationFrame    ||
+    window.oRequestAnimationFrame      ||
+    window.msRequestAnimationFrame     ||
     function( callback ){
       window.setTimeout(callback, 1000 / 60);
     };
 })();
-
+window.cancelAnimFrame = (function(){
+  return  window.cancelAnimationFrame ||
+    window.webkitCancelAnimationFrame ||
+    window.mozCancelAnimationFrame    ||
+    window.oCancelAnimationFrame      ||
+    window.msCancelAnimationFrame     ||
+    function(n){
+      window.clearTimeout(n);
+    };
+})();
 export default{
   data:function(){
     return({
@@ -430,10 +443,9 @@ export default{
           ctx.closePath();
           ctx.fill();
         }
-        requestAnimFrame(this.loop);
+        handle = requestAnimFrame(this.loop);
       }
   },
-
   created:function(){
     /*var img =new Image();
     //img.src = "../assets/mainpage/columns.png";
@@ -442,6 +454,7 @@ export default{
     }*/
   },
   mounted:function(){
+
     canvas = document.querySelector("canvas");
     ctx = document.querySelector("canvas").getContext("2d");
     d_=canvas.width*0.08;
@@ -453,17 +466,30 @@ export default{
     for(i = 0;i<10;i++){
       stars.push({x:d_+Math.random()*10*d_,y:d_+Math.random()*5*d_});
     }
-    if(this.$route.params.type!="noAnim"){
-      this.loop();
-    }
+    window.cancelAnimFrame(handle);
+    //if(this.$route.params.type!="noAnim"){
+    this.loop();
+    //}
     var vue_this = this;
     vue_this.rem =parseInt( window.getComputedStyle(document.documentElement)["fontSize"]);
+    var img1 = (new Image);
+    var img2 = (new Image);
+    var img3 = (new Image);
+    img1.src = "/static/img/bottom.png";
+    img1.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img2.src = "/static/img/title.png";
+    img2.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img3.src = "/static/img/columns.png";
+    img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img1 = img2 = img3 =null;
     axios.get('mainPageData.php')
       .then(function (response) {
         console.log(response);
         response=response.data;
         vue_this.data=response;
-        vue_this.loaded = true;
+        n++;
+        if(n>=4){vue_this.loaded = true;}
+        console.log(n);
       })
       .catch(function (error) {
         console.log(error);
@@ -491,10 +517,6 @@ export default{
         "\u7ec5\u5b9d"]
     };*/
 
-  },
-  updated:function(){
-    this.loaded = true;
-    console.log("aaa");
   }
 }
 </script>

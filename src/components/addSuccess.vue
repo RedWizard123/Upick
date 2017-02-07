@@ -39,8 +39,8 @@ div.add-success-root p{
   margin:0 auto;
 }
 div.add-success-root img{
-  width:17.2rem;
-  height:12rem;
+  width:14.3rem;
+  height:10rem;
 }
 div.add-success-root button{
   background: url("../assets/addSuccess/back.png");

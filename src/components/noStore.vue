@@ -39,8 +39,8 @@
     margin:0 auto;
   }
   div.add-failed-root img{
-    width:17.2rem;
-    height:16.2rem;
+    width:14.3rem;
+    height:13.5rem;
   }
   div.add-failed-root button{
     background: url("../assets/noStore/blank_button.png");

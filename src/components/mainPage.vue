@@ -20,7 +20,7 @@
               <ul>
                 <li v-for="item2 in item1.subTitle"><router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link></li>
               </ul>
-              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -205px'}"></div>
+              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -204px'}"></div>
             </div>
             <div class="img-div" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px 0'}"></div>
             <h3>{{item1.title}}</h3>
@@ -33,7 +33,7 @@
       <div>
         <div class="back"></div>
         <div class="mainpage-bottom">
-          <router-link v-for="item3 in data.list2" v-bind:to="'storeList/' + item3">{{item3}}</router-link>
+          <router-link v-for="item3 in data.list2" v-bind:to="'storeDetail/' + item3">{{item3}}</router-link>
         </div>
       </div>
     </div>
@@ -139,9 +139,9 @@ div.mainpage-body h3{
   bottom:0.5rem;
   text-align: center;
   width:5rem;
-  font-weight: 600;
   color:#FFF;
   z-index: 11;
+  font-weight: 400;
 }
 div.mainpage-body div.column{
   width:100%;
@@ -482,7 +482,7 @@ export default{
     img3.src = "/static/img/columns.png";
     img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
     img1 = img2 = img3 =null;
-    axios.get('mainPageData.php')
+    /*axios.get('mainPageData.php')
       .then(function (response) {
         console.log(response);
         response=response.data;
@@ -495,8 +495,8 @@ export default{
         console.log(error);
         if(error)alert("主页加载失败！");
         vue_this.loaded = true;
-      });
-    /*vue_this.data={
+      });*/
+    vue_this.data={
       "topic":"这是头条推文这是头条推文",
       "list1":[
         {
@@ -515,7 +515,9 @@ export default{
         "\u6c27\u6c14\u5382",
         "SB\u9a7e\u6821",
         "\u7ec5\u5b9d"]
-    };*/
+    };
+    n++;
+    if(n>=4){vue_this.loaded = true;}
 
   }
 }

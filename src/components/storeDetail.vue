@@ -509,6 +509,18 @@ div.store-detail-footer>a>span {
      vue_this.detail=response.data;
      vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
      vue_this.firstChosen = true;
+     vue_this.detail.comments = [];
+     axios.get('commentsList.php?id='+vue_this.$route.params.id)
+       .then(function (response) {
+         response=response.data;
+         vue_this.detail.comments = response.data;
+         vue_this.loaded = true;
+       })
+       .catch(function (error) {
+         if(error)alert("加载失败！");
+         vue_this.loaded = true;
+       });
+
      vue_this.loaded = true;
      })
      .catch(function (error) {

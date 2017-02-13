@@ -482,21 +482,19 @@ export default{
     img3.src = "/static/img/columns.png";
     img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
     img1 = img2 = img3 =null;
-    /*axios.get('mainPageData.php')
+    axios.get('mainPageData.php')
       .then(function (response) {
-        console.log(response);
         response=response.data;
         vue_this.data=response;
         n++;
         if(n>=4){vue_this.loaded = true;}
-        console.log(n);
       })
       .catch(function (error) {
         console.log(error);
         if(error)alert("主页加载失败！");
         vue_this.loaded = true;
-      });*/
-    vue_this.data={
+      });
+    /*vue_this.data={
       "topic":"这是头条推文这是头条推文",
       "list1":[
         {
@@ -517,7 +515,7 @@ export default{
         "\u7ec5\u5b9d"]
     };
     n++;
-    if(n>=4){vue_this.loaded = true;}
+    if(n>=4){vue_this.loaded = true;}*/
 
   }
 }

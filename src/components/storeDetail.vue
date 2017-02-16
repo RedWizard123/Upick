@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="store-detail-footer">
-      <router-link to="/storeComment"><span></span>我要评价</router-link>
+      <router-link v-bind:to="'/comment/'+a"><span></span>我要评价</router-link>
     </div>
   </div>
 </template>
@@ -405,7 +405,7 @@ div.store-detail-footer>a>span {
     return({
       loaded:false,
       detail:{
-        name:"",
+        name:"A",
         openTime:"",
         address:"",
         picURLs:[],

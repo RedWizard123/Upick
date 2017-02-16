@@ -7,19 +7,16 @@
     </div>
     <div class="new-store-input">
       <div class="input-item" v-for="item in items" v-bind:class="item.inputType" v-bind:data-necessary="item.necessary">
-
         <template v-if="item.inputType==='select'">
           <h2><span>{{item.title}}</span></h2>
           <div>
             <button class="select-option" v-for="option in item.ops" v-bind:data-id="option.id" v-on:click="select">{{option.name}}</button>
           </div>
         </template>
-
         <template v-else-if="item.inputType==='shortText'">
           <h2><span>{{item.title}}</span></h2>
           <input v-bind:placeholder="item.placeholder" v-bind:id="item.name" type="text"/>
         </template>
-
         <template v-else-if="item.inputType==='longText'">
           <h2><span>{{item.title}}</span></h2>
           <textarea v-bind:placeholder="item.placeholder" v-bind:id="item.name" type="text"></textarea>

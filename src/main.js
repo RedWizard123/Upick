@@ -10,9 +10,11 @@ import addSuccess from './components/addSuccess'
 import noStore from './components/noStore'
 import storeList from './components/storeList'
 import storeDetail from './components/storeDetail'
+import comment from './components/comment'
+import commentSuccess from './components/commentSuccess'
+import commentFailed from './components/commentFailed'
 
 Vue.use(VueRouter);
-
 
 const routes = [
   { path: '/', component: mainPage },
@@ -22,6 +24,9 @@ const routes = [
   { path: '/storeList/search/:keyword', component: storeList },
   { path: '/newStore', component: newStore },
   { path: '/newStore/addSuccess', component: addSuccess},
+  { path: '/comment/success', component: commentSuccess},
+  { path: '/comment/failed', component: commentFailed},
+  { path: '/comment/:id', component: comment},
   { path: '/:type', component: mainPage }
 ];
 

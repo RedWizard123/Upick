@@ -1,6 +1,7 @@
 <template>
   <div class="mainpage-root" v-bind:class="{'show':loaded}">
     <div class="mainpage-header">
+      <img  src="../assets/mainpage/xingxing.png" style="display: none;" id="xingxing"/>
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
@@ -20,7 +21,7 @@
               <ul>
                 <li v-for="item2 in item1.subTitle"><router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link></li>
               </ul>
-              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -204px'}"></div>
+              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -205px'}"></div>
             </div>
             <div class="img-div" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px 0'}"></div>
             <h3>{{item1.title}}</h3>
@@ -66,7 +67,7 @@ div.mainpage-header>h1{
   background-size: auto 100%;
   height:3rem;
   width:6.5rem;
-  margin:0.75rem auto;
+  margin:0.55rem auto;
   left:0;
   right:0;
   top:0;
@@ -78,7 +79,7 @@ div.mainpage-header>div.search{
   display: block;
   position: absolute;
   height:1.5rem;
-  top:1.65rem;
+  top:1.450rem;
   right:0;
   padding-right:0.5rem;
 }
@@ -373,7 +374,7 @@ export default{
   data:function(){
     return({
       canvasWidth:document.body.clientWidth,
-      canvasHeight:document.body.clientWidth*0.5,
+      canvasHeight:document.body.clientWidth*0.45,
       data:{topic:"这是头条推文这是头条推文",list1:[],list2:[]},
       loaded:false,
       rem:18,
@@ -402,38 +403,48 @@ export default{
         ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.fillStyle="#343856";
         ctx.fillRect(0,0,canvas.width,canvas.height);
+        var img = document.getElementById("xingxing");
+        ctx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.width * img.height / img.width);
+
         step+=2;
+
+        //canvas.getContext("2d").drawImage();
+
         var dd=canvas.width/50;
-        for(var j=0;j<stars.length;j++){
-          var grd = ctx.createRadialGradient(stars[j].x,stars[j].y, 1, stars[j].x, stars[j].y, dd/2);
+        /*for(var j=0;j<stars.length;j++){
+          var grd = ctx.createRadialGradient(stars[j].x,stars[j].y, 1, stars[j].x, stars[j].y, dd/5+Math.random()*dd);
           grd.addColorStop(0, "rgba(255,255,255,0.3)");
           grd.addColorStop(1, "rgba(0,0,0,0)");
           ctx.fillStyle = grd;
           ctx.fillRect(stars[j].x-dd/4, stars[j].y-dd/4, dd/2, dd/2);
-        }
-        for(j=0;j<meteor.length;j++){
+        }*/
+        for(var j=0;j<meteor.length;j++){
           if(meteor[j].position.x-meteor[j].length/Math.SQRT2>canvas.width||meteor[j].position.y-meteor[j].length/Math.SQRT2>canvas.height){
             meteor.splice(j,1);
-            meteor.push({position:{x:Math.random()*canvas.width*0.75,y:0},color:"",length:Math.random()*2*d_+d_});
+            meteor.push({position:{x:Math.random()*canvas.width*0.75,y:0},color:"",length:Math.random()*0.5*d_+2*d_});
           }else{
             meteor[j].position.x+=dd/2;
             meteor[j].position.y+=dd/2;
-            grd = ctx.createRadialGradient(meteor[j].position.x,meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd);
-            grd.addColorStop(0, "rgba(255,255,255,0.3)");
+
+            var grd = ctx.createRadialGradient(meteor[j].position.x,meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd*1.5);
+            grd.addColorStop(0, "rgba(255,255,255,0.6)");
+            grd.addColorStop(0.2, "rgba(255,223,0,0.18)");
             grd.addColorStop(1, "rgba(0,0,0,0)");
             ctx.fillStyle = grd;
             ctx.fillRect(meteor[j].position.x-dd/2, meteor[j].position.y-dd/2, dd, dd);
             ctx.moveTo(meteor[j].position.x,meteor[j].position.y);
             ctx.lineTo(meteor[j].position.x-meteor[j].length/Math.SQRT2,meteor[j].position.y-meteor[j].length/Math.SQRT2);
             ctx.strokeStyle="rgba(255,255,255,0.2)";
+            ctx.lineWidth = "20px";
+            //
             ctx.stroke();
           }
         }
         for(j = lines.length - 1; j >= 0; j--) {
           ctx.fillStyle = lines[j];
           var angle = (step+j*90)*Math.PI/180;
-          var deltaHeight   = Math.sin(angle) * d_;
-          var deltaHeightRight   = Math.cos(angle) * d_;
+          var deltaHeight = Math.sin(angle) * d_*0.7;
+          var deltaHeightRight = Math.cos(angle) * d_*0.7;
           ctx.beginPath();
           ctx.moveTo(0, canvas.height/3*2+deltaHeight);
           ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_, canvas.width, canvas.height/3*2+deltaHeightRight);
@@ -468,19 +479,25 @@ export default{
     }
     window.cancelAnimFrame(handle);
     //if(this.$route.params.type!="noAnim"){
-    this.loop();
-    //}
     var vue_this = this;
+
+
+    document.getElementById("xingxing").onload = function(){
+      vue_this.loop();
+    };
+
+
+    //}
     vue_this.rem =parseInt( window.getComputedStyle(document.documentElement)["fontSize"]);
     var img1 = (new Image);
     var img2 = (new Image);
     var img3 = (new Image);
     img1.src = "/static/img/bottom.png";
-    img1.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img1.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img2.src = "/static/img/title.png";
-    img2.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img2.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img3.src = "/static/img/columns.png";
-    img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}console.log(n)};
+    img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img1 = img2 = img3 =null;
     axios.get('mainPageData.php')
       .then(function (response) {
@@ -516,7 +533,6 @@ export default{
     };
     n++;
     if(n>=4){vue_this.loaded = true;}*/
-
   }
 }
 </script>

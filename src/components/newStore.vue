@@ -180,11 +180,11 @@ button.submit{
   display: block;
   -webkit-transition: all 1s;
   transition: all 1s;
-  box-shadow: 0 0 0.625rem 0 rgba(100,100,100,0.2);
+  box-shadow: 0 0 0.3rem 0.2rem rgba(179,192,227,0.65);
   outline: none;
 }
 button.submit:focus{
-  box-shadow: 0 0 0.625rem 0.625rem rgba(100,100,100,0.2);
+  box-shadow: 0 0 0.3rem 0.2rem rgba(179,192,227,0.65);
 }
 div.new-store-header{
   position: relative;

@@ -52,7 +52,7 @@
     margin:0 auto;
     font-size: 1rem;
     color:#FFF;
-    box-shadow: 0 0 1rem 0.2rem rgba(93,119,185,0.3);
+    box-shadow: 0 0 1rem 0.2rem rgba(164,221,238,0.78);
     border-radius: 1.5rem;
   }
   div.add-failed-root.show{

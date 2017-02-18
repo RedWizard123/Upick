@@ -8,15 +8,21 @@
     </div>
     <div class="comment-body">
       <div class="choose-tags">
-        <div class="tags-viewport">
-          <div>
-            <div class="tags">
-              <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
-            </div>
-          </div>
+        <div class="width-ruler"></div>
+        <div class="tags-pre" style="display:block;opacity: 0;position:absolute;z-index:-1;">
+          <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
         </div>
+        <swipe :auto="0" :continous="false" v-if="loaded">
+          <swipe-item class="tags swiper-slide" v-for="(item,index) in pages" v-bind:style="{width: width_ +'px'}">
+            <div class="button-viewport">
+              <div class="button-wrap" v-bind:style="{top:'-' + 3.2*index + 'rem'}">
+                <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
+              </div>
+            </div>
+          </swipe-item>
+        </swipe>
         <div class="dots">
-          <span></span>
+
         </div>
       </div>
       <div class="comment-write">
@@ -93,37 +99,40 @@ div.comment-body{
 }
 div.comment-body>div.choose-tags{
   padding:0 1.5rem;
+  position: relative;
+  height:4.7rem;
+}
+div.comment-body>div.choose-tags div.tags-viewport>div{
+}
+div.comment-body>div.choose-tags div.tags-viewport{
+  height:3.2rem;
+  overflow: hidden;
+  position: relative;
 }
 div.comment-body>div.choose-tags div.tags{
-  height:3.2rem;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding:0 0.8rem ;
-  overflow: hidden;
+
 }
 div.comment-body>div.choose-tags>div.dots{
   height:1rem;
   margin-bottom: 0.5rem;
 }
-div.comment-body>div.choose-tags div.tags>button.active{
+div.comment-body>div.choose-tags div.tags button.active{
   background-color: #6C77C9;
   color:#fFFFFF;
 }
-div.comment-body>div.choose-tags div.tags>button{
+div.comment-body>div.choose-tags div.tags button{
   height:1.4rem;
   min-width:2rem;
   display: inline-block;
   padding:0;
-  margin:0 0.25rem 0.3rem 0.25rem;
+  margin:0 0.25rem 0.2rem 0.25rem;
   border-radius: 0.3rem;
   background: #FFFFFF;
   border:1px solid #6C77C9;
   font-size: 0.7rem;
 }
 div.comment-write{
-  flex:1;
+  height:calc(100% - 4.7rem);
   padding:0.5rem 0 1rem 0;
   border-radius: 0.3rem;
   margin:0 1.5rem;
@@ -138,7 +147,7 @@ div.comment-write>textarea{
   box-sizing: border-box;
   height:100%;
   border-radius: 0.2rem;
-  box-shadow: -0.1rem -0.08rem 0.08rem #DCD4F8;
+  box-shadow: 0.1rem 0.08rem 0.08rem #DCD4F8 inset;
 }
 div.comment-footer{
   height: 3.2rem;
@@ -173,9 +182,39 @@ div.comment-footer>a>span {
   vertical-align:middle;
   margin:0 0.5rem
 }
+div.button-wrap{
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding:0 0.8rem ;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+div.button-viewport{
+  position: relative;
+  height:3.2rem;
+  overflow: hidden;
+}
+div.mint-swipe-indicators>div.is-active{
+  background-color: #5D77B9;
+}
+div.mint-swipe-indicators{
+  bottom:0;
+}
 </style>
 <script>
+var touched = false;
+var origin = 0;
+var p = {x:0,y:0};
+require('vue-swipe/dist/vue-swipe.css');
+import { Swipe, SwipeItem } from 'vue-swipe';
 export default {
+  components:{
+    "swipe":Swipe,
+    "swipe-item":SwipeItem
+  },
   data:function(){
     return({
       data:{
@@ -183,6 +222,8 @@ export default {
         iconURL:"",
         tags:[]
       },
+      width_:0,
+      pages:[""],
       loaded:false
     });
   },
@@ -192,8 +233,32 @@ export default {
       ele.classList.contains('active')?ele.classList.remove('active'):ele.classList.add('active');
     }
   },
+  watch:{
+    pages:function(){
+      console.log("aaa");
+    }
+  },
   mounted:function(){
     var vue_this = this;
+    /*var div = document.querySelector("div.tags-viewport>div");
+    div.addEventListener("touchstart",function (t) {
+      if(t.touches.length === 1){
+        touched = true;
+        p = {x:t.touches[0].clientX,y:t.touches[0].clientY};
+      }
+    });
+    div.addEventListener("touchmove",function (t) {
+      if(t.touches.length === 1 && touched === true){
+        div.style.transform = "translateX("+(t.touches[0].clientX - p.x + origin)+"px)";
+      }
+    });
+    div.addEventListener("touchend",function (t) {
+      if(t.changedTouches.length === 1){
+        touched = false;
+        origin += t.changedTouches[0].clientX - p.x;
+
+      }
+    });*/
     setTimeout(function(){
       vue_this.data = {
         "name":"老在咖啡",
@@ -222,12 +287,31 @@ export default {
           {"title":"好喝sc","id":545},
           {"title":"好喝xsdc","id":545},
           {"title":"好喝wdc","id":545},
+          {"title":"好喝scsd","id":545},
+          {"title":"好喝scsd","id":545},
+          {"title":"好喝scads","id":545},
+          {"title":"好喝scs","id":545},
           {"title":"好喝sc","id":545},
+          {"title":"好喝sdc","id":545},
+          {"title":"好喝sdc","id":545},
+          {"title":"好喝sdsc","id":545},
           {"title":"好喝cd","id":545}//前面提到过，这里不需要提供数量
         ]
       };
+      vue_this.width_ = document.querySelector("div.width-ruler").clientWidth;
+      vue_this.$forceUpdate();
+      setTimeout(function(){
+        var p = parseInt(document.querySelector("div.tags-pre").clientHeight/(document.querySelector("div.choose-tags").clientHeight*32/47));
 
-      vue_this.loaded = true;
+
+        var array = [];
+        for(var i=1; i< p+1;i++){
+          array.push("");
+        }
+        vue_this.pages = array;
+        vue_this.loaded = true;
+        console.log(vue_this.pages);
+      },200);
     },100);
   }
 }

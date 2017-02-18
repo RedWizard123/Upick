@@ -499,7 +499,7 @@ export default{
     img3.src = "/static/img/columns.png";
     img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img1 = img2 = img3 =null;
-    axios.get('mainPageData.php')
+    axios.get('shops/')
       .then(function (response) {
         response=response.data;
         vue_this.data=response;
@@ -524,7 +524,7 @@ export default{
         },
         {"title":"\u559d\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u73a9\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u5065\u8eab","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]}],
       "list2":[
-          "\u6c27\u6c14\u5382",
+        "\u6c27\u6c14\u5382",
         "\u6c27\u6c14\u5382",
         "\u6c27\u6c14\u5382",
         "\u6c27\u6c14\u5382",

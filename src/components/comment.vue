@@ -2,7 +2,7 @@
   <div class="comment-root" v-bind:class="{'show':loaded}">
     <div class="comment-header">
       <router-link class="comment-back" to="/"></router-link>
-      <img src="../assets/comment/comment_top.png"/>
+      <img src="../assets/comment/comment_top.png" v-on:load="n++;n>=3?loaded=true:0;"/>
       <div class="comment-float"></div>
       <h1>{{data.name}}</h1>
     </div>
@@ -15,7 +15,7 @@
         <swipe :auto="0" :continous="false" v-if="loaded">
           <swipe-item class="tags swiper-slide" v-for="(item,index) in pages" v-bind:style="{width: width_ +'px'}">
             <div class="button-viewport">
-              <div class="button-wrap" v-bind:style="{top:'-' + 3.2*index + 'rem'}">
+              <div class="button-wrap" v-bind:class="{'last':index===pages.length-1}" v-bind:style="{top:'-' + 3.2*index + 'rem'}">
                 <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
               </div>
             </div>
@@ -25,9 +25,7 @@
 
         </div>
       </div>
-      <div class="comment-write">
-        <textarea placeholder="可选(限200字以内)"></textarea>
-      </div>
+      <textarea placeholder="可选(限200字以内)"></textarea>
     </div>
     <div class="comment-footer">
       <a v-on:click="$router.replace('/comment/success');"><span></span> 下一步 </a>
@@ -131,23 +129,20 @@ div.comment-body>div.choose-tags div.tags button{
   border:1px solid #6C77C9;
   font-size: 0.7rem;
 }
-div.comment-write{
-  height:calc(100% - 4.7rem);
-  padding:0.5rem 0 1rem 0;
-  border-radius: 0.3rem;
-  margin:0 1.5rem;
-}
-div.comment-write>textarea{
+
+textarea{
   border:0;
   resize: none;
-  width:100%;
-  padding:0.5rem;
+  width:calc(100% - 3rem);
   font-size: 0.7rem;
   background-color:#EEEFFA;
   box-sizing: border-box;
-  height:100%;
-  border-radius: 0.2rem;
   box-shadow: 0.1rem 0.08rem 0.08rem #DCD4F8 inset;
+  height:calc(100% - 4.7rem);
+  padding:0.5rem 0.5rem 1rem 0.5rem;
+  border-radius: 0.3rem;
+  margin:0.5rem 1.5rem 0.5rem 1.5rem;
+
 }
 div.comment-footer{
   height: 3.2rem;
@@ -182,6 +177,9 @@ div.comment-footer>a>span {
   vertical-align:middle;
   margin:0 0.5rem
 }
+div.button-wrap.last{
+  justify-content: flex-start;
+}
 div.button-wrap{
   position: relative;
   display: flex;
@@ -197,18 +195,28 @@ div.button-viewport{
   height:3.2rem;
   overflow: hidden;
 }
-div.mint-swipe-indicators>div.is-active{
-  background-color: #5D77B9;
+div.tags-pre>button{
+  height:1.4rem;
+  min-width:2rem;
+  display: inline-block;
+  padding:0;
+  margin:0 0.25rem 0.2rem 0.25rem;
+  border-radius: 0.3rem;
+  background: #FFFFFF;
+  border:1px solid #6C77C9;
+  font-size: 0.7rem;
 }
-div.mint-swipe-indicators{
-  bottom:0;
+div.tags-pre{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+
 }
 </style>
 <script>
-var touched = false;
-var origin = 0;
-var p = {x:0,y:0};
 require('vue-swipe/dist/vue-swipe.css');
+var axios = require("axios");
 import { Swipe, SwipeItem } from 'vue-swipe';
 export default {
   components:{
@@ -224,7 +232,8 @@ export default {
       },
       width_:0,
       pages:[""],
-      loaded:false
+      loaded:false,
+      n:0
     });
   },
   methods:{
@@ -240,79 +249,81 @@ export default {
   },
   mounted:function(){
     var vue_this = this;
-    /*var div = document.querySelector("div.tags-viewport>div");
-    div.addEventListener("touchstart",function (t) {
-      if(t.touches.length === 1){
-        touched = true;
-        p = {x:t.touches[0].clientX,y:t.touches[0].clientY};
-      }
-    });
-    div.addEventListener("touchmove",function (t) {
-      if(t.touches.length === 1 && touched === true){
-        div.style.transform = "translateX("+(t.touches[0].clientX - p.x + origin)+"px)";
-      }
-    });
-    div.addEventListener("touchend",function (t) {
-      if(t.changedTouches.length === 1){
-        touched = false;
-        origin += t.changedTouches[0].clientX - p.x;
 
-      }
-    });*/
-    setTimeout(function(){
+    axios.get('commentData.php?id='+vue_this.$route.params["id"])
+      .then(function (response) {
+        response=response.data;
+        vue_this.data=response.data;
+        vue_this.n++;
+        vue_this.width_ = document.querySelector("div.width-ruler").clientWidth;
+        vue_this.$forceUpdate();
+        setTimeout(function(){
+          var p = parseInt(document.querySelector("div.tags-pre").clientHeight/(document.querySelector("div.choose-tags").clientHeight*32/47));
+          document.querySelector("div.tags-pre").style.display = "none";
+          var array = [];
+          for(var i=0; i< p+1;i++){
+            array.push("");
+          }
+          vue_this.pages = array;
+          vue_this.n++;
+          vue_this.n>=3?vue_this.loaded=true:0;
+        },200);
+      })
+      .catch(function (error) {
+        console.log(error);
+        if(error)alert("加载失败！");
+        vue_this.loaded = true;
+      });
+    /*setTimeout(function(){
       vue_this.data = {
         "name":"老在咖啡",
         "iconURL":"path/to/icon",//学长给绝对路径哦，否则目前我还真不知道怎么搞
         "tags":[
-          {"title":"好喝12","id":545},
-          {"title":"好喝23","id":545},
-          {"title":"好喝4","id":545},
-          {"title":"好喝AA","id":545},
-          {"title":"好喝AA","id":545},
-          {"title":"好喝asf","id":545},
-          {"title":"好喝sc","id":545},
-          {"title":"好喝afgtr","id":545},
-          {"title":"好喝asc","id":545},
-          {"title":"好喝afgr","id":545},
-          {"title":"好喝tg","id":545},
-          {"title":"好喝ADSF","id":545},
-          {"title":"好喝dsf","id":545},
-          {"title":"好喝adsfs","id":545},
-          {"title":"好喝ssa","id":545},
-          {"title":"好喝sf","id":545},
-          {"title":"好喝sfcs","id":545},
-          {"title":"好喝sdc","id":545},
-          {"title":"好喝sd","id":545},
-          {"title":"好喝sdc","id":545},
-          {"title":"好喝sc","id":545},
-          {"title":"好喝xsdc","id":545},
-          {"title":"好喝wdc","id":545},
-          {"title":"好喝scsd","id":545},
-          {"title":"好喝scsd","id":545},
-          {"title":"好喝scads","id":545},
-          {"title":"好喝scs","id":545},
-          {"title":"好喝sc","id":545},
-          {"title":"好喝sdc","id":545},
-          {"title":"好喝sdc","id":545},
-          {"title":"好喝sdsc","id":545},
-          {"title":"好喝cd","id":545}//前面提到过，这里不需要提供数量
+          {"title":"hbyn1","id":545},
+          {"title":"nhhg2","id":545},
+          {"title":"gvddv3","id":545},
+          {"title":"ebv4","id":545},
+          {"title":"好喝5","id":545},
+          {"title":"好喝asf6","id":545},
+          {"title":"好喝aumtj8","id":545},
+          {"title":"好喝hn9","id":545},
+          {"title":"好喝fgcvf10","id":545},
+          {"title":"vghgh11","id":545},
+          {"title":"fhnjhg12","id":545},
+          {"title":"tybg13","id":545},
+          {"title":"etyrh14","id":545},
+          {"title":"thrytu15","id":545},
+          {"title":"rfgtb17","id":545},
+          {"title":"vgbhnj18","id":545},
+          {"title":"tyrhn19","id":545},
+          {"title":"weregt20","id":545},
+          {"title":"imj21","id":545},
+          {"title":"rfgtb17","id":545},
+          {"title":"vgbhnj18","id":545},
+          {"title":"tyrhn19","id":545},
+          {"title":"weregt20","id":545},
+          {"title":"imj21","id":545},
+          {"title":"imj21","id":545},
+          {"title":"好喝cd22","id":545}//前面提到过，这里不需要提供数量
         ]
       };
       vue_this.width_ = document.querySelector("div.width-ruler").clientWidth;
       vue_this.$forceUpdate();
       setTimeout(function(){
         var p = parseInt(document.querySelector("div.tags-pre").clientHeight/(document.querySelector("div.choose-tags").clientHeight*32/47));
-
-
+        document.querySelector("div.tags-pre").style.display = "none";
         var array = [];
-        for(var i=1; i< p+1;i++){
+        for(var i=0; i< p+1;i++){
           array.push("");
         }
         vue_this.pages = array;
-        vue_this.loaded = true;
+        vue_this.n++;
+        vue_this.n>=3?vue_this.loaded=true:0;
         console.log(vue_this.pages);
       },200);
-    },100);
+    },100);*/
+
+
   }
 }
 </script>

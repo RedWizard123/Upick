@@ -24,9 +24,9 @@ const routes = [
   { path: '/storeList/search/:keyword', component: storeList },
   { path: '/newStore', component: newStore },
   { path: '/newStore/addSuccess', component: addSuccess},
-  { path: '/comment/success', component: commentSuccess},
-  { path: '/comment/failed', component: commentFailed},
-  { path: '/comment/mark/:title/:tags/:comment', component: mark},
+  { path: '/comment/success/:id', component: commentSuccess},
+  { path: '/comment/failed/:id', component: commentFailed},
+  { path: '/comment/mark/:id/:title/:tags/:comment', component: mark},
   { path: '/comment/:id', component: comment},
   { path: '/:type', component: mainPage }
 ];

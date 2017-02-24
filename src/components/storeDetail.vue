@@ -42,7 +42,7 @@
       </div>
     </div>
     <div class="store-detail-footer">
-      <router-link v-bind:to="'/comment/'+a"><span></span>我要评价</router-link>
+      <router-link v-bind:to="'/comment/'+$route.params.id"><span></span>我要评价</router-link>
     </div>
   </div>
 </template>
@@ -433,7 +433,7 @@ div.store-detail-footer>a>span {
       var temp = [item.liked,item.disliked];
       item.liked = liked;
       item.disliked = disliked;
-      axios.get('changeLikeStatus.php?id='+item.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
+      axios.get('changeLikeStatus?mac=12121122112&id='+item.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
         .then(function (response) {
           var result = response.data.data.result;
           item.liked = result.liked;
@@ -502,14 +502,14 @@ div.store-detail-footer>a>span {
     };
     this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
     this.loaded = true;*/
-    axios.get('storeDetail.php?id='+vue_this.$route.params.id)
+    axios.get('store_detail?id='+vue_this.$route.params.id)
      .then(function (response) {
      response=response.data;
      vue_this.detail=response.data;
      vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
      vue_this.firstChosen = true;
      vue_this.detail.comments = [];
-     axios.get('commentsList.php?id='+vue_this.$route.params.id)
+     axios.get('comments_list?mac=1232224&id='+vue_this.$route.params.id)
        .then(function (response) {
          response=response.data;
          vue_this.detail.comments = response.data;

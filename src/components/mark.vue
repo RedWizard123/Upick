@@ -1,5 +1,6 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div class="mark-root" v-bind:class="{'show':loaded}">
+    <div class="alert" v-bind:class="{'show':alertShow}"><p>{{alertValue}}</p></div>
     <div class="mark-header">
       <router-link to="/"><span></span></router-link>
       <span>{{$route.params.title}}</span>
@@ -193,6 +194,41 @@ div.buttons>button{
   font-size: 0.8rem;
   box-shadow: 0 0 0.8rem 0.2rem rgba(84,101,157,0.2);
 }
+div.alert.show{
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+  background-color: red;
+  opacity: 1;
+}
+div.alert>p{
+  text-align: center;
+  line-height: 3rem;
+  font-size: 0.8rem;
+  margin:0;
+  color: #FFF;
+
+}
+div.alert{
+  height: 3rem;
+  width:100%;
+  position: fixed;
+  top:0;
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 100;
+  opacity: 0;
+}
 </style>
 <script>
 var axios = require("axios");
@@ -206,11 +242,17 @@ export default{
       offset:0,
       rem:0,
       startX:0,
-      offset_bak:0
+      offset_bak:0,
+      alertShow:"",
+      alertValue:"",
+      alertTimeout:0,
+      hasMarked:false,
+      n:0
     });
   },
   methods:{
     touchstart:function(touches){
+      this.hasMarked = true;
       this.touched = true;
       if(touches.touches.length === 1){
         var touch = touches.touches[0];
@@ -253,8 +295,14 @@ export default{
       }
     },
     submit:function(){
+      var vue_this = this;
+      if(!this.hasMarked){
+        this.alert_("您未进行评分！");
+        return;
+      }
       var datas={
-        object:this.$route.params.title,
+        id:this.$route.params.id,
+        title:this.$route.params.title,
         tags:this.$route.params.tags.split("&"),
         text:this.$route.params.comment,
         score:this.score
@@ -263,32 +311,48 @@ export default{
       axios.post('comment.php', {
         data:datas
       })
-        .then(function (response) {
+        .then(function (response){
           response=response.data;
           if(!response.error){
-            vue_this.$router.push("/comment/success");
+            vue_this.$router.push("/comment/success/"+vue_this.$route.params.id);
           }else{
             if(response.error.indexOf("commented")){
-              vue_this.$router.push("/comment/failed");
+              vue_this.$router.push("/comment/failed"+vue_this.$route.params.id);
             }else{
-              alert("提交失败：服务器拒绝您的数据！");
+              vue_this.alert_("提交失败：服务器拒绝您的数据！");
             }
           }
         })
-        .catch(function (error) {
+        .catch(function(error){
           if(error){
-            alert("网络出错！");
+            vue_this.alert_("网络出错！");
           }
         });
+    },
+    alert_:function(value){
+      clearTimeout(this.alertTimeout);
+      this.alertValue = value;
+      this.alertShow = true;
+      var vue_this = this;
+      this.alertTimeout = setTimeout(function(){
+        vue_this.alertShow = false;
+      },2500);
     }
   },
   mounted:function(){
     var vue_this = this;
-    setTimeout(function(){
-      vue_this.loaded = true;
-      vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
-      console.log(vue_this.rem);
-    },100);
+    var imgList = document.querySelectorAll("img");
+    for(var i = 0 ; i < imgList.length ; i++){
+      imgList[i].onload = function(){
+        if(++vue_this.n>=imgList.length){
+          vue_this.loaded = true;
+          vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
+        }
+      }
+    }
   }
 }
+//alert
+//photo preview
+//jumping box og tags
 </script>

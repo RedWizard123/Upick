@@ -1,5 +1,6 @@
 <template>
   <div class="comment-root" v-bind:class="{'show':loaded}">
+    <div class="alert" v-bind:class="{'show':alertShow}"><p>{{alertValue}}</p></div>
     <div class="comment-header">
       <router-link class="comment-back" to="/"></router-link>
       <img src="../assets/comment/comment_top.png" v-on:load="n++;n>=3?loaded=true:0;"/>
@@ -28,7 +29,7 @@
       <textarea placeholder="可选(限200字以内)" v-model="text"></textarea>
     </div>
     <div class="comment-footer">
-      <a v-on:click="next"><span></span> 下一步 </a>
+      <a v-on:click="next"><span></span>下一步 </a>
     </div>
   </div>
 </template>
@@ -215,6 +216,41 @@ div.tags-pre{
   flex-wrap: wrap;
 
 }
+div.alert.show{
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+  background-color: red;
+  opacity: 1;
+}
+div.alert>p{
+  text-align: center;
+  line-height: 3rem;
+  font-size: 0.8rem;
+  margin:0;
+  color: #FFF;
+
+}
+div.alert{
+  height: 3rem;
+  width:100%;
+  position: fixed;
+  top:0;
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  z-index: 100;
+  opacity: 0;
+}
 </style>
 <script>
 require('vue-swipe/dist/vue-swipe.css');
@@ -236,7 +272,10 @@ export default {
       pages:[""],
       loaded:false,
       text:"",
-      n:0
+      n:0,
+      alertShow:"",
+      alertValue:"",
+      alertTimeout:0
     });
   },
   methods:{
@@ -246,22 +285,31 @@ export default {
     },
     next:function(){
       if(document.querySelectorAll(".choose-tags button.active").length === 0){
-        alert("未选择标签！");
+        this.alert_("未选择标签！");
         return;
       }
       if(this.text === ""){
-        alert("未填写详情！");
+        this.alert_("未填写详情！");
         return;
       }
-      this.$router.push('/comment/mark/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
+      this.$router.push('/comment/mark/'+this.$route.params.id+'/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
     },
     getChosenTags:function(){
-        var list = document.querySelectorAll(".choose-tags button.active");
-        var t = [];
-        for(var i = 0;i<list.length;i++){
-          t.push(list[i].dataset.id);
-        }
-        return(t.join("&"));
+      var list = document.querySelectorAll(".choose-tags button.active");
+      var t = [];
+      for(var i = 0;i<list.length;i++){
+        t.push(list[i].dataset.id);
+      }
+      return(t.join("&"));
+    },
+    alert_:function(value){
+      clearTimeout(this.alertTimeout);
+      this.alertValue = value;
+      this.alertShow = true;
+      var vue_this = this;
+      this.alertTimeout = setTimeout(function(){
+        vue_this.alertShow = false;
+      },2500);
     }
   },
   watch:{

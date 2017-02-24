@@ -342,7 +342,7 @@ div.new-store-alert.show{
             }
           }
           datas=encodeURIComponent(JSON.stringify(datas));
-          axios.post('uploadStoreData.php', {
+          axios.post('add_store', {
             data: datas
           })
             .then(function (response) {

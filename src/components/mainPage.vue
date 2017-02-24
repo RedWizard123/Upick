@@ -499,7 +499,7 @@ export default{
     img3.src = "/static/img/columns.png";
     img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img1 = img2 = img3 =null;
-    axios.get('mainPageData.php')
+    axios.get('index')
       .then(function (response) {
         response=response.data;
         vue_this.data=response;

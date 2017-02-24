@@ -9,9 +9,11 @@
       <div class="input-item" v-for="item in items" v-bind:class="item.inputType" v-bind:data-necessary="item.necessary">
         <template v-if="item.inputType==='select'">
           <h2><span>{{item.title}}</span></h2>
-          <div>
+          <div class="mask" v-bind:class="{'show':inSelection}" v-on:click="inSelection = false;"></div>
+          <div class="select-list" v-bind:class="{'show':inSelection}">
             <button class="select-option" v-for="option in item.ops" v-bind:data-id="option.id" v-on:click="select">{{option.name}}</button>
           </div>
+          <span class="input" v-bind:placeholder="item.placeholder" v-on:click="selectClick" v-bind:style="{'color':selectValue === ''?'#A9A9A9':'#000'}">{{selectValue===""?item.placeholder:selectValue}}</span>
         </template>
         <template v-else-if="item.inputType==='shortText'">
           <h2><span>{{item.title}}</span></h2>
@@ -104,7 +106,7 @@ h2::after{
   margin: 0 0.03rem;
   vertical-align: middle;
 }
-input{
+input,span.input{
   border: 0;
   background-color: transparent;
   border-bottom:1px solid #B6b6b6;
@@ -137,27 +139,29 @@ div.new-store-input>div.input-item.longText>textarea{
   padding:0 0.3125rem;
   box-sizing: border-box;
 }
-div.new-store-input>div.input-item.select>div{
-  display: inline-flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  flex-wrap: wrap;
-  -webkit-flex-wrap: wrap;
+div.new-store-input>div.input-item.select>div.select-list{
   width:calc(100% - 5rem);
-  margin-top:0.469rem;
   vertical-align: top;
+  height:50%;
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color: #EBEDF8;
+  border-radius: 0.5rem;
+  margin:auto auto;
+  overflow: auto;
+  padding: 0.5rem;
 }
 button.select-option{
-  border:1px solid #6C77C9;
-  border-radius: 0.625rem;
-  width:2rem;
+  border:none;
+  width:100%;
   height:1.43rem;
-  margin:0.3125rem;
-  background-color: #FFF;
+  background-color: transparent;
   color: #6C77C9;
   font-size: 0.78rem;
-  display: inline-block;
-  box-sizing: content-box;
+  display: block;
 }
 button.select-option.active{
   background-color: #6C77C9;
@@ -211,6 +215,50 @@ div.new-store-alert.show{
   -webkit-transform: translateY(0);
   transform: translateY(0);
   opacity: 1;
+}
+div.select-list{
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -ms-transform: scale(0);
+  -o-transform: scale(0);
+  transform: scale(0);
+  z-index: -1;
+  opacity:0;
+}
+div.select-list.show{
+
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transform: scale(1);
+  display: block;
+  z-index: 9999;
+  opacity:1;
+}
+div.mask{
+  width:100%;
+  height:100%;
+  position: fixed;
+  bottom: 0;
+  left:0;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+  background-color: rgba(0,0,0,0);
+  z-index: -1;
+}
+div.mask.show{
+  background-color: rgba(0,0,0,0.8);
+  display: block;
+  z-index: 9998;
 }
 </style>
 <script>
@@ -288,6 +336,8 @@ div.new-store-alert.show{
         items:form,
         loaded:false,
         n:0,
+        inSelection:false,
+        selectValue:""
       })
     },
     methods:{
@@ -366,7 +416,12 @@ div.new-store-alert.show{
       },
       select:function(a){
         var ele=a.target;
-        ele.classList.contains('active')?ele.classList.remove('active'):ele.classList.add('active');
+        if(document.querySelectorAll("button.select-option.active").length>=1){
+          document.querySelector("button.select-option.active").classList.remove('active')
+        }
+        ele.classList.add('active');
+        this.selectValue = ele.innerHTML;
+        this.inSelection = false;
       },
       init:function(){
         var vue_this = this;
@@ -386,6 +441,9 @@ div.new-store-alert.show{
         if(this.n===2){
           this.loaded = true;
         }
+      },
+      selectClick:function(){
+        this.inSelection = true;
       }
     },
     mounted:function(){

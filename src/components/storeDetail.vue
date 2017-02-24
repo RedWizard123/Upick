@@ -100,7 +100,7 @@ div.store-detail-header>h1{
   margin:1rem 0;
   vertical-align: top;
   line-height: 1rem;
-  width:5rem;
+  width:calc(100% - 3rem);
   height:1rem;
   white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }

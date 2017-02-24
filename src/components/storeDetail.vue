@@ -438,8 +438,7 @@ div.store-detail-footer>a>span {
           var result = response.data.data.result;
           item.liked = result.liked;
           item.disliked = result.disliked;
-        })
-        .catch(function (error) {
+        }).catch(function (error) {
           if(error)alert("操作失败！");
           item.liked = temp[0];
           item.disliked = temp[1];

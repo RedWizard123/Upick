@@ -131,7 +131,7 @@ div.new-store-input>div.input-item.longText>textarea{
   border:0;
   background-color: transparent;
   resize: none;
-  height:5rem;
+  height:1.25rem;
   border-bottom: 1px solid #B6b6b6;
   font-size: 0.78rem;
   padding:0 0.3125rem;
@@ -349,9 +349,9 @@ div.new-store-alert.show{
               response=response.data;
               if(!response.error){
                 /*alert_("提交成功",3000,"GREEN",function(){
-                  //window.location.href="main.html";
+                 //window.location.href="main.html";
 
-                });*/
+                 });*/
                 vue_this.$router.push("/newStore/addSuccess");
               }else{
                 alert_("提交失败：服务器拒绝您的数据！");

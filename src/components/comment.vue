@@ -16,7 +16,7 @@
           <swipe-item class="tags swiper-slide" v-for="(item,index) in pages" v-bind:style="{width: width_ +'px'}">
             <div class="button-viewport">
               <div class="button-wrap" v-bind:class="{'last':index===pages.length-1}" v-bind:style="{top:'-' + 3.2*index + 'rem'}">
-                <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
+                <button v-for="item in data.tags" v-on:click="select" v-bind:data-id="item.id">{{item.title}}</button>
               </div>
             </div>
           </swipe-item>
@@ -25,10 +25,10 @@
 
         </div>
       </div>
-      <textarea placeholder="可选(限200字以内)"></textarea>
+      <textarea placeholder="可选(限200字以内)" v-model="text"></textarea>
     </div>
     <div class="comment-footer">
-      <a v-on:click="$router.replace('/comment/success');"><span></span> 下一步 </a>
+      <a v-on:click="next"><span></span> 下一步 </a>
     </div>
   </div>
 </template>
@@ -94,6 +94,7 @@ div.comment-body{
   /*padding:0 1.5rem;*/
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 div.comment-body>div.choose-tags{
   padding:0 1.5rem;
@@ -138,11 +139,12 @@ textarea{
   background-color:#EEEFFA;
   box-sizing: border-box;
   box-shadow: 0.1rem 0.08rem 0.08rem #DCD4F8 inset;
-  height:calc(100% - 4.7rem);
+  height:calc(100% - 5.3rem);
   padding:0.5rem 0.5rem 1rem 0.5rem;
   border-radius: 0.3rem;
   margin:0.5rem 1.5rem 0.5rem 1.5rem;
-
+  position: absolute;
+  bottom:0;
 }
 div.comment-footer{
   height: 3.2rem;
@@ -233,6 +235,7 @@ export default {
       width_:0,
       pages:[""],
       loaded:false,
+      text:"",
       n:0
     });
   },
@@ -240,11 +243,30 @@ export default {
     select:function(a){
       var ele=a.target;
       ele.classList.contains('active')?ele.classList.remove('active'):ele.classList.add('active');
+    },
+    next:function(){
+      if(document.querySelectorAll(".choose-tags button.active").length === 0){
+        alert("未选择标签！");
+        return;
+      }
+      if(this.text === ""){
+        alert("未填写详情！");
+        return;
+      }
+      this.$router.push('/comment/mark/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
+    },
+    getChosenTags:function(){
+        var list = document.querySelectorAll(".choose-tags button.active");
+        var t = [];
+        for(var i = 0;i<list.length;i++){
+          t.push(list[i].dataset.id);
+        }
+        return(t.join("&"));
     }
   },
   watch:{
     pages:function(){
-      console.log("aaa");
+
     }
   },
   mounted:function(){
@@ -274,56 +296,6 @@ export default {
         if(error)alert("加载失败！");
         vue_this.loaded = true;
       });
-    /*setTimeout(function(){
-      vue_this.data = {
-        "name":"老在咖啡",
-        "iconURL":"path/to/icon",//学长给绝对路径哦，否则目前我还真不知道怎么搞
-        "tags":[
-          {"title":"hbyn1","id":545},
-          {"title":"nhhg2","id":545},
-          {"title":"gvddv3","id":545},
-          {"title":"ebv4","id":545},
-          {"title":"好喝5","id":545},
-          {"title":"好喝asf6","id":545},
-          {"title":"好喝aumtj8","id":545},
-          {"title":"好喝hn9","id":545},
-          {"title":"好喝fgcvf10","id":545},
-          {"title":"vghgh11","id":545},
-          {"title":"fhnjhg12","id":545},
-          {"title":"tybg13","id":545},
-          {"title":"etyrh14","id":545},
-          {"title":"thrytu15","id":545},
-          {"title":"rfgtb17","id":545},
-          {"title":"vgbhnj18","id":545},
-          {"title":"tyrhn19","id":545},
-          {"title":"weregt20","id":545},
-          {"title":"imj21","id":545},
-          {"title":"rfgtb17","id":545},
-          {"title":"vgbhnj18","id":545},
-          {"title":"tyrhn19","id":545},
-          {"title":"weregt20","id":545},
-          {"title":"imj21","id":545},
-          {"title":"imj21","id":545},
-          {"title":"好喝cd22","id":545}//前面提到过，这里不需要提供数量
-        ]
-      };
-      vue_this.width_ = document.querySelector("div.width-ruler").clientWidth;
-      vue_this.$forceUpdate();
-      setTimeout(function(){
-        var p = parseInt(document.querySelector("div.tags-pre").clientHeight/(document.querySelector("div.choose-tags").clientHeight*32/47));
-        document.querySelector("div.tags-pre").style.display = "none";
-        var array = [];
-        for(var i=0; i< p+1;i++){
-          array.push("");
-        }
-        vue_this.pages = array;
-        vue_this.n++;
-        vue_this.n>=3?vue_this.loaded=true:0;
-        console.log(vue_this.pages);
-      },200);
-    },100);*/
-
-
   }
 }
 </script>

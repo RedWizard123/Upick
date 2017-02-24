@@ -11,11 +11,11 @@ import noStore from './components/noStore'
 import storeList from './components/storeList'
 import storeDetail from './components/storeDetail'
 import comment from './components/comment'
+import mark from './components/mark'
 import commentSuccess from './components/commentSuccess'
 import commentFailed from './components/commentFailed'
 
 Vue.use(VueRouter);
-
 const routes = [
   { path: '/', component: mainPage },
   { path: '/storeDetail/:id', component: storeDetail },
@@ -26,6 +26,7 @@ const routes = [
   { path: '/newStore/addSuccess', component: addSuccess},
   { path: '/comment/success', component: commentSuccess},
   { path: '/comment/failed', component: commentFailed},
+  { path: '/comment/mark/:title/:tags/:comment', component: mark},
   { path: '/comment/:id', component: comment},
   { path: '/:type', component: mainPage }
 ];

@@ -339,6 +339,10 @@ div.store-list-footer>a>span {
   vertical-align:middle;
   margin:0 0.5rem
 }
+ul.pic>li>img{
+  width:100%;
+  height:100%;
+}
 </style>
 <script>
 var axios = require("axios");

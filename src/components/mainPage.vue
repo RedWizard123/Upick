@@ -67,7 +67,7 @@ div.mainpage-header>h1{
   background-size: auto 100%;
   height:3rem;
   width:6.5rem;
-  margin:0.55rem auto;
+  margin:1.2rem auto;
   left:0;
   right:0;
   top:0;

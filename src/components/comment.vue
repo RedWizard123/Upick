@@ -292,7 +292,7 @@ export default {
         this.alert_("未填写详情！");
         return;
       }
-      this.$router.push('/comment/mark/'+this.$route.params.id+'/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
+      this.$router.replace('/comment/mark/'+this.$route.params.id+'/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
     },
     getChosenTags:function(){
       var list = document.querySelectorAll(".choose-tags button.active");

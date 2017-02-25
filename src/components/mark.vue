@@ -7,15 +7,15 @@
     </div>
     <div class="mark-body">
       <div class="img">
-        <img class="bad" src="../assets/mark/bad.png" v-bind:style="{display:score<=5?'block':'none'}">
-        <img class="normal" src="../assets/mark/normal.png" v-bind:style="{display:score>5&&score<=7?'block':'none'}">
-        <img class="good" src="../assets/mark/good.png" v-bind:style="{display:score>7?'block':'none'}">
+        <img class="bad" src="../assets/mark/bad.png" v-bind:style="{display:score<5?'block':'none'}">
+        <img class="normal" src="../assets/mark/normal.png" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
+        <img class="good" src="../assets/mark/good.png" v-bind:style="{display:score>=7?'block':'none'}">
       </div>
       <div class="switcher">
         <h2>{{score}}分</h2>
         <div v-on:touchstart="touchstart" v-on:touchmove="touchmove" v-on:touchend="touchend">
           <span>0 </span>
-          <div class="bar" >
+          <div class="bar">
             <div>
               <div class="button" v-bind:style="{'transform':'translateX('+offset+'px)'}"></div>
             </div>
@@ -78,14 +78,14 @@ div.mark-body{
 }
 div.mark-body>div.img{
   width:100%;
-  padding:70% 2rem 0 2rem;
+  padding:70% 0 0 0;
   box-sizing: border-box;
   height:10rem;
   position: relative;
 
 }
 div.mark-body>div.img>img{
-  width:calc(100% - 4rem);
+  width:100%;
   height:auto;
   position: absolute;
   bottom:0;
@@ -237,7 +237,7 @@ export default{
     return({
       loaded:false,
       title:"aaa",
-      score:"0.0",
+      score:5,
       touched:false,
       offset:0,
       rem:0,
@@ -262,7 +262,7 @@ export default{
           this.offset_bak = touch.clientX - this.rem *2.5;
         }
 
-        this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(1);
+        this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(0);
       }
     },
     touchmove:function(touches){
@@ -275,7 +275,7 @@ export default{
           }else if(this.offset<=0){
             this.offset =0;
           }
-          this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(1);
+          this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(0);
         }
       }
     },
@@ -314,10 +314,10 @@ export default{
         .then(function (response){
           response=response.data;
           if(!response.error){
-            vue_this.$router.push("/comment/success/"+vue_this.$route.params.id);
+            vue_this.$router.replace("/comment/success/"+vue_this.$route.params.id);
           }else{
             if(response.error.indexOf("commented")){
-              vue_this.$router.push("/comment/failed"+vue_this.$route.params.id);
+              vue_this.$router.replace("/comment/failed"+vue_this.$route.params.id);
             }else{
               vue_this.alert_("提交失败：服务器拒绝您的数据！");
             }
@@ -346,6 +346,7 @@ export default{
       imgList[i].onload = function(){
         if(++vue_this.n>=imgList.length){
           vue_this.loaded = true;
+          vue_this.offset = document.querySelector("div.bar").clientWidth/2;
           vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
         }
       }

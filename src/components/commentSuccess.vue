@@ -68,7 +68,7 @@ export default{
   },
   methods:{
     back:function(){
-      this.$router.push("/storeDetail/"+this.$route.params.id);
+      this.$router.replace("/storeDetail/"+this.$route.params.id);
     },
     loadPlus:function(){
         this.n++;

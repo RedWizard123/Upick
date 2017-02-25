@@ -69,7 +69,7 @@
     },
     methods:{
       newStore:function(){
-        this.$router.push("/comment/"+this.$route.params.id);
+        this.$router.replace("/comment/"+this.$route.params.id);
       },
       loadPlus:function(){
         this.n++;

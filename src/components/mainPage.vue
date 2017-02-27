@@ -79,7 +79,7 @@ div.mainpage-header>div.search{
   display: block;
   position: absolute;
   height:1.5rem;
-  top:1.450rem;
+  top:2rem;
   right:0;
   padding-right:0.5rem;
 }

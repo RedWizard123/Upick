@@ -18,7 +18,7 @@
           </div>
           <div class="pics">
             <div class="img-con">
-              <img class="preview-img" v-for="(item2,index) in detail.picURLs_" v-bind:src="item2" v-on:click="$preview.open(index,list)"/>
+              <img class="preview-img" v-for="(item2,index) in detail.picURLs.slice(0,3)" v-bind:src="item2.msrc" v-on:click="$preview.open(index,detail.picURLs)"/>
             </div>
             <div class="mask" v-if="detail.picURLs.length>3">+{{detail.picURLs.length-detail.picURLs_.length}}</div>
           </div>
@@ -400,7 +400,6 @@ div.store-detail-footer>a>span {
 </style>
 <script>
   import axios from "axios";
-  import PhotoSwipe from "photoswipe";
   export default{
   data:function(){
     return({
@@ -504,7 +503,7 @@ div.store-detail-footer>a>span {
     };
     this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
     this.loaded = true;*/
-    axios.get('store_detail?id='+vue_this.$route.params.id)
+    axios.get('storeDetail.php?id='+vue_this.$route.params.id)
      .then(function (response) {
      response=response.data;
      vue_this.detail=response.data;

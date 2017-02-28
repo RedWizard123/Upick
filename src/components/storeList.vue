@@ -21,17 +21,17 @@
     </div>
     <div class="store-list-body">
       <ul>
-        <li v-for="item in data" v-on:click="$router.push('/storeDetail/'+item.id);">
-          <div class="title-container">
+        <li v-for="item in data" >
+          <div class="title-container" v-on:click="$router.push('/storeDetail/'+item.id);">
             <h2>{{item.name}}</h2>
             <span>{{convertToFloat(item.score)}}</span>
           </div>
-          <ul class="tags">
+          <ul class="tags" v-on:click="$router.push('/storeDetail/'+item.id);">
             <li v-for="item2 in item.tags">{{item2[0]}}</li>
           </ul>
           <ul class="pic">
-            <li v-for="item3 in item.picURLs">
-              <img v-bind:src="item3"/>
+            <li v-for="(item3,index) in item.picURLs.slice(0,3)">
+              <img v-bind:src="item3.msrc" class="preview-img" v-on:click="$preview.open(index,item.picURLs)"/>
             </li>
           </ul>
         </li>
@@ -346,7 +346,6 @@ ul.pic>li>img{
 </style>
 <script>
 var axios = require("axios");
-
 export default{
   data:function(){
     return({
@@ -384,7 +383,7 @@ export default{
 
       }else{
         vue_this.title = vue_this.$route.params.type;
-        axios.get('store_list_data?type='+vue_this.$route.params.type)
+        axios.get('storeListData.php?type='+vue_this.$route.params.type)
          .then(function (response) {
          response=response.data;
          vue_this.data=response.data;
@@ -482,7 +481,7 @@ export default{
 
     }else{
       vue_this.title = vue_this.$route.params.type;
-      axios.get('store_list_data?type='+vue_this.$route.params.type)
+      axios.get('storeListData.php?type='+vue_this.$route.params.type)
         .then(function (response) {
           response=response.data;
           vue_this.data=response.data;

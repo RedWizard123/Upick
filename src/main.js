@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VuePreview from 'vue-preview'
 
 import App from './App'
 import newStore from './components/newStore'
@@ -16,6 +17,7 @@ import commentSuccess from './components/commentSuccess'
 import commentFailed from './components/commentFailed'
 
 Vue.use(VueRouter);
+Vue.use(VuePreview);
 const routes = [
   { path: '/', component: mainPage },
   { path: '/storeDetail/:id', component: storeDetail },

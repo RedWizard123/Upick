@@ -18,7 +18,7 @@
           </div>
           <div class="pics">
             <div class="img-con">
-              <img v-for="(item2,index) in detail.picURLs_" v-bind:src="item2"/>
+              <img class="preview-img" v-for="(item2,index) in detail.picURLs_" v-bind:src="item2" v-on:click="$preview.open(index,list)"/>
             </div>
             <div class="mask" v-if="detail.picURLs.length>3">+{{detail.picURLs.length-detail.picURLs_.length}}</div>
           </div>
@@ -399,7 +399,8 @@ div.store-detail-footer>a>span {
 }
 </style>
 <script>
-  var axios = require("axios");
+  import axios from "axios";
+  import PhotoSwipe from "photoswipe";
   export default{
   data:function(){
     return({
@@ -415,7 +416,8 @@ div.store-detail-footer>a>span {
         comments:[],
       },
       low:false,
-      firstChosen:""
+      firstChosen:"",
+      list:[]
     });
   },
   methods:{
@@ -507,6 +509,9 @@ div.store-detail-footer>a>span {
      response=response.data;
      vue_this.detail=response.data;
      vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
+     for(var i = 0; i<vue_this.detail.picURLs.length;i++){
+       vue_this.list.push({src:vue_this.detail.picURLs[i],w:1200,h:800});
+     }
      vue_this.firstChosen = true;
      vue_this.detail.comments = [];
      axios.get('comments_list?id='+vue_this.$route.params.id)

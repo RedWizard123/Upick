@@ -435,7 +435,7 @@ div.store-detail-footer>a>span {
       item.liked = liked;
       item.disliked = disliked;
       axios.get('changeLikeStatus?id='+item.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
-        .then(function (response) {
+        .then(function(response){
           var result = response.data.data.result;
           item.liked = result.liked;
           item.disliked = result.disliked;
@@ -503,7 +503,7 @@ div.store-detail-footer>a>span {
     };
     this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
     this.loaded = true;*/
-    axios.get('storeDetail.php?id='+vue_this.$route.params.id)
+    axios.get('store_detail?id='+vue_this.$route.params.id)
      .then(function (response) {
      response=response.data;
      vue_this.detail=response.data;
@@ -523,14 +523,11 @@ div.store-detail-footer>a>span {
          if(error)alert("加载失败！");
          vue_this.loaded = true;
        });
-
-     vue_this.loaded = true;
      })
      .catch(function (error) {
      if(error)alert("加载失败！");
      vue_this.loaded = true;
      });
-
   }
 }
 </script>

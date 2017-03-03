@@ -398,10 +398,6 @@ div.mask.show{
             .then(function (response) {
               response=response.data;
               if(!response.error){
-                /*alert_("提交成功",3000,"GREEN",function(){
-                 //window.location.href="main.html";
-
-                 });*/
                 vue_this.$router.push("/newStore/addSuccess");
               }else{
                 alert_("提交失败：服务器拒绝您的数据！");
@@ -425,7 +421,7 @@ div.mask.show{
       },
       init:function(){
         var vue_this = this;
-        axios.get('storeFormData.php')
+        axios.get('store_form_data')
           .then(function (response) {
             response=response.data;
             vue_this.items=response.data;

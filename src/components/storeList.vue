@@ -383,7 +383,7 @@ export default{
 
       }else{
         vue_this.title = vue_this.$route.params.type;
-        axios.get('storeListData.php?type='+vue_this.$route.params.type)
+        axios.get('store_list_data?type='+vue_this.$route.params.type)
          .then(function (response) {
          response=response.data;
          vue_this.data=response.data;
@@ -481,7 +481,7 @@ export default{
 
     }else{
       vue_this.title = vue_this.$route.params.type;
-      axios.get('storeListData.php?type='+vue_this.$route.params.type)
+      axios.get('store_list_data?type='+vue_this.$route.params.type)
         .then(function (response) {
           response=response.data;
           vue_this.data=response.data;

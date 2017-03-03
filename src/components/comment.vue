@@ -319,7 +319,7 @@ export default {
   },
   mounted:function(){
     var vue_this = this;
-    axios.get('commentData.php?id='+vue_this.$route.params["id"])
+    axios.get('comment_data?id='+vue_this.$route.params["id"])
       .then(function (response) {
         response=response.data;
         vue_this.data=response.data;

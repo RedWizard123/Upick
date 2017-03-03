@@ -308,7 +308,7 @@ export default{
         score:this.score
       };
       datas=encodeURIComponent(JSON.stringify(datas));
-      axios.post('comment.php', {
+      axios.post('comment', {
         data:datas
       })
         .then(function (response){
@@ -317,7 +317,7 @@ export default{
             vue_this.$router.replace("/comment/success/"+vue_this.$route.params.id);
           }else{
             if(response.error.indexOf("commented")){
-              vue_this.$router.replace("/comment/failed"+vue_this.$route.params.id);
+              vue_this.$router.replace("/comment/failed/"+vue_this.$route.params.id);
             }else{
               vue_this.alert_("提交失败：服务器拒绝您的数据！");
             }

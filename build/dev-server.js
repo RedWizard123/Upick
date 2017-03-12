@@ -10,7 +10,7 @@ var webpackConfig = require('./webpack.dev.conf')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
-// Define HTTP proxies to your custom API backend
+// Define HTTP proxies to your custom API backendggg
 // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
@@ -117,9 +117,9 @@ app.get('/index', function(req, res){
       }
     ],
     list2: [
-      "氧气厂",
-      "氧气厂",
-      "氧气厂",
+      "氧气厂按当时把环保和市场部",
+      "氧气厂市场飒飒的发生宝宝",
+      "啥时大概因为风扳机",
       "氧气厂",
       "SB驾校",
       "绅宝"
@@ -934,7 +934,7 @@ app.post('/comment', function(req, res){
 });
 app.post('/add_store', function(req, res){
   res.json({"error":""});
-});`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  `
+});
 app.get('/store_list_data', function(req, res){
   res.json({
     error: "",
@@ -1122,7 +1122,6 @@ app.get('/store_list_data', function(req, res){
     ]
   });
 });
-
 app.get('/store_list_search_data', function(req, res){
   res.json({
     error: "",
@@ -1286,11 +1285,9 @@ app.get('/store_list_search_data', function(req, res){
     ]
   });
 });
-
 app.get('/upload_store_data', function(req, res){
   res.json({"error":""});
 });
-
 app.get('/store_form_data', function(req, res){
   res.json({
     error: "",
@@ -1434,7 +1431,6 @@ app.get('/store_form_data', function(req, res){
     ]
   });
 });
-
 app.get('/changeLikeStatus', function(req, res){
   res.json({
     error: "",
@@ -1446,7 +1442,6 @@ app.get('/changeLikeStatus', function(req, res){
     }
   });
 });
-
 
 var uri = 'http://127.0.0.1:' + port
 

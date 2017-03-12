@@ -265,6 +265,9 @@ div.column-block div.back>div.img-div-a{
 }
 div.column-block.active div.back ul{
   display: flex;
+  box-sizing: border-box;
+  font-size: 0.6rem;
+
 }
 div.column-block div.back ul{
   list-style: none;
@@ -277,7 +280,7 @@ div.column-block div.back ul{
   display: none;
 }
 div.column-block div.back li{
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color:#FFF;
   position: relative;
   z-index: 10;
@@ -285,11 +288,17 @@ div.column-block div.back li{
   margin:0.35rem 0;
   text-align: left;
 }
+div.column-block div.back li:nth-child(4),
+div.column-block div.back li:nth-child(5),
+div.column-block div.back li:nth-child(6){
+  text-align: right;
+}
 div.hot-store img{
   width:100%;
   height:auto;
 }
 div.hot-store>div{
+  overflow: hidden;
   position: relative;
 }
 div.hot-store{
@@ -313,6 +322,8 @@ div.hot-store div.mainpage-bottom{
   margin:0;
   box-sizing: border-box;
   text-align: center;
+  font-size: 0;
+  line-height: 0;
 }
 div.hot-store div.mainpage-bottom>a:focus{
   background: #FFFFFF;
@@ -323,17 +334,25 @@ div.hot-store div.mainpage-bottom>a{
   display:inline-block;
   border: solid 1px #FFF;
   border-radius: 0.5rem;
-  width:3rem;
+  min-width:3rem;
+  max-width:8rem;
   height:1.2rem;
   font-size: 0.7rem;
   color:#FFF;
   text-align: center;
   line-height: 1.2rem;
-  margin: 0.3rem 0.5rem;
+  margin: 0.35rem 0.5rem;
   text-decoration: none;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+
 }
 </style>
 <script>

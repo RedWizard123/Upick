@@ -22,7 +22,21 @@ module.exports = {
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/index':'http://118.89.54.28:8087/shops/',
+      '/comment_data':'http://118.89.54.28:8087/shops/',
+      '/store_detail':'http://118.89.54.28:8087/shops/',
+      '/comments_list':'http://118.89.54.28:8087/shops/',
+      '/comment':'http://118.89.54.28:8087/shops/',
+      '/add_store':'http://118.89.54.28:8087/shops/',
+      '/store_list_data':'http://118.89.54.28:8087/shops/',
+      '/store_list_search_data':'http://118.89.54.28:8087/shops/',
+      '/upload_store_data':'http://118.89.54.28:8087/shops/',
+      '/store_form_data':'http://118.89.54.28:8087/shops/',
+      '/changeLikeStatus':'http://118.89.54.28:8087/shops/',
+      '/small_store_image':'http://118.89.54.28:8087/shops/',
+      '/store_image':'http://118.89.54.28:8087/shops/',
+    },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)

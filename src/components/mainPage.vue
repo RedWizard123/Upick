@@ -336,11 +336,11 @@ div.hot-store div.mainpage-bottom>a{
   border-radius: 0.5rem;
   min-width:3rem;
   max-width:8rem;
-  height:1.2rem;
+  height:1.35rem;
   font-size: 0.7rem;
   color:#FFF;
   text-align: center;
-  line-height: 1.2rem;
+  line-height: 1.35rem;
   margin: 0.35rem 0.5rem;
   text-decoration: none;
   transition: all 0.5s;
@@ -511,11 +511,11 @@ export default{
     var img1 = (new Image);
     var img2 = (new Image);
     var img3 = (new Image);
-    img1.src = "/static/img/bottom.png";
+    img1.src = "static/img/bottom.png";
     img1.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
-    img2.src = "/static/img/title.png";
+    img2.src = "static/img/title.png";
     img2.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
-    img3.src = "/static/img/columns.png";
+    img3.src = "static/img/columns.png";
     img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
     img1 = img2 = img3 =null;
     axios.get('index')

@@ -33,8 +33,22 @@
           <li v-for="item2 in detail.comments">
             <div>
               <span class="date">{{(new Date(item2.date*1000)).toLocaleDateString()}}</span>
-              <span v-bind:data-id="item2.id" class="dislike" v-bind:class="{'black':item2.disliked}" v-on:click="item2.disliked ? disliked = false : (liked = false , disliked = true); changeLikeStatus(liked,disliked,item2);"><span>{{item2.dislike}}</span></span>
-              <span v-bind:data-id="item2.id" class="like" v-bind:class="{'black':item2.liked}" v-on:click="item2.liked ? liked = false : (disliked = false , liked = true); changeLikeStatus(liked,disliked,item2);"><span>{{item2.like}}</span></span>
+              <span
+                v-bind:data-id="item2.id"
+                class="dislike"
+                v-bind:class="{'black':item2.disliked}"
+                v-on:click="dislikeOnClick(item2);"
+              >
+                <span>{{item2.dislike}}</span>
+              </span>
+              <span
+                v-bind:data-id="item2.id"
+                class="like"
+                v-bind:class="{'black':item2.liked}"
+                v-on:click="likeOnClick(item2);"
+              >
+                <span>{{item2.like}}</span>
+              </span>
             </div>
             <p>{{item2.value}}</p>
           </li>
@@ -46,6 +60,168 @@
     </div>
   </div>
 </template>
+<script>
+  //item2.disliked ? disliked = false : (liked = false , disliked = true); changeLikeStatus(liked,disliked,item2);
+  //item2.liked ? liked = false : (disliked = false , liked = true); changeLikeStatus(liked,disliked,item2);
+
+  import axios from "axios";
+  var liked = false;
+  var disliked = false;
+  export default{
+  data:function(){
+    return({
+      loaded:false,
+      detail:{
+        name:"A",
+        openTime:"",
+        address:"",
+        picURLs:[],
+        picURLs_:[],
+        tags:[],
+        score:"",
+        comments:[],
+      },
+      low:false,
+      firstChosen:"",
+      list:[]
+    });
+  },
+  methods:{
+    convertToFloat:function(a){
+      if(typeof a ==="number"){
+        a = a.toString();
+      }
+      if(a.length===3){
+        return(a);
+      }else{
+        return(a+".0");
+      }
+    },
+    changeLikeStatus:function(liked,disliked,item2){
+      var vue_this = this;
+      var temp = [item2.liked,item2.disliked];
+      //var temp2 = [item2.like,item2.dislike];
+      item2.liked = liked;
+      item2.disliked = disliked;
+      axios.get('changeLikeStatus?id='+item2.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
+        .then(function(response){
+          var result = response.data.data.result;
+          item2.liked = result.liked;
+          item2.disliked = result.disliked;
+          vue_this.$forceUpdate();
+        }).catch(function (error) {
+          console.log(error);
+          if(error)alert("操作失败！");
+          item2.liked = temp[0];
+          item2.disliked = temp[1];
+          //item2.like = temp2[0];
+          //item2.dislike = temp2[1];
+        });
+    },
+    likeOnClick:function(item){
+      if(item.liked){
+        liked = false;
+      }else{
+        disliked = false;
+        liked = true;
+      }
+      this.changeLikeStatus(liked,disliked,item);
+    },
+    dislikeOnClick:function(item){
+      if(item.disliked){
+        disliked = false;
+      }else{
+        disliked = true;
+        liked = false;
+      }
+      this.changeLikeStatus(liked,disliked,item);
+    }
+  },
+  watch:{
+    "firstChosen":function(from,to){
+      if(to != false){
+        this.detail.comments.sort(function(a,b){
+          return(b.date - a.date);
+        });
+      }else{
+        this.detail.comments.sort(function(a,b){
+          return(b.like - a.like);
+        });
+      }
+    }
+  },
+  mounted:function(){
+    var vue_this = this;
+    document.querySelector("ul#comments-list").addEventListener("scroll",function(){
+      vue_this.low = this.scrollTop >= 10;
+    });
+    /*this.detail = {
+      name:"地址",
+      openTime:"9:00 - 21:00",
+      address:"地址地址地址地址地址地址",
+      picURLs:["","","","","","","","","","","",""],
+      tags:[["地址A",5],["地址",5],["A地址",5],["地A址",5]],
+      score:"9",
+      comments:[
+        {
+          "id": 512,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～01",
+          "date": 1476619910,
+          "like": 618,
+          "dislike": 1,
+          "liked": true,
+          "disliked": false
+        },
+        {
+          "id": 513,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～02",
+          "date": 1409618479,
+          "like": 213,
+          "dislike": 1,
+          "liked": false,
+          "disliked": true
+        },
+        {
+          "id": 514,
+          "value": "红豆牛奶超级好喝...下次点别的尝一下～～03",
+          "date": 1464101473,
+          "like": 970,
+          "dislike": 1,
+          "liked": false,
+          "disliked": true
+        }
+      ]
+    };
+    this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
+    this.loaded = true;*/
+    axios.get('store_detail?id='+vue_this.$route.params.id)
+     .then(function (response) {
+     response=response.data;
+     vue_this.detail=response.data;
+     vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
+     for(var i = 0; i<vue_this.detail.picURLs.length;i++){
+       vue_this.list.push({src:vue_this.detail.picURLs[i],w:1200,h:800});
+     }
+     vue_this.firstChosen = true;
+     vue_this.detail.comments = [];
+     axios.get('comments_list?id='+vue_this.$route.params.id)
+       .then(function (response) {
+         response=response.data;
+         vue_this.detail.comments = response.data;
+         vue_this.loaded = true;
+       })
+       .catch(function (error) {
+         if(error)alert("加载失败！");
+         vue_this.loaded = true;
+       });
+     })
+     .catch(function (error) {
+     if(error)alert("加载失败！");
+     vue_this.loaded = true;
+     });
+  }
+}
+</script>
 <style scoped>
 div.store-detail-root.show{
   opacity: 1;
@@ -102,7 +278,7 @@ div.store-detail-header>h1{
   line-height: 1rem;
   width:calc(100% - 3rem);
   height:1rem;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap; overflow:hidden; text -overflow:ellipsis;
 }
 div.store-detail-body{
   height:calc(100% - 6.4rem);
@@ -398,136 +574,3 @@ div.store-detail-footer>a>span {
   margin:0 0.5rem
 }
 </style>
-<script>
-  import axios from "axios";
-  export default{
-  data:function(){
-    return({
-      loaded:false,
-      detail:{
-        name:"A",
-        openTime:"",
-        address:"",
-        picURLs:[],
-        picURLs_:[],
-        tags:[],
-        score:"",
-        comments:[],
-      },
-      low:false,
-      firstChosen:"",
-      list:[]
-    });
-  },
-  methods:{
-    convertToFloat:function(a){
-      if(typeof a ==="number"){
-        a = a.toString();
-      }
-      if(a.length===3){
-        return(a);
-      }else{
-        return(a+".0");
-      }
-    },
-    changeLikeStatus:function(liked,disliked,item){
-      var temp = [item.liked,item.disliked];
-      item.liked = liked;
-      item.disliked = disliked;
-      axios.get('changeLikeStatus?id='+item.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
-        .then(function(response){
-          var result = response.data.data.result;
-          item.liked = result.liked;
-          item.disliked = result.disliked;
-        }).catch(function (error) {
-          if(error)alert("操作失败！");
-          item.liked = temp[0];
-          item.disliked = temp[1];
-        });
-    }
-  },
-  watch:{
-    "firstChosen":function(from,to){
-      if(to != false){
-        this.detail.comments.sort(function(a,b){
-          return(b.date - a.date);
-        });
-      }else{
-        this.detail.comments.sort(function(a,b){
-          return(b.like - a.like);
-        });
-      }
-    }
-  },
-  mounted:function(){
-    var vue_this = this;
-    document.querySelector("ul#comments-list").addEventListener("scroll",function(){
-      vue_this.low = this.scrollTop >= 10;
-    });
-    /*this.detail = {
-      name:"地址",
-      openTime:"9:00 - 21:00",
-      address:"地址地址地址地址地址地址",
-      picURLs:["","","","","","","","","","","",""],
-      tags:[["地址A",5],["地址",5],["A地址",5],["地A址",5]],
-      score:"9",
-      comments:[
-        {
-          "id": 512,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～01",
-          "date": 1476619910,
-          "like": 618,
-          "dislike": 1,
-          "liked": true,
-          "disliked": false
-        },
-        {
-          "id": 513,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～02",
-          "date": 1409618479,
-          "like": 213,
-          "dislike": 1,
-          "liked": false,
-          "disliked": true
-        },
-        {
-          "id": 514,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～03",
-          "date": 1464101473,
-          "like": 970,
-          "dislike": 1,
-          "liked": false,
-          "disliked": true
-        }
-      ]
-    };
-    this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
-    this.loaded = true;*/
-    axios.get('store_detail?id='+vue_this.$route.params.id)
-     .then(function (response) {
-     response=response.data;
-     vue_this.detail=response.data;
-     vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
-     for(var i = 0; i<vue_this.detail.picURLs.length;i++){
-       vue_this.list.push({src:vue_this.detail.picURLs[i],w:1200,h:800});
-     }
-     vue_this.firstChosen = true;
-     vue_this.detail.comments = [];
-     axios.get('comments_list?id='+vue_this.$route.params.id)
-       .then(function (response) {
-         response=response.data;
-         vue_this.detail.comments = response.data;
-         vue_this.loaded = true;
-       })
-       .catch(function (error) {
-         if(error)alert("加载失败！");
-         vue_this.loaded = true;
-       });
-     })
-     .catch(function (error) {
-     if(error)alert("加载失败！");
-     vue_this.loaded = true;
-     });
-  }
-}
-</script>

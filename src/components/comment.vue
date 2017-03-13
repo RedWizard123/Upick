@@ -146,6 +146,7 @@ textarea{
   margin:0.5rem 1.5rem 0.5rem 1.5rem;
   position: absolute;
   bottom:0;
+  min-height: 5rem;
 }
 div.comment-footer{
   height: 3.2rem;

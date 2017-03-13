@@ -155,45 +155,6 @@
     document.querySelector("ul#comments-list").addEventListener("scroll",function(){
       vue_this.low = this.scrollTop >= 10;
     });
-    /*this.detail = {
-      name:"地址",
-      openTime:"9:00 - 21:00",
-      address:"地址地址地址地址地址地址",
-      picURLs:["","","","","","","","","","","",""],
-      tags:[["地址A",5],["地址",5],["A地址",5],["地A址",5]],
-      score:"9",
-      comments:[
-        {
-          "id": 512,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～01",
-          "date": 1476619910,
-          "like": 618,
-          "dislike": 1,
-          "liked": true,
-          "disliked": false
-        },
-        {
-          "id": 513,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～02",
-          "date": 1409618479,
-          "like": 213,
-          "dislike": 1,
-          "liked": false,
-          "disliked": true
-        },
-        {
-          "id": 514,
-          "value": "红豆牛奶超级好喝...下次点别的尝一下～～03",
-          "date": 1464101473,
-          "like": 970,
-          "dislike": 1,
-          "liked": false,
-          "disliked": true
-        }
-      ]
-    };
-    this.detail.picURLs_ = this.detail.picURLs.slice(0,3);
-    this.loaded = true;*/
     axios.get('store_detail?id='+vue_this.$route.params.id)
      .then(function (response) {
      response=response.data;
@@ -276,9 +237,9 @@ div.store-detail-header>h1{
   margin:1rem 0;
   vertical-align: top;
   line-height: 1rem;
-  width:calc(100% - 3rem);
+  width:calc(100% - 6rem);
   height:1rem;
-  white-space:nowrap; overflow:hidden; text -overflow:ellipsis;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 div.store-detail-body{
   height:calc(100% - 6.4rem);

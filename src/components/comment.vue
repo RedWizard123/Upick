@@ -26,7 +26,7 @@
 
         </div>
       </div>
-      <textarea placeholder="可选(限200字以内)" v-model="text"></textarea>
+      <textarea placeholder="限200字以内" v-model="text"></textarea>
     </div>
     <div class="comment-footer">
       <a v-on:click="next"><span></span>下一步 </a>

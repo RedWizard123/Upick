@@ -489,15 +489,11 @@ div.store-detail-body div.tabs>span.chosen{
   border-bottom: solid 2px #5D77B9;
 }
 div.store-detail-body div.tabs>span{
-  padding:0.2rem 0.2rem;
+  padding:0 0.2rem;
   box-sizing: border-box;
   display: inline-block;
   margin-right: 1rem;
-  -webkit-transition: all 0.25s;
-  -moz-transition: all 0.25s;
-  -ms-transition: all 0.25s;
-  -o-transition: all 0.25s;
-  transition: all 0.25s;
+  height:1.4rem;
 }
 div.store-detail-body div.tabs{
   border-bottom: 1px solid #B6b6b6;

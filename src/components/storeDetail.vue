@@ -108,14 +108,14 @@
           var result = response.data.data.result;
           item2.liked = result.liked;
           item2.disliked = result.disliked;
+          item2.like = result.like;
+          item2.dislike = result.liked;
           vue_this.$forceUpdate();
         }).catch(function (error) {
-          console.log(error);
-          if(error)alert("操作失败！");
+          /*console.log(error);
+          if(error)alert("操作失败！");*/
           item2.liked = temp[0];
           item2.disliked = temp[1];
-          //item2.like = temp2[0];
-          //item2.dislike = temp2[1];
         });
     },
     likeOnClick:function(item){

@@ -27,7 +27,7 @@
     </div>
     <div class="mark-footer">
       <div class="buttons">
-        <button v-on:click="$router.push('storeDetail/'+$route.params.title)">暂不评价</button>
+        <button v-on:click="$router.push('/storeDetail/'+$route.params.title)">暂不评价</button>
         <button v-on:click="submit">完成</button>
       </div>
     </div>
@@ -296,10 +296,11 @@ export default{
     },
     submit:function(){
       var vue_this = this;
-      if(!this.hasMarked){
+      //去除是否移动过的判断
+      /*if(!this.hasMarked){
         this.alert_("您未进行评分！");
         return;
-      }
+      }*/
       var datas={
         id:this.$route.params.id,
         title:this.$route.params.title,
@@ -343,12 +344,16 @@ export default{
     var vue_this = this;
     var imgList = document.querySelectorAll("img.load");
     for(var i = 0 ; i < imgList.length ; i++){
-      imgList[i].onload = function(){
+      if(imgList[i].complete){
         vue_this.n++;
-        if(vue_this.n>=imgList.length){
-          vue_this.loaded = true;
-          vue_this.offset = document.querySelector("div.bar").clientWidth/2;
-          vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
+      }else{
+        imgList[i].onload = function(){
+          vue_this.n++;
+          if(vue_this.n>=imgList.length){
+            vue_this.loaded = true;
+            vue_this.offset = document.querySelector("div.bar").clientWidth/2;
+            vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
+          }
         }
       }
     }

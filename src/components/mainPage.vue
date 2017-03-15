@@ -531,28 +531,6 @@ export default{
         if(error)alert("主页加载失败！");
         vue_this.loaded = true;
       });
-    /*vue_this.data={
-      "topic":"这是头条推文这是头条推文",
-      "list1":[
-        {
-          "title":"\u7f8e\u98df",
-          "subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]
-        },
-        {
-          "title":"\u751f\u6d3b\u670d\u52a1",
-          "subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]
-        },
-        {"title":"\u559d\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u73a9\u7684","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]},{"title":"\u5065\u8eab","subTitle":["\u64e6\u8d39","asfs","assaf","safef","asdd","frevc"]}],
-      "list2":[
-        "\u6c27\u6c14\u5382",
-        "\u6c27\u6c14\u5382",
-        "\u6c27\u6c14\u5382",
-        "\u6c27\u6c14\u5382",
-        "SB\u9a7e\u6821",
-        "\u7ec5\u5b9d"]
-    };
-    n++;
-    if(n>=4){vue_this.loaded = true;}*/
   }
 }
 </script>

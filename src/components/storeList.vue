@@ -272,9 +272,10 @@ div.store-list-body>ul div.title-container>span{
   font-size: 0.8rem;
   font-weight: 300;
 }
-div.store-list-body>ul ul.pic,
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;
+  height:2rem;
+  overflow: hidden;
 }
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){
   background: #5D77B9;

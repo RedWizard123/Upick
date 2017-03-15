@@ -256,7 +256,7 @@ div.store-detail-body>div.body-top{
   padding:0 1.5rem;
   width:100%;
   box-sizing: border-box;
-  height: 12.5rem;
+  /*height: 12.5rem;*/
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   -ms-transition: all 0.2s;
@@ -310,8 +310,10 @@ div.store-detail-body>div.body-top span.score{
   right:0;
 }
 div.store-detail-body div.body-top div.tags{
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.5rem;
   position: relative;
+  max-height: 3rem;
+  overflow: hidden;
 }
 div.store-detail-body div.body-top div.tags>span{
   display: inline-block;

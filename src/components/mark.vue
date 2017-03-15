@@ -342,18 +342,17 @@ export default{
   },
   mounted:function(){
     var vue_this = this;
-    var imgList = document.querySelectorAll("img.load");
+    var imgList = [new Image(),new Image(),new Image()];
+    imgList[0].src = "static/img/bad.png";
+    imgList[1].src = "static/img/normal.png";
+    imgList[2].src = "static/img/good.png";
     for(var i = 0 ; i < imgList.length ; i++){
-      if(imgList[i].complete){
+      imgList[i].onload = function(){
         vue_this.n++;
-      }else{
-        imgList[i].onload = function(){
-          vue_this.n++;
-          if(vue_this.n>=imgList.length){
-            vue_this.loaded = true;
-            vue_this.offset = document.querySelector("div.bar").clientWidth/2;
-            vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
-          }
+        if(vue_this.n>=imgList.length){
+          vue_this.loaded = true;
+          vue_this.offset = document.querySelector("div.bar").clientWidth/2;
+          vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
         }
       }
     }

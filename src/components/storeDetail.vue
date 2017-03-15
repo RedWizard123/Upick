@@ -321,7 +321,7 @@ div.store-detail-body div.body-top div.tags>span{
   border-radius: 0.3rem;
   color:#FFF;
   padding:0.2rem 0.3rem;
-  margin:0 0.2rem;
+  margin:0 0.2rem 0.1rem 0.2rem;
 }
 div.store-detail-body div.body-top div.tags>span:nth-child(4n+1){
   background: #5D77B9;

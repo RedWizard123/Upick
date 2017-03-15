@@ -109,7 +109,7 @@
           item2.liked = result.liked;
           item2.disliked = result.disliked;
           item2.like = result.like;
-          item2.dislike = result.liked;
+          item2.dislike = result.dislike;
           vue_this.$forceUpdate();
         }).catch(function (error) {
           /*console.log(error);

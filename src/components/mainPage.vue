@@ -287,6 +287,7 @@ div.column-block div.back li{
   width:2rem;
   margin:0.35rem 0;
   text-align: left;
+  white-space: nowrap;
 }
 div.column-block div.back li:nth-child(4),
 div.column-block div.back li:nth-child(5),

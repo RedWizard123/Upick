@@ -7,9 +7,9 @@
     </div>
     <div class="mark-body">
       <div class="img">
-        <img class="bad" src="../assets/mark/bad.png" v-bind:style="{display:score<5?'block':'none'}">
-        <img class="normal" src="../assets/mark/normal.png" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
-        <img class="good" src="../assets/mark/good.png" v-bind:style="{display:score>=7?'block':'none'}">
+        <img class="bad load" src="../assets/mark/bad.png" v-bind:style="{display:score<5?'block':'none'}">
+        <img class="normal load" src="../assets/mark/normal.png" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
+        <img class="good load" src="../assets/mark/good.png" v-bind:style="{display:score>=7?'block':'none'}">
       </div>
       <div class="switcher">
         <h2>{{score}}分</h2>
@@ -341,10 +341,11 @@ export default{
   },
   mounted:function(){
     var vue_this = this;
-    var imgList = document.querySelectorAll("img");
+    var imgList = document.querySelectorAll("img.load");
     for(var i = 0 ; i < imgList.length ; i++){
       imgList[i].onload = function(){
-        if(++vue_this.n>=imgList.length){
+        vue_this.n++;
+        if(vue_this.n>=imgList.length){
           vue_this.loaded = true;
           vue_this.offset = document.querySelector("div.bar").clientWidth/2;
           vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;

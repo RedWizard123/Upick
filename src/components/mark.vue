@@ -7,9 +7,9 @@
     </div>
     <div class="mark-body">
       <div class="img">
-        <img class="bad" src="../assets/mark/bad.png" v-bind:style="{display:score<5?'block':'none'}">
-        <img class="normal" src="../assets/mark/normal.png" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
-        <img class="good" src="../assets/mark/good.png" v-bind:style="{display:score>=7?'block':'none'}">
+        <img class="bad" src="" v-bind:style="{display:score<5?'block':'none'}">
+        <img class="normal" src="" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
+        <img class="good" src="" v-bind:style="{display:score>=7?'block':'none'}">
       </div>
       <div class="switcher">
         <h2>{{score}}分</h2>
@@ -342,7 +342,14 @@ export default{
   mounted:function(){
     var vue_this = this;
     var imgList = document.querySelectorAll("img");
+    var src = [
+      "static/img/bad.png",
+      "static/img/normal.png",
+      "static/img/good.png"
+
+    ];
     for(var i = 0 ; i < imgList.length ; i++){
+      imgList[i].src = src[i];
       imgList[i].onload = function(){
         if(++vue_this.n>=imgList.length){
           vue_this.loaded = true;

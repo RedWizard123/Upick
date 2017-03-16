@@ -59,7 +59,7 @@ div.add-success-root.show{
 }
 </style>
 <script>
-export default{
+module.exports = {
   data:function(){
     return({
       loaded:false,
@@ -71,16 +71,14 @@ export default{
       this.$router.push("/noAnim");
     },
     loadPlus:function(){
-        this.n++;
-        if(this.n===2){
-          this.loaded = true;
-        }
+      this.n++;
+      if(this.n===2){
+        this.loaded = true;
+      }
     }
   },
   mounted:function(){
     this.n++;
   }
 }
-
-
 </script>

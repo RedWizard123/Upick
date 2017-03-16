@@ -256,8 +256,11 @@ div.alert{
 <script>
 require('vue-swipe/dist/vue-swipe.css');
 var axios = require("axios");
-import { Swipe, SwipeItem } from 'vue-swipe';
-export default {
+
+//import { Swipe, SwipeItem } from 'vue-swipe';
+var Swipe = require("vue-swipe").Swipe;
+var SwipeItem = require("vue-swipe").SwipeItem;
+module.exports = {
   components:{
     "swipe":Swipe,
     "swipe-item":SwipeItem

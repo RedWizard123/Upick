@@ -347,7 +347,7 @@ ul.pic>li>img{
 </style>
 <script>
 var axios = require("axios");
-export default{
+module.exports = {
   data:function(){
     return({
       loaded:false,
@@ -388,21 +388,13 @@ export default{
          .then(function (response) {
          response=response.data;
          vue_this.data=response.data;
-
          console.log(vue_this.$route.path);
-
-         //vue_this.$router.push("");
-
-
          vue_this.loaded = true;
          })
          .catch(function (error) {
          if(error)alert("加载失败！");
          vue_this.loaded = true;
          });
-
-        /*vue_this.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
-        vue_this.loaded=true;*/
       }
     }
   },
@@ -417,10 +409,10 @@ export default{
             return(a+".0");
         }
     },
-    menuActive:function(a){
+    menuActive:function(){
       this.isMenuActive = !this.isMenuActive;
     },
-    searchActive:function(a){
+    searchActive:function(){
       this.isSearchActive = !this.isSearchActive;
     },
     sort1:function(){
@@ -453,7 +445,6 @@ export default{
       if(this.keyword!=""){
         this.$router.push("/storeList/search/"+this.keyword);
       }
-      //this.$router.replace("/");
     }
   },
   mounted:function(){

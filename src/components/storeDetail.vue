@@ -61,125 +61,122 @@
   </div>
 </template>
 <script>
-  //item2.disliked ? disliked = false : (liked = false , disliked = true); changeLikeStatus(liked,disliked,item2);
-  //item2.liked ? liked = false : (disliked = false , liked = true); changeLikeStatus(liked,disliked,item2);
-
-  import axios from "axios";
-  var liked = false;
-  var disliked = false;
-  export default{
-  data:function(){
-    return({
-      loaded:false,
-      detail:{
-        name:"A",
-        openTime:"",
-        address:"",
-        picURLs:[],
-        picURLs_:[],
-        tags:[],
-        score:"",
-        comments:[],
-      },
-      low:false,
-      firstChosen:"",
-      list:[]
-    });
-  },
-  methods:{
-    convertToFloat:function(a){
-      if(typeof a ==="number"){
-        a = a.toString();
-      }
-      if(a.length===3){
-        return(a);
-      }else{
-        return(a+".0");
-      }
+var axios = require("axios");
+var liked = false;
+var disliked = false;
+module.exports = {
+data:function(){
+  return({
+    loaded:false,
+    detail:{
+      name:"A",
+      openTime:"",
+      address:"",
+      picURLs:[],
+      picURLs_:[],
+      tags:[],
+      score:"",
+      comments:[]
     },
-    changeLikeStatus:function(liked,disliked,item2){
-      var vue_this = this;
-      var temp = [item2.liked,item2.disliked];
-      //var temp2 = [item2.like,item2.dislike];
-      item2.liked = liked;
-      item2.disliked = disliked;
-      axios.get('changeLikeStatus?id='+item2.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
-        .then(function(response){
-          var result = response.data.data.result;
-          item2.liked = result.liked;
-          item2.disliked = result.disliked;
-          item2.like = result.like;
-          item2.dislike = result.dislike;
-          vue_this.$forceUpdate();
-        }).catch(function (error) {
-          /*console.log(error);
-          if(error)alert("操作失败！");*/
-          item2.liked = temp[0];
-          item2.disliked = temp[1];
-        });
-    },
-    likeOnClick:function(item){
-      if(item.liked){
-        liked = false;
-      }else{
-        disliked = false;
-        liked = true;
-      }
-      this.changeLikeStatus(liked,disliked,item);
-    },
-    dislikeOnClick:function(item){
-      if(item.disliked){
-        disliked = false;
-      }else{
-        disliked = true;
-        liked = false;
-      }
-      this.changeLikeStatus(liked,disliked,item);
+    low:false,
+    firstChosen:"",
+    list:[]
+  });
+},
+methods:{
+  convertToFloat:function(a){
+    if(typeof a ==="number"){
+      a = a.toString();
+    }
+    if(a.length===3){
+      return(a);
+    }else{
+      return(a+".0");
     }
   },
-  watch:{
-    "firstChosen":function(from,to){
-      if(to != false){
-        this.detail.comments.sort(function(a,b){
-          return(b.date - a.date);
-        });
-      }else{
-        this.detail.comments.sort(function(a,b){
-          return(b.like - a.like);
-        });
-      }
-    }
-  },
-  mounted:function(){
+  changeLikeStatus:function(liked,disliked,item2){
     var vue_this = this;
-    document.querySelector("ul#comments-list").addEventListener("scroll",function(){
-      vue_this.low = this.scrollTop >= 10;
+    var temp = [item2.liked,item2.disliked];
+    //var temp2 = [item2.like,item2.dislike];
+    item2.liked = liked;
+    item2.disliked = disliked;
+    axios.get('changeLikeStatus?id='+item2.id+"&liked="+(liked?"true":"false")+"&disliked="+(disliked?"true":"false"))
+      .then(function(response){
+        var result = response.data.data.result;
+        item2.liked = result.liked;
+        item2.disliked = result.disliked;
+        item2.like = result.like;
+        item2.dislike = result.dislike;
+        vue_this.$forceUpdate();
+      }).catch(function () {
+        /*console.log(error);
+        if(error)alert("操作失败！");*/
+        item2.liked = temp[0];
+        item2.disliked = temp[1];
+      });
+  },
+  likeOnClick:function(item){
+    if(item.liked){
+      liked = false;
+    }else{
+      disliked = false;
+      liked = true;
+    }
+    this.changeLikeStatus(liked,disliked,item);
+  },
+  dislikeOnClick:function(item){
+    if(item.disliked){
+      disliked = false;
+    }else{
+      disliked = true;
+      liked = false;
+    }
+    this.changeLikeStatus(liked,disliked,item);
+  }
+},
+watch:{
+  "firstChosen":function(from,to){
+    if(to != false){
+      this.detail.comments.sort(function(a,b){
+        return(b.date - a.date);
+      });
+    }else{
+      this.detail.comments.sort(function(a,b){
+        return(b.like - a.like);
+      });
+    }
+  }
+},
+mounted:function(){
+  var vue_this = this;
+  document.querySelector("ul#comments-list").addEventListener("scroll",function(){
+    vue_this.low = this.scrollTop >= 10;
+  });
+  axios.get('store_detail?id='+vue_this.$route.params.id)
+    .then(function (response) {
+    response=response.data;
+    vue_this.detail=response.data;
+    vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
+    for(var i = 0; i<vue_this.detail.picURLs.length;i++){
+      vue_this.list.push({src:vue_this.detail.picURLs[i],w:1200,h:800});
+    }
+    vue_this.firstChosen = true;
+    vue_this.detail.comments = [];
+    axios.get('comments_list?id='+vue_this.$route.params.id)
+      .then(function (response) {
+        response=response.data;
+        vue_this.detail.comments = response.data;
+        vue_this.loaded = true;
+      })
+      .catch(function (error) {
+        if(error)alert("加载失败！");
+        vue_this.loaded = true;
+      });
+    })
+    .catch(function (error) {
+    if(error)alert("加载失败！");
+    vue_this.loaded = true;
     });
-    axios.get('store_detail?id='+vue_this.$route.params.id)
-     .then(function (response) {
-     response=response.data;
-     vue_this.detail=response.data;
-     vue_this.detail.picURLs_ =vue_this.detail.picURLs.slice(0,3);
-     for(var i = 0; i<vue_this.detail.picURLs.length;i++){
-       vue_this.list.push({src:vue_this.detail.picURLs[i],w:1200,h:800});
-     }
-     vue_this.firstChosen = true;
-     vue_this.detail.comments = [];
-     axios.get('comments_list?id='+vue_this.$route.params.id)
-       .then(function (response) {
-         response=response.data;
-         vue_this.detail.comments = response.data;
-         vue_this.loaded = true;
-       })
-       .catch(function (error) {
-         if(error)alert("加载失败！");
-         vue_this.loaded = true;
-       });
-     })
-     .catch(function (error) {
-     if(error)alert("加载失败！");
-     vue_this.loaded = true;
-     });
   }
 }
 </script>

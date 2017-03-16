@@ -1,7 +1,7 @@
 <template>
   <div class="mainpage-root" v-bind:class="{'show':loaded}">
     <div class="mainpage-header">
-      <img  src="../assets/mainpage/xingxing.png" style="display: none;" id="xingxing"/>
+      <img src="../assets/mainpage/xingxing.png" style="display: none;" id="xingxing"/>
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
@@ -224,9 +224,6 @@ div.mainpage-body div.column-block>*{
 div.mainpage-body div.column-block{
   border-radius:0.5rem;
 }
-div.mainpage-body div.column-block.active{
-
-}
 div.mainpage-body div.column-block.active>div.img-div{
   opacity: 0;
   -webkit-opacity: 0;
@@ -390,7 +387,7 @@ window.cancelAnimFrame = (function(){
       window.clearTimeout(n);
     };
 })();
-export default{
+module.exports = {
   data:function(){
     return({
       canvasWidth:document.body.clientWidth,
@@ -428,16 +425,7 @@ export default{
 
         step+=2;
 
-        //canvas.getContext("2d").drawImage();
-
         var dd=canvas.width/50;
-        /*for(var j=0;j<stars.length;j++){
-          var grd = ctx.createRadialGradient(stars[j].x,stars[j].y, 1, stars[j].x, stars[j].y, dd/5+Math.random()*dd);
-          grd.addColorStop(0, "rgba(255,255,255,0.3)");
-          grd.addColorStop(1, "rgba(0,0,0,0)");
-          ctx.fillStyle = grd;
-          ctx.fillRect(stars[j].x-dd/4, stars[j].y-dd/4, dd/2, dd/2);
-        }*/
         for(var j=0;j<meteor.length;j++){
           if(meteor[j].position.x-meteor[j].length/Math.SQRT2>canvas.width||meteor[j].position.y-meteor[j].length/Math.SQRT2>canvas.height){
             meteor.splice(j,1);

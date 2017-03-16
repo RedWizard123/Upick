@@ -59,7 +59,7 @@ div.add-success-root.show{
 }
 </style>
 <script>
-export default{
+module.exports = {
   data:function(){
     return({
       loaded:false,
@@ -81,6 +81,4 @@ export default{
     this.n++;
   }
 }
-
-
 </script>

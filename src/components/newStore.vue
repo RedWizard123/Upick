@@ -157,7 +157,7 @@ div.new-store-input>div.input-item.select>div.select-list{
 button.select-option{
   border:none;
   width:100%;
-  height:1.43rem;
+  height:2rem;
   background-color: transparent;
   color: #6C77C9;
   font-size: 0.78rem;
@@ -217,11 +217,7 @@ div.new-store-alert.show{
   opacity: 1;
 }
 div.select-list{
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  -ms-transition: all 0.5s;
-  -o-transition: all 0.5s;
-  transition: all 0.5s;
+
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   -ms-transform: scale(0);
@@ -231,7 +227,11 @@ div.select-list{
   opacity:0;
 }
 div.select-list.show{
-
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);
@@ -262,188 +262,150 @@ div.mask.show{
 }
 </style>
 <script>
-  var time_left=0;
-  var timer;
-  function alert_(s,time,background,callback){
-    if(typeof time ==="undefined"){
-      time=2100;
-    }
-    if(typeof background === "undefined"){
-      background="crimson";
-    }
-    if(typeof callback === "undefined"){
-      callback=function(){};
-    }
-    clearInterval(timer);
-    time_left=time;
-    var alert_div = document.querySelector("div.new-store-alert");
-    alert_div.classList.add("show");
-    alert_div.style.background=background;
-    alert_div.innerHTML="<p>"+s+"</p>";
-    timer = setInterval(function(){
-      time_left-=30;
-      if(time_left<=0){
-        alert_div.classList.remove("show");
-        alert_div.style.background="transparent";
-        clearInterval(timer);
-        return(callback());
-      }
-    },30);
+var time_left=0;
+var timer;
+function alert_(s,time,background,callback){
+  if(typeof time ==="undefined"){
+    time=2100;
   }
-  var axios = require("axios");
-  var form;
-  /*var form=[
-    {
-      title:"类型",
-      placeholder:"",
-      inputType:"select",
-      necessary:true,
-      ops:[
-        {name:"aygfy",id:1},
-        {name:"bsd",id:2},
-        {name:"b",id:54},
-        {name:"bsfd",id:545}
-      ]},
-    {
-      title:"商家名称",
-      placeholder:"必填",
-      inputType:"shortText",
-      necessary:true
-    },
-    {
-      title:"地址",
-      placeholder:"请描述具体位置",
-      inputType:"shortText",
-      necessary:true
-    },
-    {
-      title:"营业时间",
-      placeholder:"选填",
-      inputType:"shortText",
-      necessary:false
-    },
-    {
-      title:"描述",
-      placeholder:"选填",
-      inputType:"longText",
-      necessary:false
+  if(typeof background === "undefined"){
+    background="crimson";
+  }
+  if(typeof callback === "undefined"){
+    callback=function(){};
+  }
+  clearInterval(timer);
+  time_left=time;
+  var alert_div = document.querySelector("div.new-store-alert");
+  alert_div.classList.add("show");
+  alert_div.style.background=background;
+  alert_div.innerHTML="<p>"+s+"</p>";
+  timer = setInterval(function(){
+    time_left-=30;
+    if(time_left<=0){
+      alert_div.classList.remove("show");
+      alert_div.style.background="transparent";
+      clearInterval(timer);
+      return(callback());
     }
-  ];*/
-
-  export default {
-    data:()=>{
-      return({
-        items:form,
-        loaded:false,
-        n:0,
-        inSelection:false,
-        selectValue:""
-      })
-    },
-    methods:{
-      submit:function(){
-        if(0){
-          alert("请完整填写！");
-        }else{
-          var vue_this=this;
-          var datas=[];
-          var list_item = document.querySelectorAll("div.input-item");
-          for(var i=0;i<list_item.length;i++){
-            if(list_item[i].classList.contains("select")){
-              var name = list_item[i].querySelector("h2>span").innerHTML;
-              var ops=[];
-              var list = document.querySelectorAll("button.select-option.active");
-              if(list.length===0 && list_item[i].dataset.necessary=="true"){
-                alert_("没有选择" + name);
-                return;
-              }
-              for(var n=0;n<list.length;n++){
-                ops.push({id:list[n].dataset.id,name:list[n].innerHTML});
-              }
-              datas.push({
-                name:name,
-                type:"select",
-                ops:ops
-              });
-            }else if(list_item[i].classList.contains("shortText")){
-              var value=list_item[i].querySelector("input").value;
-              var name=list_item[i].querySelector("h2>span").innerHTML;
-              if(value==="" && list_item[i].dataset.necessary=="true"){
-                alert_("没有填写"+name);
-                return;
-              }
-              datas.push({
-                name:name,
-                type:"shortText",
-                value:value
-              });
-            }else if(list_item[i].classList.contains("longText")){
-              var value=list_item[i].querySelector("textarea").value;
-              var name=list_item[i].querySelector("h2>span").innerHTML;
-              if(value==="" && list_item[i].dataset.necessary=="true"){
-                alert_("没有填写"+name);
-                return;
-              }
-              datas.push({
-                name:name,
-                type:"longText",
-                value:value
-              });
+  },30);
+}
+var axios = require("axios");
+var form;
+module.exports = {
+  data:function(){
+    return({
+      items:form,
+      loaded:false,
+      n:0,
+      inSelection:false,
+      selectValue:""
+    })
+  },
+  methods:{
+    submit:function(){
+      if(0){
+        alert("请完整填写！");
+      }else{
+        var vue_this=this;
+        var datas=[];
+        var list_item = document.querySelectorAll("div.input-item");
+        for(var i=0;i<list_item.length;i++){
+          if(list_item[i].classList.contains("select")){
+            var name = list_item[i].querySelector("h2>span").innerHTML;
+            var ops=[];
+            var list = document.querySelectorAll("button.select-option.active");
+            if(list.length===0 && list_item[i].dataset.necessary=="true"){
+              alert_("没有选择" + name);
+              return;
             }
-          }
-          datas=encodeURIComponent(JSON.stringify(datas));
-          axios.post('add_store', {
-            data: datas
-          })
-            .then(function (response) {
-              response=response.data;
-              if(!response.error){
-                vue_this.$router.push("/newStore/addSuccess");
-              }else{
-                alert_("提交失败：服务器拒绝您的数据！");
-              }
-            })
-            .catch(function (error) {
-              if(error){
-                alert_("网络出错！");
-              }
+            for(var n=0;n<list.length;n++){
+              ops.push({id:list[n].dataset.id,name:list[n].innerHTML});
+            }
+            datas.push({
+              name:name,
+              type:"select",
+              ops:ops
             });
+          }else if(list_item[i].classList.contains("shortText")){
+            var value=list_item[i].querySelector("input").value;
+            var name=list_item[i].querySelector("h2>span").innerHTML;
+            if(value==="" && list_item[i].dataset.necessary=="true"){
+              alert_("没有填写"+name);
+              return;
+            }
+            datas.push({
+              name:name,
+              type:"shortText",
+              value:value
+            });
+          }else if(list_item[i].classList.contains("longText")){
+            var value=list_item[i].querySelector("textarea").value;
+            var name=list_item[i].querySelector("h2>span").innerHTML;
+            if(value==="" && list_item[i].dataset.necessary=="true"){
+              alert_("没有填写"+name);
+              return;
+            }
+            datas.push({
+              name:name,
+              type:"longText",
+              value:value
+            });
+          }
         }
-      },
-      select:function(a){
-        var ele=a.target;
-        if(document.querySelectorAll("button.select-option.active").length>=1){
-          document.querySelector("button.select-option.active").classList.remove('active')
-        }
-        ele.classList.add('active');
-        this.selectValue = ele.innerHTML;
-        this.inSelection = false;
-      },
-      init:function(){
-        var vue_this = this;
-        axios.get('store_form_data')
+        datas=encodeURIComponent(JSON.stringify(datas));
+        axios.post('add_store', {
+          data: datas
+        })
           .then(function (response) {
             response=response.data;
-            vue_this.items=response.data;
-            vue_this.n++;
-            vue_this.checkLoad();
+            if(!response.error){
+              vue_this.$router.push("/newStore/addSuccess");
+            }else{
+              alert_("提交失败：服务器拒绝您的数据！");
+            }
           })
           .catch(function (error) {
-            console.log(error);
-            if(error)alert_("加载表单失败！");
+            if(error){
+              alert_("网络出错！");
+            }
           });
-      },
-      checkLoad:function(){
-        if(this.n===2){
-          this.loaded = true;
-        }
-      },
-      selectClick:function(){
-        this.inSelection = true;
       }
     },
-    mounted:function(){
-        this.init();
+    select:function(a){
+      var ele=a.target;
+      if(document.querySelectorAll("button.select-option.active").length>=1){
+        document.querySelector("button.select-option.active").classList.remove('active')
+      }
+      ele.classList.add('active');
+      this.selectValue = ele.innerHTML;
+      this.inSelection = false;
+    },
+    init:function(){
+      var vue_this = this;
+      axios.get('store_form_data')
+        .then(function (response) {
+          response=response.data;
+          vue_this.items=response.data;
+          vue_this.n++;
+          vue_this.checkLoad();
+        })
+        .catch(function (error) {
+          console.log(error);
+          if(error)alert_("加载表单失败！");
+        });
+    },
+    checkLoad:function(){
+      if(this.n===2){
+        this.loaded = true;
+      }
+    },
+    selectClick:function(){
+      this.inSelection = true;
     }
+  },
+  mounted:function(){
+      this.init();
   }
+}
 </script>

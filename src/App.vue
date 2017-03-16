@@ -2,10 +2,9 @@
   <router-view></router-view>
 </template>
 <script>
-export default{
+module.exports = {
   name: 'app',
-  components: {
-  }
+  components: {}
 };
 </script>
 

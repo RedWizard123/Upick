@@ -60,26 +60,26 @@
   }
 </style>
 <script>
-  export default{
-    data:function(){
-      return({
-        loaded:false,
-        n:0
-      });
+module.exports = {
+  data:function(){
+    return({
+      loaded:false,
+      n:0
+    });
+  },
+  methods:{
+    newStore:function(){
+      this.$router.replace("/comment/"+this.$route.params.id);
     },
-    methods:{
-      newStore:function(){
-        this.$router.replace("/comment/"+this.$route.params.id);
-      },
-      loadPlus:function(){
-        this.n++;
-        if(this.n===2){
-          this.loaded = true;
-        }
-      }
-    },
-    mounted:function(){
+    loadPlus:function(){
       this.n++;
+      if(this.n===2){
+        this.loaded = true;
+      }
     }
+  },
+  mounted:function(){
+    this.n++;
   }
+}
 </script>

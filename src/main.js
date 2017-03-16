@@ -1,24 +1,27 @@
-// The Vue build version to load with the `import` command
+// The Vue build version to load with the `var` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import VuePreview from 'vue-preview'
+var Vue = require('vue');
+var VueRouter = require("vue-router");
+var VuePreview = require("vue-preview");
 
-import App from './App'
-import newStore from './components/newStore'
-import mainPage from './components/mainPage'
-import addSuccess from './components/addSuccess'
-import noStore from './components/noStore'
-import storeList from './components/storeList'
-import storeDetail from './components/storeDetail'
-import comment from './components/comment'
-import mark from './components/mark'
-import commentSuccess from './components/commentSuccess'
-import commentFailed from './components/commentFailed'
+//import VueRouter from 'vue-router'
+//import VuePreview from 'vue-preview'
+
+var App = require('./App.vue');
+var newStore = require('./components/newStore.vue');
+var mainPage = require('./components/mainPage.vue');
+var addSuccess = require('./components/addSuccess.vue');
+var noStore = require( './components/noStore.vue');
+var storeList = require( './components/storeList.vue');
+var storeDetail = require( './components/storeDetail.vue');
+var comment =require( './components/comment.vue');
+var mark =require( './components/mark.vue');
+var commentSuccess =require( './components/commentSuccess.vue');
+var commentFailed =require( './components/commentFailed.vue');
 
 Vue.use(VueRouter);
-Vue.use(VuePreview);
-const routes = [
+Vue.use(VuePreview.default);
+var routes = [
   { path: '/', component: mainPage },
   { path: '/storeDetail/:id', component: storeDetail },
   { path: '/storeList/:type', component: storeList },
@@ -33,16 +36,12 @@ const routes = [
   { path: '/:type', component: mainPage }
 ];
 
-const router = new VueRouter({
+var router = new VueRouter({
   routes:routes
 });
 new Vue({
   el: '#app',
   template: '<App/>',
-  components: { App },
-  router:router,
-  mounted:function(){
-    //router.push('/');
-  }
+  components: { App:App },
+  router:router
 });
-//

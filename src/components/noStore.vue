@@ -60,28 +60,28 @@
   }
 </style>
 <script>
-  export default{
-    data:function(){
-      return({
-        loaded:false,
-        n:0
-      });
+module.exports = {
+  data:function(){
+    return({
+      loaded:false,
+      n:0
+    });
+  },
+  methods:{
+    newStore:function(){
+      this.$router.push("/newStore");
     },
-    methods:{
-      newStore:function(){
-        this.$router.push("/newStore");
-      },
-      loadPlus:function(){
-        this.n++;
-        if(this.n===2){
-          this.loaded = true;
-        }
-      }
-    },
-    mounted:function(){
+    loadPlus:function(){
       this.n++;
+      if(this.n===2){
+        this.loaded = true;
+      }
     }
+  },
+  mounted:function(){
+    this.n++;
   }
+}
 
 
 </script>

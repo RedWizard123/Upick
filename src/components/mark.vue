@@ -1,4 +1,4 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<template>
   <div class="mark-root" v-bind:class="{'show':loaded}">
     <div class="alert" v-bind:class="{'show':alertShow}"><p>{{alertValue}}</p></div>
     <div class="mark-header">
@@ -232,7 +232,7 @@ div.alert{
 </style>
 <script>
 var axios = require("axios");
-export default{
+module.exports = {
   data:function(){
     return({
       loaded:false,

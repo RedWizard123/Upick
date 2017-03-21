@@ -83,7 +83,9 @@ div.comment-header>div.comment-float{
   width:3.8rem;
   height:3.8rem;
   border-radius: 50%;
-  background-color: #2c3e50;
+  background:no-repeat 100% 100%;
+  background-size: 100% 100%;
+
   top:0;
 }
 div.comment-header>img{
@@ -124,7 +126,8 @@ div.comment-body>div.choose-tags div.tags button{
   height:1.4rem;
   min-width:2rem;
   display: inline-block;
-  padding:0;
+  padding:0 0.3rem;
+
   margin:0 0.25rem 0.2rem 0.25rem;
   border-radius: 0.3rem;
   background: #FFFFFF;
@@ -337,6 +340,16 @@ module.exports = {
           for(var i=0; i< p+1;i++){
             array.push("");
           }
+          var img_icon = new Image();
+          img_icon.src = vue_this.data.iconURL;
+          if(img_icon.complete){
+            document.querySelector("div.comment-float").style.backgroundImage = "url('"+vue_this.data.iconURL+"')";
+          }else{
+            img_icon.onload = function(){
+              document.querySelector("div.comment-float").style.backgroundImage = "url('"+vue_this.data.iconURL+"')";
+            }
+          }
+
           vue_this.pages = array;
           vue_this.n++;
           vue_this.n>=3?vue_this.loaded=true:0;

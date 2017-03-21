@@ -160,7 +160,7 @@ button.select-option{
   height:2rem;
   background-color: transparent;
   color: #6C77C9;
-  font-size: 0.78rem;
+  font-size: 0.93rem;
   display: block;
 }
 button.select-option.active{

@@ -272,12 +272,12 @@ div.column-block div.back ul{
   margin: 0;
   width:100%;
   height:100%;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
   display: none;
 }
 div.column-block div.back li{
-  font-size: 0.6rem;
+  font-size: 0.5rem;
   color:#FFF;
   position: relative;
   z-index: 10;
@@ -286,8 +286,8 @@ div.column-block div.back li{
   text-align: left;
   white-space: nowrap;
 }
+div.column-block div.back li:nth-child(2),
 div.column-block div.back li:nth-child(4),
-div.column-block div.back li:nth-child(5),
 div.column-block div.back li:nth-child(6){
   text-align: right;
 }
@@ -355,169 +355,159 @@ div.hot-store div.mainpage-bottom>a{
 </style>
 <script>
 var handle;
-var axios = require("axios");
+var axios = require('axios');
 var ctx;
 var canvas;
-var step=0;
-var d_=0;
-var lines = ["rgba(255,255,255,1)",
-  "rgba(96,119,186, 0.7)",
-  "rgba(142,211,227, 0.5)"
+var step = 0;
+var d_ = 0;
+var lines = ['rgba(255,255,255,1)',
+  'rgba(96,119,186, 0.7)',
+  'rgba(142,211,227, 0.5)'
 ];
 var meteor = [];
 var stars = [];
-var n= 0;
-window.requestAnimFrame = (function(){
-  return  window.requestAnimationFrame ||
+var n = 0;
+window.requestAnimFrame = (function () {
+  return window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame    ||
-    window.oRequestAnimationFrame      ||
-    window.msRequestAnimationFrame     ||
-    function( callback ){
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function (callback) {
       window.setTimeout(callback, 1000 / 60);
     };
 })();
-window.cancelAnimFrame = (function(){
-  return  window.cancelAnimationFrame ||
+window.cancelAnimFrame = (function () {
+  return window.cancelAnimationFrame ||
     window.webkitCancelAnimationFrame ||
-    window.mozCancelAnimationFrame    ||
-    window.oCancelAnimationFrame      ||
-    window.msCancelAnimationFrame     ||
-    function(n){
+    window.mozCancelAnimationFrame ||
+    window.oCancelAnimationFrame ||
+    window.msCancelAnimationFrame ||
+    function (n) {
       window.clearTimeout(n);
     };
 })();
 module.exports = {
-  data:function(){
-    return({
-      canvasWidth:document.body.clientWidth,
-      canvasHeight:document.body.clientWidth*0.45,
-      data:{topic:"这是头条推文这是头条推文",list1:[],list2:[]},
-      loaded:false,
-      rem:18,
-      keyword:""
+  data: function () {
+    return ({
+      canvasWidth: document.body.clientWidth,
+      canvasHeight: document.body.clientWidth * 0.45,
+      data: {topic: '这是头条推文这是头条推文', list1: [], list2: []},
+      loaded: false,
+      rem: 18,
+      keyword: ''
     });
   },
-  methods:{
-      searchClick:function(a){
-        var input = a.target.parentNode.querySelector("input");
-        var parentDiv = a.target.parentNode.parentNode;
-        if(input.value==="" && parentDiv.classList.contains("active")){
-          parentDiv.classList.remove("active");
-        }else if(!parentDiv.classList.contains("active")){
-          parentDiv.classList.add("active");
-        }else{
-          this.$router.push("/storeList/search/"+this.keyword);
-        }
-      },
-      buttonClick:function(a){
-        if(document.querySelectorAll(".active").length != 0){
-          document.querySelector(".active").classList.remove("active");
-        }
-        a.target.parentNode.classList.add("active");
-      },
-      loop:function(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle="#343856";
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-        var img = document.getElementById("xingxing");
-        ctx.drawImage(img,0,0,img.width,img.height,0,0,canvas.width,canvas.width * img.height / img.width);
-
-        step+=2;
-
-        var dd=canvas.width/50;
-        for(var j=0;j<meteor.length;j++){
-          if(meteor[j].position.x-meteor[j].length/Math.SQRT2>canvas.width||meteor[j].position.y-meteor[j].length/Math.SQRT2>canvas.height){
-            meteor.splice(j,1);
-            meteor.push({position:{x:Math.random()*canvas.width*0.75,y:0},color:"",length:Math.random()*0.5*d_+2*d_});
-          }else{
-            meteor[j].position.x+=dd/2;
-            meteor[j].position.y+=dd/2;
-
-            var grd = ctx.createRadialGradient(meteor[j].position.x,meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd*1.5);
-            grd.addColorStop(0, "rgba(255,255,255,0.6)");
-            grd.addColorStop(0.2, "rgba(255,223,0,0.18)");
-            grd.addColorStop(1, "rgba(0,0,0,0)");
-            ctx.fillStyle = grd;
-            ctx.fillRect(meteor[j].position.x-dd/2, meteor[j].position.y-dd/2, dd, dd);
-            ctx.moveTo(meteor[j].position.x,meteor[j].position.y);
-            ctx.lineTo(meteor[j].position.x-meteor[j].length/Math.SQRT2,meteor[j].position.y-meteor[j].length/Math.SQRT2);
-            ctx.strokeStyle="rgba(255,255,255,0.2)";
-            ctx.lineWidth = "20px";
-            //
-            ctx.stroke();
-          }
-        }
-        for(j = lines.length - 1; j >= 0; j--) {
-          ctx.fillStyle = lines[j];
-          var angle = (step+j*90)*Math.PI/180;
-          var deltaHeight = Math.sin(angle) * d_*0.7;
-          var deltaHeightRight = Math.cos(angle) * d_*0.7;
-          ctx.beginPath();
-          ctx.moveTo(0, canvas.height/3*2+deltaHeight);
-          ctx.bezierCurveTo(canvas.width /2, canvas.height/3*2+deltaHeight-d_, canvas.width / 2, canvas.height/3*2+deltaHeightRight-d_, canvas.width, canvas.height/3*2+deltaHeightRight);
-          ctx.lineTo(canvas.width, canvas.height);
-          ctx.lineTo(0, canvas.height);
-          ctx.lineTo(0, canvas.height/3*2+deltaHeight);
-          ctx.closePath();
-          ctx.fill();
-        }
-        handle = requestAnimFrame(this.loop);
+  methods: {
+    searchClick: function (a) {
+      var input = a.target.parentNode.querySelector('input');
+      var parentDiv = a.target.parentNode.parentNode;
+      if (input.value === '' && parentDiv.classList.contains('active')) {
+        parentDiv.classList.remove('active');
+      } else if (!parentDiv.classList.contains('active')) {
+        parentDiv.classList.add('active');
+      } else {
+        this.$router.push('/storeList/search/' + this.keyword);
       }
-  },
-  created:function(){
-    /*var img =new Image();
-    //img.src = "../assets/mainpage/columns.png";
-    img.onload = function(){
-      alert("loaded");
-    }*/
-  },
-  mounted:function(){
+    },
+    buttonClick: function (a) {
+      if (document.querySelectorAll('.active').length !== 0) {
+        document.querySelector('.active').classList.remove('active');
+      }
+      a.target.parentNode.classList.add('active');
+    },
+    loop: function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#343856';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      var img = document.getElementById('xingxing');
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.width * img.height / img.width);
 
-    canvas = document.querySelector("canvas");
-    ctx = document.querySelector("canvas").getContext("2d");
-    d_=canvas.width*0.08;
-    meteor=[];
-    stars=[];
-    for(var i=0;i<2;i++){
-      meteor.push({position:{x:-10*d_+Math.random()*30*d_,y:-5*d_-Math.random()*d_},color:"",length:d_/2});
+      step += 2;
+
+      var dd = canvas.width / 50;
+      for (var j = 0; j < meteor.length; j++) {
+        if (meteor[j].position.x - meteor[j].length / Math.SQRT2 > canvas.width || meteor[j].position.y - meteor[j].length / Math.SQRT2 > canvas.height) {
+          meteor.splice(j, 1);
+          meteor.push({position: {x: Math.random() * canvas.width * 0.75, y: 0}, color: '', length: Math.random() * 0.5 * d_ + 2 * d_});
+        } else {
+          meteor[j].position.x += dd / 2;
+          meteor[j].position.y += dd / 2;
+
+          var grd = ctx.createRadialGradient(meteor[j].position.x, meteor[j].position.y, 1, meteor[j].position.x, meteor[j].position.y, dd * 1.5);
+          grd.addColorStop(0, 'rgba(255,255,255,0.6)');
+          grd.addColorStop(0.2, 'rgba(255,223,0,0.18)');
+          grd.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = grd;
+          ctx.fillRect(meteor[j].position.x - dd / 2, meteor[j].position.y - dd / 2, dd, dd);
+          ctx.moveTo(meteor[j].position.x, meteor[j].position.y);
+          ctx.lineTo(meteor[j].position.x - meteor[j].length / Math.SQRT2, meteor[j].position.y - meteor[j].length / Math.SQRT2);
+          ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+          ctx.lineWidth = '20px';
+            //
+          ctx.stroke();
+        }
+      }
+      for (j = lines.length - 1; j >= 0; j--) {
+        ctx.fillStyle = lines[j];
+        var angle = (step + j * 90) * Math.PI / 180;
+        var deltaHeight = Math.sin(angle) * d_ * 0.7;
+        var deltaHeightRight = Math.cos(angle) * d_ * 0.7;
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 3 * 2 + deltaHeight);
+        ctx.bezierCurveTo(canvas.width / 2, canvas.height / 3 * 2 + deltaHeight - d_, canvas.width / 2, canvas.height / 3 * 2 + deltaHeightRight - d_, canvas.width, canvas.height / 3 * 2 + deltaHeightRight);
+        ctx.lineTo(canvas.width, canvas.height);
+        ctx.lineTo(0, canvas.height);
+        ctx.lineTo(0, canvas.height / 3 * 2 + deltaHeight);
+        ctx.closePath();
+        ctx.fill();
+      }
+      handle = requestAnimFrame(this.loop);
     }
-    for(i = 0;i<10;i++){
-      stars.push({x:d_+Math.random()*10*d_,y:d_+Math.random()*5*d_});
+  },
+  mounted: function () {
+    canvas = document.querySelector('canvas');
+    ctx = document.querySelector('canvas').getContext('2d');
+    d_ = canvas.width * 0.08;
+    meteor = [];
+    stars = [];
+    for (var i = 0; i < 2; i++) {
+      meteor.push({position: {x: -10 * d_ + Math.random() * 30 * d_, y: -5 * d_ - Math.random() * d_}, color: '', length: d_ / 2});
+    }
+    for (i = 0; i < 10; i++) {
+      stars.push({x: d_ + Math.random() * 10 * d_, y: d_ + Math.random() * 5 * d_});
     }
     window.cancelAnimFrame(handle);
-    //if(this.$route.params.type!="noAnim"){
-    var vue_this = this;
+    // if(this.$route.params.type!="noAnim"){
+    var vueThis = this;
 
-
-    document.getElementById("xingxing").onload = function(){
-      vue_this.loop();
+    document.getElementById('xingxing').onload = function () {
+      vueThis.loop();
     };
 
-
-    //}
-    vue_this.rem =parseInt( window.getComputedStyle(document.documentElement)["fontSize"]);
-    var img1 = (new Image);
-    var img2 = (new Image);
-    var img3 = (new Image);
-    img1.src = "static/img/bottom.png";
-    img1.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
-    img2.src = "static/img/title.png";
-    img2.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
-    img3.src = "static/img/columns.png";
-    img3.onload = function(){n++;if(n>=4){vue_this.loaded = true;}};
-    img1 = img2 = img3 =null;
+    // }
+    vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
+    var img1 = (new Image());
+    var img2 = (new Image());
+    var img3 = (new Image());
+    img1.src = 'static/img/bottom.png';
+    img1.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img2.src = 'static/img/title.png';
+    img2.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img3.src = 'static/img/columns.png';
+    img3.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img1 = img2 = img3 = null;
     axios.get('index')
       .then(function (response) {
-        response=response.data;
-        vue_this.data=response;
+        response = response.data;
+        vueThis.data = response;
         n++;
-        if(n>=4){vue_this.loaded = true;}
+        if (n >= 4) { vueThis.loaded = true; }
       })
       .catch(function (error) {
         console.log(error);
-        if(error)alert("主页加载失败！");
-        vue_this.loaded = true;
+        if (error)alert('主页加载失败！');
+        vueThis.loaded = true;
       });
   }
 }

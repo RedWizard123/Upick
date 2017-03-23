@@ -60,24 +60,24 @@ div.add-success-root.show{
 </style>
 <script>
 module.exports = {
-  data:function(){
-    return({
-      loaded:false,
-      n:0
+  data: function () {
+    return ({
+      loaded: false,
+      n: 0
     });
   },
-  methods:{
-    back:function(){
-      this.$router.replace("/storeDetail/"+this.$route.params.id);
+  methods: {
+    back: function () {
+      this.$router.replace('/storeDetail/' + this.$route.params.id);
     },
-    loadPlus:function(){
-        this.n++;
-        if(this.n===2){
-          this.loaded = true;
-        }
+    loadPlus: function () {
+      this.n++;
+      if (this.n === 2) {
+        this.loaded = true;
+      }
     }
   },
-  mounted:function(){
+  mounted: function () {
     this.n++;
   }
 }

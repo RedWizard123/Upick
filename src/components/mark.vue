@@ -231,134 +231,131 @@ div.alert{
 }
 </style>
 <script>
-var axios = require("axios");
+var axios = require('axios');
 module.exports = {
-  data:function(){
-    return({
-      loaded:false,
-      title:"aaa",
-      score:5,
-      touched:false,
-      offset:0,
-      rem:0,
-      startX:0,
-      offset_bak:0,
-      alertShow:"",
-      alertValue:"",
-      alertTimeout:0,
-      hasMarked:false,
-      n:0
+  data: function () {
+    return ({
+      loaded: false,
+      title: 'aaa',
+      score: 5,
+      touched: false,
+      offset: 0,
+      rem: 0,
+      startX: 0,
+      offset_bak: 0,
+      alertShow: '',
+      alertValue: '',
+      alertTimeout: 0,
+      hasMarked: false,
+      n: 0
     });
   },
-  methods:{
-    touchstart:function(touches){
+  methods: {
+    touchstart: function (touches) {
       this.hasMarked = true;
       this.touched = true;
-      if(touches.touches.length === 1){
+      if (touches.touches.length === 1) {
         var touch = touches.touches[0];
         this.startX = touch.clientX;
-        if(/*touch.target.classList.contains("bar")*/1){
-          this.offset = touch.clientX - this.rem *2.5;
-          this.offset_bak = touch.clientX - this.rem *2.5;
-        }
-
-        this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(0);
+        this.offset = touch.clientX - this.rem * 2.5;
+        this.offset_bak = touch.clientX - this.rem * 2.5;
+        this.score = (this.offset / document.querySelector('div.bar').clientWidth * 10).toFixed(0);
       }
     },
-    touchmove:function(touches){
-      if(touches.touches.length === 1){
+    touchmove: function (touches) {
+      if (touches.touches.length === 1) {
         var touch = touches.touches[0];
-        if(this.touched){
-          this.offset = this.offset_bak + (touch.clientX) - this.startX ;
-          if(this.offset >= document.querySelector("div.bar").clientWidth){
-            this.offset = document.querySelector("div.bar").clientWidth;
-          }else if(this.offset<=0){
-            this.offset =0;
+        if (this.touched) {
+          this.offset = this.offset_bak + (touch.clientX) - this.startX;
+          if (this.offset >= document.querySelector('div.bar').clientWidth) {
+            this.offset = document.querySelector('div.bar').clientWidth;
+          } else if (this.offset <= 0) {
+            this.offset = 0;
           }
-          this.score = (this.offset / document.querySelector("div.bar").clientWidth *10).toFixed(0);
+          this.score = (this.offset / document.querySelector('div.bar').clientWidth * 10).toFixed(0);
         }
       }
     },
-    touchend:function(touches){
-      if(this.touched){
+    touchend: function (touches) {
+      if (this.touched) {
         this.touched = false;
       }
     },
-    convertToFloat:function(a){
-      if(typeof a ==="number"){
+    convertToFloat: function (a) {
+      if (typeof a === 'number') {
         a = a.toString();
       }
-      if(a.length===3){
-        return(a);
-      }else{
-        return(a+".0");
+      if (a.length === 3) {
+        return (a);
+      } else {
+        return (a + '.0');
       }
     },
-    submit:function(){
-      var vue_this = this;
-      //去除是否移动过的判断
-      /*if(!this.hasMarked){
+    submit: function () {
+      var vueThis = this;
+      // 去除是否移动过的判断
+      /* if(!this.hasMarked){
         this.alert_("您未进行评分！");
         return;
-      }*/
-      var datas={
-        id:this.$route.params.id,
-        title:this.$route.params.title,
-        tags:this.$route.params.tags.split("&"),
-        text:this.$route.params.comment,
-        score:this.score
+      } */
+      var datas = {
+        id: this.$route.params.id,
+        title: this.$route.params.title,
+        tags: this.$route.params.tags.split('&'),
+        text: this.$route.params.comment,
+        score: this.score
       };
-      datas=encodeURIComponent(JSON.stringify(datas));
+      datas = encodeURIComponent(JSON.stringify(datas));
       axios.post('comment', {
-        data:datas
+        data: datas
       })
-        .then(function (response){
-          response=response.data;
-          if(!response.error){
-            vue_this.$router.replace("/comment/success/"+vue_this.$route.params.id);
-          }else{
-            if(response.error.indexOf("commented")){
-              vue_this.$router.replace("/comment/failed/"+vue_this.$route.params.id);
-            }else{
-              vue_this.alert_("提交失败：服务器拒绝您的数据！");
+        .then(function (response) {
+          response = response.data;
+          if (!response.error) {
+            vueThis.$router.replace('/comment/success/' + vueThis.$route.params.id);
+          } else {
+            if (response.error.indexOf('commented')) {
+              vueThis.$router.replace('/comment/failed/' + vueThis.$route.params.id);
+            } else {
+              vueThis.alert_('提交失败：服务器拒绝您的数据！');
             }
           }
         })
-        .catch(function(error){
-          if(error){
-            vue_this.alert_("网络出错！");
+        .catch(function (error) {
+          if (error) {
+            vueThis.alert_('网络出错！');
           }
         });
     },
-    alert_:function(value){
+    alert_: function (value) {
       clearTimeout(this.alertTimeout);
       this.alertValue = value;
       this.alertShow = true;
-      var vue_this = this;
-      this.alertTimeout = setTimeout(function(){
-        vue_this.alertShow = false;
-      },2500);
+      var vueThis = this;
+      this.alertTimeout = setTimeout(function () {
+        vueThis.alertShow = false;
+      }, 2500);
     }
   },
-  mounted:function(){
-    var vue_this = this;
-    var imgList = [new Image(),new Image(),new Image()];
-    imgList[0].src = "static/img/bad.png";
-    imgList[1].src = "static/img/normal.png";
-    imgList[2].src = "static/img/good.png";
-    for(var i = 0 ; i < imgList.length ; i++){
-      imgList[i].onload = function(){
-        vue_this.n++;
-        if(vue_this.n>=imgList.length){
-          vue_this.loaded = true;
-          vue_this.offset = document.querySelector("div.bar").clientWidth/2;
-          vue_this.rem = document.querySelector("div.switcher span").clientWidth / 1.5;
+  mounted: function () {
+    var vueThis = this;
+    var imgList = [new Image(), new Image(), new Image()];
+    imgList[0].src = 'static/img/bad.png';
+    imgList[1].src = 'static/img/normal.png';
+    imgList[2].src = 'static/img/good.png';
+    for (var i = 0; i < imgList.length; i++) {
+      imgList[i].onload = function () {
+        vueThis.n++;
+        if (vueThis.n >= imgList.length) {
+          vueThis.loaded = true;
+          vueThis.offset = document.querySelector('div.bar').clientWidth / 2;
+          vueThis.rem = document.querySelector('div.switcher span').clientWidth / 1.5;
         }
       }
     }
   }
 }
-//alert
-//photo preview
-//jumping box og tags
+// alert
+// photo preview
+// jumping box og tags
 </script>

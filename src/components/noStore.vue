@@ -61,27 +61,26 @@
 </style>
 <script>
 module.exports = {
-  data:function(){
-    return({
-      loaded:false,
-      n:0
+  data: function () {
+    return ({
+      loaded: false,
+      n: 0
     });
   },
-  methods:{
-    newStore:function(){
-      this.$router.push("/newStore");
+  methods: {
+    newStore: function () {
+      this.$router.push('/newStore');
     },
-    loadPlus:function(){
+    loadPlus: function () {
       this.n++;
-      if(this.n===2){
+      if (this.n === 2) {
         this.loaded = true;
       }
     }
   },
-  mounted:function(){
+  mounted: function () {
     this.n++;
   }
 }
-
 
 </script>

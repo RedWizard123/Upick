@@ -258,107 +258,109 @@ div.alert{
 </style>
 <script>
 require('vue-swipe/dist/vue-swipe.css');
-var axios = require("axios");
+var axios = require('axios');
 
-//import { Swipe, SwipeItem } from 'vue-swipe';
-var Swipe = require("vue-swipe").Swipe;
-var SwipeItem = require("vue-swipe").SwipeItem;
+// import { Swipe, SwipeItem } from 'vue-swipe';
+var Swipe = require('vue-swipe').Swipe;
+var SwipeItem = require('vue-swipe').SwipeItem;
 module.exports = {
-  components:{
-    "swipe":Swipe,
-    "swipe-item":SwipeItem
+  components: {
+    'swipe': Swipe,
+    'swipe-item': SwipeItem
   },
-  data:function(){
-    return({
-      data:{
-        name:"",
-        iconURL:"",
-        tags:[]
+  data: function () {
+    return ({
+      data: {
+        name: '',
+        iconURL: '',
+        tags: []
       },
-      width_:0,
-      pages:[""],
-      loaded:false,
-      text:"",
-      n:0,
-      alertShow:"",
-      alertValue:"",
-      alertTimeout:0
+      width_: 0,
+      pages: [''],
+      loaded: false,
+      text: '',
+      n: 0,
+      alertShow: '',
+      alertValue: '',
+      alertTimeout: 0
     });
   },
-  methods:{
-    select:function(a){
-      var ele=a.target;
-      ele.classList.contains('active')?ele.classList.remove('active'):ele.classList.add('active');
+  methods: {
+    select: function (a) {
+      var ele = a.target;
+      ele.classList.contains('active') ? ele.classList.remove('active') : ele.classList.add('active');
     },
-    next:function(){
-      if(document.querySelectorAll(".choose-tags button.active").length === 0){
-        this.alert_("未选择标签！");
+    next: function () {
+      if (document.querySelectorAll('.choose-tags button.active').length === 0) {
+        this.alert_('未选择标签！');
         return;
       }
-      if(this.text === ""){
-        this.alert_("未填写详情！");
+      if (this.text === '') {
+        this.alert_('未填写详情！');
         return;
       }
-      this.$router.replace('/comment/mark/'+this.$route.params.id+'/'+this.data.name+'/'+this.getChosenTags()+'/'+this.text);
+      this.$router.replace('/comment/mark/' + this.$route.params.id + '/' + this.data.name + '/' + this.getChosenTags() + '/' + this.text);
     },
-    getChosenTags:function(){
-      var list = document.querySelectorAll(".choose-tags button.active");
+    getChosenTags: function () {
+      var list = document.querySelectorAll('.choose-tags button.active');
       var t = [];
-      for(var i = 0;i<list.length;i++){
+      for (var i = 0; i < list.length; i++) {
         t.push(list[i].dataset.id);
       }
-      return(t.join("&"));
+      return (t.join('&'));
     },
-    alert_:function(value){
+    alert_: function (value) {
       clearTimeout(this.alertTimeout);
       this.alertValue = value;
       this.alertShow = true;
-      var vue_this = this;
-      this.alertTimeout = setTimeout(function(){
-        vue_this.alertShow = false;
-      },2500);
+      var vueThis = this;
+      this.alertTimeout = setTimeout(function () {
+        vueThis.alertShow = false;
+      }, 2500);
     }
   },
-  watch:{
-    pages:function(){
+  watch: {
+    pages: function () {
 
     }
   },
-  mounted:function(){
-    var vue_this = this;
-    axios.get('comment_data?id='+vue_this.$route.params["id"])
+  mounted: function () {
+    var vueThis = this;
+    axios.get('comment_data?id=' + vueThis.$route.params['id'])
       .then(function (response) {
-        response=response.data;
-        vue_this.data=response.data;
-        vue_this.n++;
-        vue_this.width_ = document.querySelector("div.width-ruler").clientWidth;
-        vue_this.$forceUpdate();
-        setTimeout(function(){
-          var p = parseInt(document.querySelector("div.tags-pre").clientHeight/(document.querySelector("div.choose-tags").clientHeight*32/47));
-          document.querySelector("div.tags-pre").style.display = "none";
+        response = response.data;
+        vueThis.data = response.data;
+        vueThis.n++;
+        vueThis.width_ = document.querySelector('div.width-ruler').clientWidth;
+        vueThis.$forceUpdate();
+        setTimeout(function () {
+          var p = parseInt(document.querySelector('div.tags-pre').clientHeight / (document.querySelector('div.choose-tags').clientHeight * 32 / 47));
+          document.querySelector('div.tags-pre').style.display = 'none';
           var array = [];
-          for(var i=0; i< p+1;i++){
-            array.push("");
+          for (var i = 0; i < p + 1; i++) {
+            array.push('');
           }
-          var img_icon = new Image();
-          img_icon.src = vue_this.data.iconURL;
-          if(img_icon.complete){
-            document.querySelector("div.comment-float").style.backgroundImage = "url('"+vue_this.data.iconURL+"')";
-          }else{
-            img_icon.onload = function(){
-              document.querySelector("div.comment-float").style.backgroundImage = "url('"+vue_this.data.iconURL+"')";
+          var imgIcon = new Image();
+          imgIcon.src = vueThis.data.iconURL;
+          if (imgIcon.complete) {
+            document.querySelector('div.comment-float').style.backgroundImage = "url('" + vueThis.data.iconURL + "')";
+          } else {
+            imgIcon.onload = function () {
+              document.querySelector('div.comment-float').style.backgroundImage = "url('" + vueThis.data.iconURL + "')";
             }
           }
 
-          vue_this.pages = array;
-          vue_this.n++;
-          vue_this.n>=3?vue_this.loaded=true:0;
-        },200);
+          vueThis.pages = array;
+          vueThis.n++;
+          if (vueThis.n >= 3) {
+            vueThis.loaded = true;
+          }
+        }, 200);
       })
       .catch(function (error) {
         console.log(error);
-        if(error)alert("加载失败！");
-        vue_this.loaded = true;
+        if (error)alert('加载失败！');
+        vueThis.loaded = true;
       });
   }
 }

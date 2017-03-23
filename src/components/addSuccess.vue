@@ -60,24 +60,24 @@ div.add-success-root.show{
 </style>
 <script>
 module.exports = {
-  data:function(){
-    return({
-      loaded:false,
-      n:0
+  data: function () {
+    return ({
+      loaded: false,
+      n: 0
     });
   },
-  methods:{
-    back:function(){
-      this.$router.push("/noAnim");
+  methods: {
+    back: function () {
+      this.$router.push('/noAnim');
     },
-    loadPlus:function(){
+    loadPlus: function () {
       this.n++;
-      if(this.n===2){
+      if (this.n === 2) {
         this.loaded = true;
       }
     }
   },
-  mounted:function(){
+  mounted: function () {
     this.n++;
   }
 }

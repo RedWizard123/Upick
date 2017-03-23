@@ -76,21 +76,13 @@ module.exports = {
         test: /\.vue$/,
         loader: 'eslint',
         include: projectRoot,
-        exclude: /node_modules/,
-        options: {
-          formatter: require("eslint-friendly-formatter"),
-          fix:true
-        }
+        exclude: /node_modules/
       },
       {
         test: /\.js$/,
         loader: 'eslint',
         include: projectRoot,
-        exclude: /node_modules/,
-        options: {
-          formatter: require("eslint-friendly-formatter"),
-          fix:true
-        }
+        exclude: /node_modules/
       }
     ]
   },

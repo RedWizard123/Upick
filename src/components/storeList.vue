@@ -249,7 +249,6 @@ div.store-list-body{
 }
 div.store-list-body>ul{
   width:100%;
-
 }
 div.store-list-body>ul>li{
   display: block;

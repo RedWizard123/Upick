@@ -109,8 +109,6 @@ module.exports = {
         item2.dislike = result.dislike;
         vueThis.$forceUpdate();
       }).catch(function () {
-        /* console.log(error);
-        if(error)alert("操作失败！"); */
         item2.liked = temp[0];
         item2.disliked = temp[1];
       });

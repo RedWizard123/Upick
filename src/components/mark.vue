@@ -293,16 +293,11 @@ module.exports = {
     },
     submit: function () {
       var vueThis = this;
-      // 去除是否移动过的判断
-      /* if(!this.hasMarked){
-        this.alert_("您未进行评分！");
-        return;
-      } */
       var datas = {
         id: this.$route.params.id,
         title: this.$route.params.title,
         tags: this.$route.params.tags.split('&'),
-        text: this.$route.params.comment,
+        text: decodeURIComponent(this.$route.params.comment),
         score: this.score
       };
       datas = encodeURIComponent(JSON.stringify(datas));
@@ -355,7 +350,4 @@ module.exports = {
     }
   }
 }
-// alert
-// photo preview
-// jumping box og tags
 </script>

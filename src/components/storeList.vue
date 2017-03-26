@@ -30,7 +30,7 @@
             <li v-for="item2 in item.tags">{{item2[0]}}</li>
           </ul>
           <ul class="pic">
-            <li v-for="(item3,index) in item.picURLs.slice(0,3)">
+            <li v-for="(item3, index) in item.picURLs.slice(0,3)">
               <img v-bind:src="item3.msrc" class="preview-img" v-on:click="$preview.open(index,item.picURLs)"/>
             </li>
           </ul>
@@ -42,8 +42,6 @@
     </div>
   </div>
 </template>
-
-
 <style scoped>
 div.store-list-root{
   min-height: 100%;
@@ -258,7 +256,7 @@ div.store-list-body>ul>li{
   border-bottom: 1px solid #bbb;
 }
 div.store-list-body>ul h2{
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 400;
   margin:0.1rem;
   display: inline-block;
@@ -273,7 +271,7 @@ div.store-list-body>ul div.title-container>span{
 }
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;
-  height:2rem;
+  max-height:1.7rem;
   overflow: hidden;
 }
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){

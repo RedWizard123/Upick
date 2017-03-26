@@ -259,12 +259,13 @@ div.store-detail-body>div.body-top{
   transition: all 0.2s;
 }
 div.store-detail-body>div.body-top>div.addr-time{
-  padding:1.5rem 0 0.5rem 0;
+  padding:1.5rem 0 0 0;
   position: relative;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2{
   font-size: 0.75rem;
   font-weight: 400;
+  width: calc(100% - 2.5rem);
 }
 div.store-detail-body>div.body-top>div.addr-time>h2>span{
   margin:0.5rem 0.2rem 0.5rem 0;
@@ -281,7 +282,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2.time>span::before{
   width:0.9rem;
   height:0.9rem;
   display: inline-block;
-  vertical-align:top;
+  vertical-align:middle;
   margin-right: 0.3rem;
 
 }
@@ -293,7 +294,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2.addr>span::before{
   width:0.9rem;
   height:0.9rem;
   display: inline-block;
-  vertical-align:top;
+  vertical-align:middle;
   margin-right: 0.3rem;
 }
 div.store-detail-body>div.body-top span.score{
@@ -303,6 +304,8 @@ div.store-detail-body>div.body-top span.score{
   font-weight: 400;
   top:2rem;
   right:0;
+  width:2.5rem;
+  margin:0.15rem;
 }
 div.store-detail-body div.body-top div.tags{
   margin-bottom: 0.5rem;

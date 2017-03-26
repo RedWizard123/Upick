@@ -272,9 +272,10 @@ div.column-block div.back ul{
   margin: 0;
   width:100%;
   height:100%;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   display: none;
+  justify-content: flex-start;
 }
 div.column-block div.back li{
   font-size: 0.5rem;
@@ -286,7 +287,7 @@ div.column-block div.back li{
   text-align: left;
   white-space: nowrap;
 }
-div.column-block div.back li:nth-child(2),
+div.column-block div.back li:nth-child(5),
 div.column-block div.back li:nth-child(4),
 div.column-block div.back li:nth-child(6){
   text-align: right;

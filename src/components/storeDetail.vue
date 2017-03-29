@@ -266,6 +266,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2{
   font-size: 0.75rem;
   font-weight: 400;
   width: calc(100% - 2.5rem);
+  margin: 0.7rem 0 0.2rem 0;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2>span{
   margin:0.5rem 0.2rem 0.5rem 0;
@@ -309,17 +310,18 @@ div.store-detail-body>div.body-top span.score{
 }
 div.store-detail-body div.body-top div.tags{
   margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
   position: relative;
   max-height: 3rem;
   overflow: hidden;
 }
 div.store-detail-body div.body-top div.tags>span{
   display: inline-block;
-  font-size: 0.7rem;
-  border-radius: 0.3rem;
-  color:#FFF;
-  padding:0.2rem 0.3rem;
-  margin:0 0.2rem 0.1rem 0.2rem;
+  font-size: .7rem;
+  border-radius: .3rem;
+  color: #FFF;
+  padding: .2rem .3rem;
+  margin:0 .2rem .2rem .2rem;
 }
 div.store-detail-body div.body-top div.tags>span:nth-child(4n+1){
   background: #5D77B9;
@@ -349,7 +351,6 @@ div.store-detail-body div.body-top div.pics>div.img-con{
   position: relative;
   text-align: center;
   color:#FFF;
-  margin-bottom: 1rem;
 }
 div.store-detail-body div.body-top div.pics>div.mask{
   position: absolute;
@@ -363,7 +364,7 @@ div.store-detail-body div.body-top div.pics>div.mask{
   font-size: 1.5rem;
   color: #FFF;
 }
-div.store-detail-body div.body-top div.pics>div>img{
+div.store-detail-body div.body-top div.pics > div > img{
   background: #AAAAAA;
   width:5.2rem;
   height:3.2rem;
@@ -389,10 +390,10 @@ div.store-detail-body div.body-top div.container{
   -o-transform-origin:0 0;
   transform-origin:0 0;
 }
-div.store-detail-body div.body-top.low{
+div.store-detail-body div.body-top.low {
   height:6rem;
 }
-div.store-detail-body div.body-top.low div.container{
+div.store-detail-body div.body-top.low div.container {
   -webkit-transform: scale(0);
   -moz-transform: scale(0);
   -ms-transform: scale(0);
@@ -400,26 +401,22 @@ div.store-detail-body div.body-top.low div.container{
   transform: scale(0);
   opacity: 0;
 }
-div.store-detail-body div.body-bottom{
+div.store-detail-body div.body-bottom {
   width:100%;
   /*height:calc(100% - 12.5rem);*/
   flex:1;
   overflow: hidden;
-  /*-webkit-transition: all 0.25s;
-  -moz-transition: all 0.25s;
-  -ms-transition: all 0.25s;
-  -o-transition: all 0.25s;
-  transition: all 0.25s;*/
+  margin-top: 1rem;
 }
-div.store-detail-body ul.comments-list>li>div{
+div.store-detail-body ul.comments-list > li > div {
   color:#666666;
 }
-div.store-detail-body ul.comments-list>li>div>span{
+div.store-detail-body ul.comments-list > li > div > span{
   display: inline-block;
   height:1rem;
   line-height: 1rem;
 }
-div.store-detail-body ul.comments-list>li>div>span.dislike::before{
+div.store-detail-body ul.comments-list > li > div > span.dislike::before{
   content:"";
   background: url("../assets/storeDetail/like.png");
   height:1rem;

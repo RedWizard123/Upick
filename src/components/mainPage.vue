@@ -278,7 +278,8 @@ div.column-block div.back ul{
   justify-content: flex-start;
 }
 div.column-block div.back li{
-  font-size: 0.5rem;
+  font-size: 0.6rem;
+  height: 0.8rem;
   color:#FFF;
   position: relative;
   z-index: 10;
@@ -340,7 +341,7 @@ div.hot-store div.mainpage-bottom>a{
   color:#FFF;
   text-align: center;
   line-height: 1.35rem;
-  margin: 0.35rem 0.5rem;
+  margin: 0 0.5rem 0.5rem 0.5rem;
   text-decoration: none;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;

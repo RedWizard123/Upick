@@ -258,8 +258,9 @@ div.store-list-body>ul>li{
 div.store-list-body>ul h2{
   font-size: 0.9rem;
   font-weight: 400;
-  margin:0.1rem;
+  margin: 0;
   display: inline-block;
+  width: calc(100% - 2rem);
 }
 div.store-list-body>ul div.title-container{
   padding:0.5rem 0 0.2rem 0;
@@ -268,6 +269,9 @@ div.store-list-body>ul div.title-container>span{
   float: right;
   font-size: 0.8rem;
   font-weight: 300;
+  height: 1.2rem;
+  line-height: 1.2rem;
+  width:2rem;
 }
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;

@@ -259,7 +259,7 @@ div.store-detail-body>div.body-top{
   transition: all 0.2s;
 }
 div.store-detail-body>div.body-top>div.addr-time{
-  padding:1.5rem 0 0 0;
+  padding:1rem 0 0 0;
   position: relative;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2{
@@ -267,6 +267,10 @@ div.store-detail-body>div.body-top>div.addr-time>h2{
   font-weight: 400;
   width: calc(100% - 2.5rem);
   margin: 0.7rem 0 0.2rem 0;
+}
+div.store-detail-body>div.body-top>div.addr-time>h2.addr{
+  width: 100%;
+  word-break: break-all;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2>span{
   margin:0.5rem 0.2rem 0.5rem 0;
@@ -303,17 +307,19 @@ div.store-detail-body>div.body-top span.score{
   position: absolute;
   font-size: 0.9rem;
   font-weight: 400;
-  top:2rem;
+  top:1.5rem;
+
   right:0;
   width:2.5rem;
   margin:0.15rem;
 }
 div.store-detail-body div.body-top div.tags{
   margin-bottom: 0.5rem;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
   position: relative;
   max-height: 3rem;
   overflow: hidden;
+  font-size: 0;
 }
 div.store-detail-body div.body-top div.tags>span{
   display: inline-block;
@@ -322,6 +328,7 @@ div.store-detail-body div.body-top div.tags>span{
   color: #FFF;
   padding: .2rem .3rem;
   margin:0 .2rem .2rem .2rem;
+  height: 1rem;
 }
 div.store-detail-body div.body-top div.tags>span:nth-child(4n+1){
   background: #5D77B9;

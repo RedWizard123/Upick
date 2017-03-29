@@ -6,7 +6,7 @@
       <div class="tip"></div>
       <div class="search" v-bind:class="{'active':isSearchActive}" v-on:click="searchActive">
         <button v-on:click="search">搜索</button>
-        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword">
+        <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword" v-on:keyup.enter="search">
       </div>
       <div class="menu" v-bind:class="{'active':isMenuActive}" v-on:click="menuActive">
         <button v-on:blur="menuActive">菜单</button>
@@ -275,8 +275,10 @@ div.store-list-body>ul div.title-container>span{
 }
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;
-  max-height:1.7rem;
+  max-height:1.2rem;
   overflow: hidden;
+  margin: 0.2rem 0 0.5rem 0;
+  font-size: 0;
 }
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){
   background: #5D77B9;

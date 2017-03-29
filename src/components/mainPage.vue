@@ -5,7 +5,7 @@
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
-        <input class="search-input" placeholder="输入搜索内容" v-model="keyword"/>
+        <input class="search-input" placeholder="输入搜索内容" v-model="keyword" v-on:keyup.enter="searchClick"/>
         <button class="search-button" v-on:click="searchClick"><span class="search-button-icon">搜索</span></button>
       </div>
       <div class="topic">

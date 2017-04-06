@@ -21,7 +21,7 @@
               <ul>
                 <li v-for="item2 in item1.subTitle"><router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link></li>
               </ul>
-              <div class="img-div-a" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px -205px'}"></div>
+              <div class="img-div-a" v-bind:style="{transform:'scale(' + 5 * rem / 181 + ')', backgroundPosition:'-'+index*181 +'px -205px'}"></div>
             </div>
             <div class="img-div" v-bind:style="{transform:'scale('+5*rem/181+')',backgroundPosition:'-'+index*181 +'px 0'}"></div>
             <h3>{{item1.title}}</h3>
@@ -125,6 +125,10 @@ div.mainpage-header.active>div>input{
 div.mainpage-body{
   width:100%;
   flex-grow: 1;
+  display: flex;
+}
+div.mainpage-body > div{
+  flex: 1;
 }
 div.mainpage-body div.img-div{
   background:url("../assets/mainpage/columns.png");
@@ -145,10 +149,16 @@ div.mainpage-body h3{
   font-weight: 400;
 }
 div.mainpage-body div.column{
-  width:100%;
+  width: 100%;
+  height: calc(100% - 3rem);
   text-align: center;
   font-size: 0;
   margin-bottom: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: space-around;
 }
 div.mainpage-body div.column-block{
   height:5.663rem;
@@ -502,6 +512,7 @@ module.exports = {
     axios.get('index')
       .then(function (response) {
         response = response.data;
+        response.list1 = response.list1.slice(0, 3);
         vueThis.data = response;
         n++;
         if (n >= 4) { vueThis.loaded = true; }

@@ -36,7 +36,8 @@ module.exports = {
       '/store_form_data':'http://118.89.54.28:8087/shops/',
       '/changeLikeStatus':'http://118.89.54.28:8087/shops/',
       '/small_store_image':'http://118.89.54.28:8087/shops/',
-      '/store_image':'http://118.89.54.28:8087/shops/'
+      '/store_image':'http://118.89.54.28:8087/shops/',
+      '/is_commented':'http://118.89.54.28:8087/shops/'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

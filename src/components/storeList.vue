@@ -295,7 +295,7 @@ div.store-list-body>ul ul.tags>li:nth-child(4n+4){
 div.store-list-body>ul ul.tags>li{
   display: inline-block;
   height:1.2rem;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   line-height: 1.2rem;
   text-align: center;
   padding:0 0.3rem;

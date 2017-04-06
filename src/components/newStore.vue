@@ -44,7 +44,7 @@ img{
   width:100%;
   height:auto;
 }
-h1>span:first-child{
+h1 > span:first-child {
   background: url("../assets/newStore/laugh.png");
   background-size: 100% 100%;
   width:1.1rem;

@@ -6,7 +6,7 @@
       <div class="tip"></div>
     </div>
     <div class="store-detail-body">
-      <div class="body-top"  v-bind:class="{'low':low && detail.comments.length>=5}">
+      <div class="body-top"  v-bind:class="{ 'low' : low && detail.comments.length >= 5}">
         <div class="addr-time">
           <h2 class="time"><span class="icon-time">营业时间:</span>{{detail.openTime}}</h2>
           <h2 class="addr"><span class="icon-addr">地址:</span>{{detail.address}}</h2>
@@ -55,8 +55,11 @@
         </ul>
       </div>
     </div>
-    <div class="store-detail-footer">
-      <router-link v-bind:to="'/comment/'+$route.params.id"><span></span>我要评价</router-link>
+    <div class="store-detail-footer" v-if="loaded && !commented">
+      <router-link v-bind:to="'/comment/' + $route.params.id"><span></span>我要评价</router-link>
+    </div>
+    <div class="store-detail-footer commented" v-else-if="loaded && commented">
+      <a>您已经评价过了</a>
     </div>
   </div>
 </template>
@@ -80,7 +83,8 @@ module.exports = {
       },
       low: false,
       firstChosen: '',
-      list: []
+      list: [],
+      commented: false
     });
   },
   methods: {
@@ -164,7 +168,16 @@ module.exports = {
       .then(function (response) {
         response = response.data;
         vueThis.detail.comments = response.data;
-        vueThis.loaded = true;
+        axios.get('is_commented?id=' + vueThis.detail.name)
+          .then(function (response) {
+            response = response.data;
+            vueThis.commented = response.result;
+            vueThis.loaded = true;
+          })
+          .catch(function (error) {
+            if (error)alert('加载失败！');
+            vueThis.loaded = true;
+          });
       })
       .catch(function (error) {
         if (error)alert('加载失败！');
@@ -265,7 +278,7 @@ div.store-detail-body>div.body-top>div.addr-time{
 div.store-detail-body>div.body-top>div.addr-time>h2{
   font-size: 0.75rem;
   font-weight: 400;
-  width: calc(100% - 2.5rem);
+  width: calc(100% - 3rem);
   margin: 0.7rem 0 0.2rem 0;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2.addr{
@@ -524,6 +537,9 @@ div.store-detail-footer{
   font-size: 1rem;
   text-align: center;
   position: relative;
+}
+div.store-detail-footer.commented > a{
+  color: #bbb;
 }
 div.store-detail-footer>a>span {
   display: inline-block;

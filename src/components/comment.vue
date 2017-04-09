@@ -137,7 +137,7 @@ div.comment-body>div.choose-tags div.tags button{
   font-size: 0.7rem;
 }
 
-textarea{
+div.comment-body textarea{
   border:0;
   resize: none;
   width:calc(100% - 3rem);

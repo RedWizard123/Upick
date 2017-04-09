@@ -372,11 +372,13 @@ module.exports = {
         axios.get('store_list_search_data?keyword=' + vueThis.$route.params.keyword)
          .then(function (response) {
            response = response.data;
+           response.data.sort(function (a, b) {
+             return b.overall - a.overall;
+           });
+           vueThis.data = response.data;
            if (response.data.length === 0) {
              vueThis.$router.replace('noStore');
            }
-           vueThis.data = response.data;
-
          // vueThis.$router.push("");
            vueThis.loaded = true;
          })
@@ -389,8 +391,10 @@ module.exports = {
         axios.get('store_list_data?type=' + vueThis.$route.params.type)
          .then(function (response) {
            response = response.data;
+           response.data.sort(function (a, b) {
+             return b.overall - a.overall;
+           });
            vueThis.data = response.data;
-           console.log(vueThis.$route.path);
            vueThis.loaded = true;
          })
          .catch(function (error) {
@@ -456,6 +460,10 @@ module.exports = {
       axios.get('store_list_search_data?keyword=' + vueThis.$route.params.keyword)
         .then(function (response) {
           response = response.data;
+          response.data.sort(function (a, b) {
+            return b.overall - a.overall;
+          });
+          vueThis.data = response.data;
           vueThis.data = response.data;
           if (response.data.length < 1) {
             vueThis.$router.replace('/storeList/search/noStore');
@@ -474,10 +482,11 @@ module.exports = {
       axios.get('store_list_data?type=' + vueThis.$route.params.type)
         .then(function (response) {
           response = response.data;
+
+          response.data.sort(function (a, b) {
+            return b.overall - a.overall;
+          });
           vueThis.data = response.data;
-
-          console.log(vueThis.$route.path);
-
           // vueThis.$router.push("");
 
           vueThis.loaded = true;

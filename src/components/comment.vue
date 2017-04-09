@@ -33,7 +33,7 @@
     </div>
   </div>
 </template>
-<style scoped>
+<style>
 div.comment-root{
   opacity: 0;
   min-height: 100%;
@@ -257,9 +257,26 @@ div.alert{
   z-index: 100;
   opacity: 0;
 }
+.mint-swipe,.mint-swipe-items-wrap{
+  overflow:hidden;position:relative;height:100%
+}
+.mint-swipe-items-wrap>div{
+  position:absolute;-webkit-transform:translateX(-100%);transform:translateX(-100%);width:100%;height:100%;display:none
+}
+.mint-swipe-items-wrap>div.is-active{
+  display:block;-webkit-transform:none;transform:none
+}
+.mint-swipe-indicators{
+  position:absolute;bottom:0.3rem;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)
+}
+.mint-swipe-indicator{
+  width:0.3rem;height:0.3rem;display:inline-block;border-radius:100%;background:#AAA;opacity:.8;margin:0 3px
+}
+.mint-swipe-indicator.is-active{
+  background:#2c3e50;
+}
 </style>
 <script>
-require('vue-swipe/dist/vue-swipe.css');
 var axios = require('axios');
 
 // import { Swipe, SwipeItem } from 'vue-swipe';

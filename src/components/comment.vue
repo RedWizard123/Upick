@@ -14,7 +14,7 @@
           <button v-for="item in data.tags" v-on:click="select">{{item.title}}</button>
         </div>
         <swipe :auto="0" :continous="false" v-if="loaded">
-          <swipe-item class="tags swiper-slide" v-for="(item,index) in pages" v-bind:style="{width: width_ +'px'}">
+          <swipe-item class="tags swiper-slide" v-for="(item ,index) in pages" v-bind:style="{width: width_ +'px'}">
             <div class="button-viewport">
               <div class="button-wrap" v-bind:class="{'last':index===pages.length-1}" v-bind:style="{top:'-' + 3.2*index + 'rem'}">
                 <button v-for="item in data.tags" v-on:click="select" v-bind:data-id="item.id">{{item.title}}</button>
@@ -26,7 +26,7 @@
 
         </div>
       </div>
-      <textarea placeholder="限200字以内" v-model="text"></textarea>
+      <textarea placeholder="请说出你的故事(限200字以内)" v-model="text"></textarea>
     </div>
     <div class="comment-footer">
       <a v-on:click="next"><span></span>下一步 </a>
@@ -72,8 +72,10 @@ div.comment-header>h1{
   left:0;
   right:0;
   top:4.3rem;
-
-
+  width: 7rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 div.comment-header>div.comment-float{
   position: absolute;
@@ -296,7 +298,7 @@ module.exports = {
         return;
       }
       if (this.text === '') {
-        this.alert_('未填写详情！');
+        this.alert_('未填写评论！');
         return;
       }
       this.$router.replace('/comment/mark/' + this.$route.params.id + '/' + this.data.name + '/' + this.getChosenTags() + '/' + encodeURIComponent(this.text));

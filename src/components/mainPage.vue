@@ -18,8 +18,13 @@
         <div class="column">
           <div class="column-block" v-for="(item1,index) in data.list1" v-on:click="buttonClick">
             <div class="back">
-              <ul>
-                <li v-for="item2 in item1.subTitle"><router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link></li>
+              <ul v-if="item1.subTitle.length > 0">
+                <li v-for="item2 in item1.subTitle">
+                  <router-link v-bind:to="'storeList/' + item2">{{item2}}</router-link>
+                </li>
+              </ul>
+              <ul v-else>
+                <li class="come-soon">敬请期待</li>
               </ul>
               <div class="img-div-a" v-bind:style="{transform:'scale(' + 5 * rem / 181 + ')', backgroundPosition:'-'+index*181 +'px -205px'}"></div>
             </div>
@@ -42,6 +47,7 @@
 </template>
 <style>
 div.mainpage-root{
+
   min-height: 100%;
   opacity: 0;
   -webkit-opacity: 0;
@@ -267,6 +273,7 @@ div.column-block div.back>div.img-div-a{
   height:205px;
   width:181px;
   transform-origin: 0 0;
+
   position: absolute;
   top:0;
 }
@@ -286,6 +293,17 @@ div.column-block div.back ul{
   flex-wrap: wrap;
   display: none;
   justify-content: flex-start;
+}
+
+div.column-block div.back li.come-soon{
+  width:100%;
+  height:100%;
+  display: inline-block;
+  line-height: 100%;
+  vertical-align: middle;
+  padding: calc(50% - 0.4rem) 0;
+  color: #BBB;
+  text-align: center;
 }
 div.column-block div.back li{
   font-size: 0.6rem;
@@ -310,6 +328,7 @@ div.hot-store img{
 div.hot-store>div{
   overflow: hidden;
   position: relative;
+  height: 4rem;
 }
 div.hot-store{
   /*position: absolute;
@@ -372,7 +391,8 @@ var ctx;
 var canvas;
 var step = 0;
 var d_ = 0;
-var lines = ['rgba(255,255,255,1)',
+var lines = [
+  'rgba(255,255,255,1)',
   'rgba(96,119,186, 0.7)',
   'rgba(142,211,227, 0.5)'
 ];
@@ -512,7 +532,6 @@ module.exports = {
     axios.get('index')
       .then(function (response) {
         response = response.data;
-        response.list1 = response.list1.slice(0, 3);
         vueThis.data = response;
         n++;
         if (n >= 4) { vueThis.loaded = true; }

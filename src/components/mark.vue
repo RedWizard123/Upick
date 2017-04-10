@@ -7,9 +7,9 @@
     </div>
     <div class="mark-body">
       <div class="img">
-        <img class="bad load" src="../assets/mark/bad.png" v-bind:style="{display:score<5?'block':'none'}">
-        <img class="normal load" src="../assets/mark/normal.png" v-bind:style="{display:score>=5&&score<7?'block':'none'}">
-        <img class="good load" src="../assets/mark/good.png" v-bind:style="{display:score>=7?'block':'none'}">
+        <img class="bad load" src="../assets/mark/bad.png" v-bind:style="{display : score < 5 ? 'block' : 'none'}">
+        <img class="normal load" src="../assets/mark/normal.png" v-bind:style="{display : score >= 5 && score<7 ? 'block' : 'none'}">
+        <img class="good load" src="../assets/mark/good.png" v-bind:style="{display: score >= 7 ? 'block' : 'none'}">
       </div>
       <div class="switcher">
         <h2>{{score}}分</h2>

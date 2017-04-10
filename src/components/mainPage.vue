@@ -1,5 +1,8 @@
 <template>
   <div class="mainpage-root" v-bind:class="{'show':loaded}">
+    <div style="width: 0;height: 0;">
+      <img src="../assets/mainpage/title_share.png"/>
+    </div>
     <div class="mainpage-header">
       <img src="../assets/mainpage/xingxing.png" style="display: none;" id="xingxing"/>
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>

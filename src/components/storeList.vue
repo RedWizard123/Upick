@@ -455,8 +455,6 @@ module.exports = {
     var vueThis = this;
     if (vueThis.$route.path.includes('storeList') && vueThis.$route.path.includes('search')) {
       vueThis.title = '搜索: ' + vueThis.$route.params.keyword;
-      /* vueThis.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
-      vueThis.loaded=true; */
       axios.get('store_list_search_data?keyword=' + vueThis.$route.params.keyword)
         .then(function (response) {
           response = response.data;
@@ -468,9 +466,6 @@ module.exports = {
           if (response.data.length < 1) {
             vueThis.$router.replace('/storeList/search/noStore');
           }
-
-          // vueThis.$router.push("");
-
           vueThis.loaded = true;
         })
         .catch(function (error) {

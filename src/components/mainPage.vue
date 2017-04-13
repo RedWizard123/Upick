@@ -46,6 +46,7 @@
         </div>
       </div>
     </div>
+    <img src="../assets/mainpage/favicon.ico" style="display: none;">
   </div>
 </template>
 <style>

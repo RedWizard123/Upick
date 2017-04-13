@@ -1,6 +1,6 @@
 <template>
   <div class="mainpage-root" v-bind:class="{'show':loaded}">
-    <div style="width: 0;height: 0;">
+    <div style="display: none;">
       <img src="../assets/mainpage/title_share.png"/>
     </div>
     <div class="mainpage-header">

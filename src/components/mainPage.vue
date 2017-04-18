@@ -457,6 +457,9 @@ module.exports = {
       ctx.fillStyle = '#343856';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       var img = document.getElementById('xingxing');
+      if (!img) {
+        return;
+      }
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.width * img.height / img.width);
 
       step += 2;
@@ -480,7 +483,6 @@ module.exports = {
           ctx.lineTo(meteor[j].position.x - meteor[j].length / Math.SQRT2, meteor[j].position.y - meteor[j].length / Math.SQRT2);
           ctx.strokeStyle = 'rgba(255,255,255,0.2)';
           ctx.lineWidth = '20px';
-            //
           ctx.stroke();
         }
       }
@@ -499,6 +501,15 @@ module.exports = {
         ctx.fill();
       }
       handle = requestAnimFrame(this.loop);
+    }
+  },
+  watch: {
+    '$route': function () {
+      /* var vueThis = this;
+      if (vueThis.$route.path.includes('storeList') && vueThis.$route.path.includes('search')) {
+
+      }
+      cancelAnimFrame(handle); */
     }
   },
   mounted: function () {

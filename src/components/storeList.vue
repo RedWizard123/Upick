@@ -1,14 +1,14 @@
 <template>
-  <div class="store-list-root" v-bind:class="{'show':loaded}">
+  <div class="store-list-root" v-bind:class="{'show': loaded}">
     <div class="store-list-header">
       <router-link class="store-list-return" to="/noAnim"><span></span></router-link>
       <h1>{{title}}</h1>
       <div class="tip"></div>
-      <div class="search" v-bind:class="{'active':isSearchActive}" v-on:click="searchActive">
+      <div class="search" v-bind:class="{'active': isSearchActive}" v-on:click="searchActive">
         <button v-on:click="search">搜索</button>
         <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword" v-on:keyup.enter="search">
       </div>
-      <div class="menu" v-bind:class="{'active':isMenuActive}" v-on:click="menuActive">
+      <div class="menu" v-bind:class="{'active': isMenuActive}" v-on:click="menuActive">
         <button v-on:blur="menuActive">菜单</button>
         <ul class="menu">
           <li><button v-on:click="sort1">综合排序</button></li>
@@ -29,9 +29,9 @@
           <ul class="tags" v-on:click="$router.push('/storeDetail/'+item.id);">
             <li v-for="item2 in item.tags">{{item2[0]}}</li>
           </ul>
-          <ul class="pic">
+          <ul class="pic" v-on:click="$router.push('/storeDetail/'+item.id);">
             <li v-for="(item3, index) in item.picURLs.slice(0,3)">
-              <img v-bind:src="item3.msrc" class="preview-img" v-on:click="$preview.open(index,item.picURLs)"/>
+              <img v-bind:src="item3.msrc" class="preview-img" />
             </li>
           </ul>
         </li>
@@ -74,7 +74,7 @@ div.store-list-header div.tip{
   left:2rem;
 }
 div.store-list-header div.search{
-  width:9rem;
+  width:10rem;
   height:1.4rem;
   display: inline-block;
   font-size: 0;
@@ -96,7 +96,7 @@ div.store-list-header div.search>button{
   float: right;
 }
 div.store-list-header div.search.active>input{
-  width:7rem;
+  width: 7rem;
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
   -ms-transform: scale(1);

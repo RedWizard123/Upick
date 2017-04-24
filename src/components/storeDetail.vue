@@ -8,8 +8,8 @@
     <div class="store-detail-body">
       <div class="body-top"  v-bind:class="{ 'low' : low && detail.comments.length >= 5}">
         <div class="addr-time">
-          <h2 class="time"><span class="icon-time">营业时间:</span>{{detail.openTime}}</h2>
-          <h2 class="addr"><span class="icon-addr">地址:</span>{{detail.address}}</h2>
+          <h2 class="time"><span class="icon"></span><span class="icon-time">营业时间:</span>{{detail.openTime}}</h2>
+          <h2 class="addr"><span class="icon"></span><span class="icon-addr">地址:</span>{{detail.address}}</h2>
           <span class="score">{{convertToFloat(detail.score)}}分</span>
         </div>
         <div class="container">
@@ -280,31 +280,33 @@ div.store-detail-body>div.body-top>div.addr-time>h2{
   font-weight: 400;
   width: calc(100% - 3rem);
   margin: 0.7rem 0 0.2rem 0;
+  position: relative;
 }
 div.store-detail-body>div.body-top>div.addr-time>h2.addr{
   width: 100%;
   word-break: break-all;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2>span{
+div.store-detail-body>div.body-top>div.addr-time>h2>span:not(.icon){
   margin:0.5rem 0.2rem 0.5rem 0;
   padding:0;
   height:1rem;
   font-size: 0.9rem;
   font-weight: 600;
-
+  margin-left: 0.9rem;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2.time>span::before{
+div.store-detail-body>div.body-top>div.addr-time>h2.time>span.icon{
   content: "";
-  background: url("../assets/storeDetail/icon.png");
+  background: url("../assets/storeDetail/icon.png") no-repeat;
   background-size: 2rem 0.9rem;
   width:0.9rem;
   height: 1rem;
   display: inline-block;
   vertical-align:middle;
   margin-right: 0.3rem;
-
+  top: 0.1rem;
+  position: absolute;
 }
-div.store-detail-body>div.body-top>div.addr-time>h2.addr>span::before{
+div.store-detail-body>div.body-top>div.addr-time>h2.addr>span.icon{
   content: "";
   background: url("../assets/storeDetail/icon.png") no-repeat;
   background-position: -1.3rem;
@@ -314,6 +316,8 @@ div.store-detail-body>div.body-top>div.addr-time>h2.addr>span::before{
   display: inline-block;
   vertical-align:middle;
   margin-right: 0.3rem;
+  top: 0.1rem;
+  position: absolute;
 }
 div.store-detail-body>div.body-top span.score{
   display: inline-block;

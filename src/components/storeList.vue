@@ -36,6 +36,7 @@
           </ul>
         </li>
       </ul>
+      <div class="mask" v-bind:style="{display: isMenuActive ? 'block' : 'none'}"></div>
     </div>
     <div class="store-list-footer">
       <router-link to="/newStore"><span></span>添加新店</router-link>
@@ -346,6 +347,12 @@ div.store-list-footer>a>span {
 ul.pic>li>img{
   width:100%;
   height:100%;
+}
+div.mask{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
 }
 </style>
 <script>

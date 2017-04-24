@@ -525,14 +525,10 @@ module.exports = {
       stars.push({x: d_ + Math.random() * 10 * d_, y: d_ + Math.random() * 5 * d_});
     }
     window.cancelAnimFrame(handle);
-    // if(this.$route.params.type!="noAnim"){
     var vueThis = this;
-
     document.getElementById('xingxing').onload = function () {
       vueThis.loop();
     };
-
-    // }
     vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
     var img1 = (new Image());
     var img2 = (new Image());

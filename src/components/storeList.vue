@@ -1,15 +1,15 @@
 <template>
   <div class="store-list-root" v-bind:class="{'show': loaded}">
     <div class="store-list-header">
-      <router-link class="store-list-return" to="/noAnim"><span></span></router-link>
+      <router-link class="store-list-return" to="/"><span></span></router-link>
       <h1>{{title}}</h1>
-      <div class="tip"></div>
+      <!-- <div class="tip"></div> -->
       <div class="search" v-bind:class="{'active': isSearchActive}" v-on:click="searchActive">
         <button v-on:click="search">搜索</button>
         <input type="text" placeholder="输入搜索内容" v-on:click="inputClick" v-model="keyword" v-on:keyup.enter="search">
       </div>
       <div class="menu" v-bind:class="{'active': isMenuActive}" v-on:click="menuActive">
-        <button v-on:blur="menuActive">菜单</button>
+        <button v-on:blur="isMenuActive = false">菜单</button>
         <ul class="menu">
           <li><button v-on:click="sort1">综合排序</button></li>
           <li></li>
@@ -367,8 +367,6 @@ module.exports = {
 
       if (vueThis.$route.path.includes('storeList') && vueThis.$route.path.includes('search')) {
         vueThis.title = '搜索: ' + vueThis.$route.params.keyword;
-        /* vueThis.data=[{"id":1,"name":"\u8001\u518d","openTime":"6:00-24:00","adress":"XXXXXXX","score":9,"overall":9.8,"picURLs":["path\/to\/pic1","\u6700\u597d\u662f\u7edd\u5bf9\u8def\u5f84"],"tags":[["\u73af\u5883\u597d",10],["\u9002\u5408\u81ea\u4e60",20],["\u96be\u559d",7]]},{"id":2,"name":"F2","openTime":"6:00-24:00","adress":"XXXXXXX","score":7,"overall":6.8,"picURLs":["",""],"tags":[["\u73af\u5883\u597d",1],["\u4e0d\u9002\u5408\u81ea\u4e60",5],["\u96be\u559d",7]]}];
-        vueThis.loaded=true; */
         axios.get('store_list_search_data?keyword=' + vueThis.$route.params.keyword)
          .then(function (response) {
            response = response.data;
@@ -379,7 +377,6 @@ module.exports = {
            if (response.data.length === 0) {
              vueThis.$router.replace('noStore');
            }
-         // vueThis.$router.push("");
            vueThis.loaded = true;
          })
          .catch(function (error) {
@@ -441,9 +438,6 @@ module.exports = {
     },
     inputClick: function () {
       this.isSearchActive = !this.isSearchActive;
-    },
-    addNewStore: function () {
-
     },
     search: function () {
       if (this.keyword !== '') {

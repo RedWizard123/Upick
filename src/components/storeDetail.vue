@@ -298,7 +298,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2.time>span::before{
   background: url("../assets/storeDetail/icon.png");
   background-size: 2rem 0.9rem;
   width:0.9rem;
-  height:0.9rem;
+  height: 1rem;
   display: inline-block;
   vertical-align:middle;
   margin-right: 0.3rem;
@@ -310,7 +310,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2.addr>span::before{
   background-position: -1.3rem;
   background-size: 2rem 0.9rem;
   width:0.9rem;
-  height:0.9rem;
+  height: 1rem;
   display: inline-block;
   vertical-align:middle;
   margin-right: 0.3rem;
@@ -321,7 +321,6 @@ div.store-detail-body>div.body-top span.score{
   font-size: 0.9rem;
   font-weight: 400;
   top:1.5rem;
-
   right:0;
   width:2.5rem;
   margin:0.15rem;

@@ -27,7 +27,7 @@
     </div>
     <div class="mark-footer">
       <div class="buttons">
-        <button v-on:click="$router.push('/storeDetail/'+$route.params.title)">暂不评价</button>
+        <button v-on:click="submitWithoutMark">暂不评分</button>
         <button v-on:click="submit">完成</button>
       </div>
     </div>
@@ -299,6 +299,37 @@ module.exports = {
         tags: this.$route.params.tags.split('&'),
         text: decodeURIComponent(this.$route.params.comment),
         score: this.score
+      };
+      datas = encodeURIComponent(JSON.stringify(datas));
+      axios.post('comment', {
+        data: datas
+      })
+        .then(function (response) {
+          response = response.data;
+          if (!response.error) {
+            vueThis.$router.replace('/comment/success/' + vueThis.$route.params.id);
+          } else {
+            if (response.error.indexOf('commented')) {
+              vueThis.$router.replace('/comment/failed/' + vueThis.$route.params.id);
+            } else {
+              vueThis.alert_('提交失败：服务器拒绝您的数据！');
+            }
+          }
+        })
+        .catch(function (error) {
+          if (error) {
+            vueThis.alert_('网络出错！');
+          }
+        });
+    },
+    submitWithoutMark: function () {
+      var vueThis = this;
+      var datas = {
+        id: this.$route.params.id,
+        title: this.$route.params.title,
+        tags: this.$route.params.tags.split('&'),
+        text: decodeURIComponent(this.$route.params.comment),
+        score: -1
       };
       datas = encodeURIComponent(JSON.stringify(datas));
       axios.post('comment', {

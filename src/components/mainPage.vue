@@ -391,6 +391,7 @@ div.hot-store div.mainpage-bottom>a{
 <script>
 var handle;
 var axios = require('axios');
+var wx = require('weixin-js-sdk');
 var ctx;
 var canvas;
 var step = 0;
@@ -534,18 +535,110 @@ module.exports = {
     var img2 = (new Image());
     var img3 = (new Image());
     img1.src = 'static/img/bottom.png';
-    img1.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img1.onload = function () { n++; if (n >= 5) { vueThis.loaded = true; } };
     img2.src = 'static/img/title.png';
-    img2.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img2.onload = function () { n++; if (n >= 5) { vueThis.loaded = true; } };
     img3.src = 'static/img/columns.png';
-    img3.onload = function () { n++; if (n >= 4) { vueThis.loaded = true; } };
+    img3.onload = function () { n++; if (n >= 5) { vueThis.loaded = true; } };
     img1 = img2 = img3 = null;
     axios.get('index')
       .then(function (response) {
         response = response.data;
         vueThis.data = response;
         n++;
-        if (n >= 4) { vueThis.loaded = true; }
+        if (n >= 5) { vueThis.loaded = true; }
+        axios.get('http://weixin.bigtech.cc/service/jssdk_config?url=' + encodeURIComponent('http://weixin.bigtech.cc/upick/index.html'))
+          .then(function (response) {
+            console.log(vueThis.$route.path);
+            response = response.data;
+            wx.config({
+              debug: false,
+              appId: response.appid,
+              timestamp: response.timestamp,
+              nonceStr: response.noncestr,
+              signature: response.signature,
+              jsApiList: [
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'onMenuShareQZone'
+              ]
+            });
+            wx.ready(function () {
+              wx.onMenuShareTimeline({
+                title: 'Upick', // 分享标题
+                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+                success: function () {
+                  // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                }
+              });
+              wx.onMenuShareAppMessage({
+                title: 'Upick', // 分享标题
+                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+                success: function () {
+                  // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                }
+              });
+              wx.onMenuShareQQ({
+                title: 'Upick', // 分享标题
+                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+                success: function () {
+                  // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                }
+              });
+              wx.onMenuShareWeibo({
+                title: 'Upick', // 分享标题
+                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+                success: function () {
+                  // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                }
+              });
+              wx.onMenuShareQZone({
+                title: 'Upick', // 分享标题
+                desc: '华科吃喝玩乐，让老司机带你飞！！', // 分享描述
+                link: 'http://weixin.bigtech.cc/upick/index.html', // 分享链接
+                imgUrl: 'http://weixin.bigtech.cc/upick/static/img/title_share.png', // 分享图标
+                success: function () {
+                  // 用户确认分享后执行的回调函数
+                },
+                cancel: function () {
+                  // 用户取消分享后执行的回调函数
+                }
+              });
+              n++;
+              if (n >= 5) { vueThis.loaded = true; }
+            });
+            wx.error(function (res) {
+              console.log('error');
+              console.log(res);
+            });
+          })
+          .catch(function (error) {
+            console.log(error);
+            if (error)alert('主页加载失败！');
+            vueThis.loaded = true;
+          });
       })
       .catch(function (error) {
         console.log(error);

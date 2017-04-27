@@ -7,7 +7,7 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: '',
     // assetsPublicPath: '/',
     productionSourceMap: true,
     // Gzip off by default as many popular static hosts such as
@@ -19,7 +19,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    hostname:"192.168.0.157",
+    hostname:"127.0.0.1",
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',

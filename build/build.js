@@ -4,6 +4,7 @@ require('shelljs/global')
 env.NODE_ENV = 'production'
 
 var path = require('path')
+var fs = require('fs')
 var config = require('../config')
 var ora = require('ora')
 var webpack = require('webpack')
@@ -33,4 +34,17 @@ webpack(webpackConfig, function (err, stats) {
     chunks: false,
     chunkModules: false
   }) + '\n')
+  setImmediate(function () {
+    fs.readFile(config.build.assetsRoot + '/static/css/app.css', function (err, data) {
+      if (err)
+        throw err;
+      else {
+        data = data.toString();
+        data = data.replace(/static\//g, '../');
+        fs.writeFile(config.build.assetsRoot + '/static/css/app.css', data, function () {
+          console.log('Rewrite CSS successfully!');
+        });
+      }
+    });
+  })
 })

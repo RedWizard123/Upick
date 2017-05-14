@@ -100,6 +100,7 @@ div.comment-body{
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 9rem;
 }
 div.comment-body>div.choose-tags{
   padding:0 1.5rem;
@@ -150,7 +151,7 @@ div.comment-body textarea{
   border-radius: 0.3rem;
   margin:0.5rem 1.5rem 0.5rem 1.5rem;
   position: absolute;
-  bottom:0;
+  top: 4.2rem;
   min-height: 5rem;
 }
 div.comment-footer{

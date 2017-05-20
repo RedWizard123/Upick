@@ -2,7 +2,7 @@
   <div class="comment-root" v-bind:class="{'show':loaded}">
     <div class="alert" v-bind:class="{'show':alertShow}"><p>{{alertValue}}</p></div>
     <div class="comment-header">
-      <router-link class="comment-back" to="/"></router-link>
+      <!--<router-link class="comment-back" to="/"></router-link>-->
       <img src="../assets/comment/comment_top.png" v-on:load="n++;n>=3?loaded=true:0;"/>
       <div class="comment-float"></div>
       <h1>{{data.name}}</h1>
@@ -23,13 +23,30 @@
           </swipe-item>
         </swipe>
         <div class="dots">
-
         </div>
       </div>
-      <textarea placeholder="请说出你的故事(限200字以内)" v-model="text"></textarea>
+      <div class="input-area">
+        <textarea placeholder="请说出你的故事(限200字以内)" v-model="text"></textarea>
+        <ul class="input-area-upload">
+          <li v-for="(image, i) in imagesToUpload" class="images-to-upload">
+            <img :src="image.src" class=""/>
+            <a @click="imagesToUpload.splice(i, 1); imagesURLToUpload.splice(i, 1); $refs.imageSelector.value = ''" class="image-upload-delete">+</a>
+          </li>
+          <li v-show="imagesToUpload.length < 3">
+            <img
+              class="choose-image" 
+              src="../assets/comment/upload.png"
+              v-on:click="selectImg"
+            />
+            <input type="file" ref="imageSelector" multiple/>
+            <canvas ref="imageCanvas"></canvas>
+          </li>
+        </ul>        
+      </div>
     </div>
     <div class="comment-footer">
-      <a v-on:click="next"><span></span>下一步 </a>
+      <a v-if="imagesUploading"> 正在上传图片... </a>
+      <a v-if="!imagesUploading" v-on:click="next"><span></span>下一步 </a>
     </div>
   </div>
 </template>
@@ -138,7 +155,7 @@ div.comment-body>div.choose-tags div.tags button{
   font-size: 0.7rem;
 }
 
-div.comment-body textarea{
+div.comment-body .input-area{
   border:0;
   resize: none;
   width:calc(100% - 3rem);
@@ -153,6 +170,14 @@ div.comment-body textarea{
   position: absolute;
   top: 4.2rem;
   min-height: 5rem;
+}
+.input-area textarea{
+  width: 100%;
+  background: rgba(0,0,0,0);
+  border: none;
+  resize: none;
+  height: calc(100% - 5rem);
+  padding: 0 0.3rem;
 }
 div.comment-footer{
   height: 3.2rem;
@@ -187,6 +212,11 @@ div.comment-footer>a>span {
   vertical-align:middle;
   margin:0 0.5rem
 }
+
+.comment-footer-uploading {
+  color: #bbb;
+}
+
 div.button-wrap.last{
   justify-content: flex-start;
 }
@@ -276,19 +306,56 @@ div.alert{
 .mint-swipe-indicator.is-active{
   background:#2c3e50;
 }
+.input-area-upload {
+  padding: 0;
+  margin: 0.5rem 0.5rem 0.7rem;
+  list-style: none;
+  /* text-align: center; */
+}
+.input-area-upload > li {
+  width: 4.3rem;
+  height: 4.3rem;
+  display: inline-block;
+  margin-right: 0.6rem;
+  position: relative;
+}
+.input-area-upload .choose-image {
+  width: 100%;
+  height: 100%;
+}
+.input-area-upload input {
+  display: none;
+}
+.input-area-upload canvas {
+  display: none;  
+}
+.images-to-upload img {
+  width: 100%;
+  height: 100%;
+}
+.image-upload-delete {
+  display: block;
+  position: absolute;
+  left: -0.4rem;
+  top: -0.4rem;
+  width: 1rem;
+  height: 1rem;
+  font-size: 1rem;
+  line-height: 1rem;
+  text-align: center;
+  background: #FF0000;
+  border-radius: 50%;
+  color: #FFFFFF;
+  transform: rotate(45deg);
+}
 </style>
 <script>
 var axios = require('axios');
-
 // import { Swipe, SwipeItem } from 'vue-swipe';
 var Swipe = require('vue-swipe').Swipe;
 var SwipeItem = require('vue-swipe').SwipeItem;
 module.exports = {
-  components: {
-    'swipe': Swipe,
-    'swipe-item': SwipeItem
-  },
-  data: function () {
+  data () {
     return ({
       data: {
         name: '',
@@ -302,24 +369,38 @@ module.exports = {
       n: 0,
       alertShow: '',
       alertValue: '',
-      alertTimeout: 0
+      alertTimeout: 0,
+      imagesToUpload: [],
+      imagesURLToUpload: [],
+      uploadPromises: [],
+      imagesUploading: false
     });
   },
   methods: {
-    select: function (a) {
+    select (a) {
       var ele = a.target;
       ele.classList.contains('active') ? ele.classList.remove('active') : ele.classList.add('active');
     },
     next: function () {
-      if (document.querySelectorAll('.choose-tags button.active').length === 0) {
-        this.alert_('未选择标签！');
-        return;
-      }
-      if (this.text === '') {
-        this.alert_('未填写评论！');
-        return;
-      }
-      this.$router.replace('/comment/mark/' + this.$route.params.id + '/' + this.data.name + '/' + this.getChosenTags() + '/' + encodeURIComponent(this.text));
+      var vueThis = this;
+      vueThis.imagesUploading = true;
+      Promise.all(vueThis.uploadPromises)
+      .then(function () {
+        vueThis.imagesUploading = false;
+      })
+      .then(function () {
+        // 按照讨论，标签内容可以二选一
+        if (document.querySelectorAll('.choose-tags button.active').length === 0 && vueThis.text === '' && vueThis.imagesURLToUpload.length === 0) {
+          vueThis.alert_('你什么都没有填！');
+          return;
+        }
+        if (vueThis.text === '') {
+          vueThis.text = 'empty';
+        }
+        vueThis.$router.replace('/comment/mark/' + vueThis.$route.params.id + '/' + vueThis.data.name + '/' + vueThis.getChosenTags() + '/' + encodeURIComponent(vueThis.text) + '/' + encodeURIComponent(JSON.stringify(vueThis.imagesURLToUpload)));
+      }).catch(function (err) {
+        console.log(err);
+      });
     },
     getChosenTags: function () {
       var list = document.querySelectorAll('.choose-tags button.active');
@@ -327,7 +408,11 @@ module.exports = {
       for (var i = 0; i < list.length; i++) {
         t.push(list[i].dataset.id);
       }
-      return (t.join('&'));
+      if (t.length > 0) {
+        return t.join('&');
+      } else {
+        return 'empty'
+      }
     },
     alert_: function (value) {
       clearTimeout(this.alertTimeout);
@@ -337,6 +422,9 @@ module.exports = {
       this.alertTimeout = setTimeout(function () {
         vueThis.alertShow = false;
       }, 2500);
+    },
+    selectImg: function () {
+      this.$refs.imageSelector.click();
     }
   },
   watch: {
@@ -369,7 +457,6 @@ module.exports = {
               document.querySelector('div.comment-float').style.backgroundImage = "url('" + vueThis.data.iconURL + "')";
             }
           }
-
           vueThis.pages = array;
           vueThis.n++;
           if (vueThis.n >= 3) {
@@ -382,6 +469,48 @@ module.exports = {
         if (error)alert('加载失败！');
         vueThis.loaded = true;
       });
+    this.$refs.imageSelector.addEventListener('change', function (ele) {
+      console.log('change!');
+      for (var i = 0; i < Math.min(ele.target.files.length, 3); i++) {
+        vueThis.uploadPromises.push((function (i) {
+          return new Promise(function (resolve, reject) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL(ele.target.files[i]);
+            fileReader.onload = function (e) {
+              var img = new Image();
+              var result = e.target.result;
+              img.src = result;
+              img.onload = function () {
+                // compress img when it is too big (> 1000x1000)
+                if (img.width > 1000 || img.height > 1000) {
+                  vueThis.$refs.imageCanvas.width = img.width / 2;
+                  vueThis.$refs.imageCanvas.height = img.height / 2;
+                  var ctx = vueThis.$refs.imageCanvas.getContext('2d');
+                  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, img.width / 2, img.height / 2);
+                  result = vueThis.$refs.imageCanvas.toDataURL();
+                }
+                vueThis.imagesToUpload.push({
+                  'src': result
+                });
+                resolve(result);
+              }
+            };
+          });
+        })(i).then(function (src) {
+          return axios.post('comments/images', {
+            image: src
+          }).then(function (response) {
+            vueThis.imagesURLToUpload.push({
+              'src': response.data.url
+            });
+          });
+        }));
+      }
+    });
+  },
+  components: {
+    'swipe': Swipe,
+    'swipe-item': SwipeItem
   }
 }
 </script>

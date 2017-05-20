@@ -2,7 +2,7 @@
   <div class="mark-root" v-bind:class="{'show':loaded}">
     <div class="alert" v-bind:class="{'show':alertShow}"><p>{{alertValue}}</p></div>
     <div class="mark-header">
-      <router-link to="/"><span></span></router-link>
+      <!--<router-link to="/"><span></span></router-link>-->
       <span>{{$route.params.title}}</span>
     </div>
     <div class="mark-body">
@@ -52,6 +52,7 @@ div.mark-header>span{
   display: inline-block;
   height:1rem;
   color:#555792;
+  margin-left: 2rem;
 }
 div.mark-header{
   height:3rem;
@@ -296,8 +297,9 @@ module.exports = {
       var datas = {
         id: this.$route.params.id,
         title: this.$route.params.title,
-        tags: this.$route.params.tags.split('&'),
-        text: decodeURIComponent(this.$route.params.comment),
+        tags: this.$route.params.tags === 'empty' ? [] : this.$route.params.tags.split('&'),
+        text: this.$route.params.comment === 'empty' ? '' : decodeURIComponent(this.$route.params.comment),
+        img: decodeURIComponent(this.$route.params.images),
         score: this.score
       };
       datas = encodeURIComponent(JSON.stringify(datas));

@@ -19,25 +19,27 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    hostname:"127.0.0.1",
+    hostname: '127.0.0.1',
     port: 8080,
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/index':'http://118.89.54.28:8087/',
-      '/comment_data':'http://118.89.54.28:8087/',
-      '/store_detail':'http://118.89.54.28:8087/',
-      '/comments_list':'http://118.89.54.28:8087/',
-      '/comment':'http://118.89.54.28:8087/',
-      '/add_store':'http://118.89.54.28:8087/',
-      '/store_list_data':'http://118.89.54.28:8087/',
-      '/store_list_search_data':'http://118.89.54.28:8087/',
-      '/upload_store_data':'http://118.89.54.28:8087/',
-      '/store_form_data':'http://118.89.54.28:8087/',
-      '/changeLikeStatus':'http://118.89.54.28:8087/',
-      '/small_store_image':'http://118.89.54.28:8087/',
-      '/store_image':'http://118.89.54.28:8087/',
-      '/is_commented':'http://118.89.54.28:8087/'
+      '/comments/images': 'http://127.0.0.1:5050/',
+      '/index': 'http://202.114.18.13/',
+      '/comment_data': 'http://202.114.18.13/',
+      '/store_detail': 'http://202.114.18.13/',
+      '/comments_list': 'http://202.114.18.13/',
+      '/comment': 'http://202.114.18.13/',
+      '/add_store': 'http://202.114.18.13/',
+      '/store_list_data': 'http://202.114.18.13/',
+      '/store_list_search_data': 'http://202.114.18.13/',
+      '/upload_store_data': 'http://202.114.18.13/',
+      '/store_form_data': 'http://202.114.18.13/',
+      '/changeLikeStatus': 'http://202.114.18.13/',
+      '/small_store_image': 'http://202.114.18.13/',
+      '/store_image': 'http://202.114.18.13/',
+      '/is_commented': 'http://202.114.18.13/'
+      // '/is_commented': 'http://118.89.54.28:8087/'
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README

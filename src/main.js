@@ -31,7 +31,7 @@ var routes = [
   { path: '/newStore/addSuccess', component: addSuccess},
   { path: '/comment/success/:id', component: commentSuccess},
   { path: '/comment/failed/:id', component: commentFailed},
-  { path: '/comment/mark/:id/:title/:tags/:comment', component: mark},
+  { path: '/comment/mark/:id/:title/:tags/:comment/:images', component: mark},
   { path: '/comment/:id', component: comment},
   { path: '/:type', component: mainPage }
 ];

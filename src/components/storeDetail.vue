@@ -1,7 +1,7 @@
 <template>
   <div class="store-detail-root" v-bind:class="{'show':loaded}">
     <div class="store-detail-header">
-      <a v-on:click="$router.go(-1);"><span class="back"></span></a>
+      <!--<a v-on:click="$router.go(-1);"><span class="back"></span></a>-->
       <h1>{{detail.name}}</h1>
       <div class="tip"></div>
     </div>
@@ -101,7 +101,6 @@ module.exports = {
     changeLikeStatus: function (liked, disliked, item2) {
       var vueThis = this;
       var temp = [item2.liked, item2.disliked];
-    // var temp2 = [item2.like,item2.dislike];
       item2.liked = liked;
       item2.disliked = disliked;
       axios.get('changeLikeStatus?id=' + item2.id + '&liked=' + (liked ? 'true' : 'false') + '&disliked=' + (disliked ? 'true' : 'false'))
@@ -180,12 +179,16 @@ module.exports = {
           });
       })
       .catch(function (error) {
-        if (error)alert('加载失败！');
+        if (error) {
+          alert('加载失败！');
+        }
         vueThis.loaded = true;
       });
     })
     .catch(function (error) {
-      if (error)alert('加载失败！');
+      if (error) {
+        alert('加载失败！');
+      }
       vueThis.loaded = true;
     });
   }
@@ -242,12 +245,14 @@ div.store-detail-header>h1{
   display: inline-block;
   color:#FFF;
   font-weight: 400;
-  margin:1rem 0;
+  margin:1rem 2rem;
   vertical-align: top;
   line-height: 1rem;
-  width:calc(100% - 6rem);
+  width: calc(100% - 6rem);
   height:1rem;
-  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 div.store-detail-body{
   height:calc(100% - 6.4rem);
@@ -264,14 +269,14 @@ div.store-detail-body>div.body-top{
   padding:0 1.5rem;
   width:100%;
   box-sizing: border-box;
-  /*height: 12.5rem;*/
+  /* height: 12.5rem; */
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   -ms-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
 }
-div.store-detail-body>div.body-top>div.addr-time{
+div.store-detail-body > div.body-top > div.addr-time{
   padding:1rem 0 0 0;
   position: relative;
 }
@@ -319,7 +324,7 @@ div.store-detail-body>div.body-top>div.addr-time>h2.addr>span.icon{
   top: 0.1rem;
   position: absolute;
 }
-div.store-detail-body>div.body-top span.score{
+div.store-detail-body>div.body-top span.score { 
   display: inline-block;
   position: absolute;
   font-size: 0.9rem;
@@ -361,9 +366,7 @@ div.store-detail-body div.body-top div.tags>span:nth-child(4n+4){
 div.store-detail-body div.body-top div.pics{
   position: relative;
 }
-div.store-detail-body div.body-top div.pics>div>span{
 
-}
 div.store-detail-body div.body-top div.pics>div.img-con{
   height:3.2rem;
   width:100%;
@@ -396,37 +399,19 @@ div.store-detail-body div.body-top div.pics > div > img{
   box-sizing: border-box;
 }
 div.store-detail-body div.body-top div.container{
-  -webkit-transition: all 0.2s;
-  -moz-transition: all 0.2s;
-  -ms-transition: all 0.2s;
-  -o-transition: all 0.2s;
   transition: all 0.2s;
-
-  -webkit-transform: scale(1);
-  -moz-transform: scale(1);
-  -ms-transform: scale(1);
-  -o-transform: scale(1);
   transform: scale(1);
-  -webkit-transform-origin: 0 0;
-  -moz-transform-origin: 0 0;
-  -ms-transform-origin: 0 0;
-  -o-transform-origin:0 0;
   transform-origin:0 0;
 }
 div.store-detail-body div.body-top.low {
   height:6rem;
 }
 div.store-detail-body div.body-top.low div.container {
-  -webkit-transform: scale(0);
-  -moz-transform: scale(0);
-  -ms-transform: scale(0);
-  -o-transform: scale(0);
   transform: scale(0);
   opacity: 0;
 }
 div.store-detail-body div.body-bottom {
   width:100%;
-  /*height:calc(100% - 12.5rem);*/
   flex:1;
   overflow: hidden;
   margin-top: 1rem;
@@ -439,6 +424,8 @@ div.store-detail-body ul.comments-list > li > div > span{
   height:1rem;
   line-height: 1rem;
 }
+/*-----------------begin------------------*/
+
 div.store-detail-body ul.comments-list > li > div > span.dislike::before{
   content:"";
   background: url("../assets/storeDetail/like.png");
@@ -453,6 +440,7 @@ div.store-detail-body ul.comments-list > li > div > span.dislike::before{
   -o-transform: rotateX(180deg);
   transform: rotateX(180deg);
 }
+
 div.store-detail-body ul.comments-list>li>div>span.dislike.black::before{
   content:"";
   background: url("../assets/storeDetail/liked.png");
@@ -466,6 +454,8 @@ div.store-detail-body ul.comments-list>li>div>span.dislike.black::before{
   -o-transform: rotateX(180deg);
   transform: rotateX(180deg);
 }
+/*-----------------end------------------*/
+
 div.store-detail-body ul.comments-list>li>div>span.like::before{
   content:"";
   background: url("../assets/storeDetail/like.png");
@@ -489,7 +479,7 @@ div.store-detail-body ul.comments-list>li>div>span>span{
 }
 div.store-detail-body ul.comments-list>li>div>span.dislike,
 div.store-detail-body ul.comments-list>li>div>span.like{
-  float:right;
+  float: right;
   margin:0 0.3rem;
 }
 div.store-detail-body ul.comments-list>li{

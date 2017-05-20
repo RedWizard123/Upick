@@ -23,7 +23,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: function(){}
+  log: function () {}
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
@@ -39,8 +39,12 @@ Object.keys(proxyTable).forEach(function (context) {
   if (typeof options === 'string') {
     options = { target: options }
   }
+  app.use(function (req, res, next) {
+    req.headers.host = 'upick.hustonline.net';
+    next();
+  });
   app.use(proxyMiddleware(context, options))
-  //console.log(context + "->" +options.target);
+  // console.log(context + "->" +options.target);
 })
 
 // handle fallback for HTML5 history API

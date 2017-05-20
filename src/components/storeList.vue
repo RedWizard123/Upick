@@ -1,7 +1,7 @@
 <template>
   <div class="store-list-root" v-bind:class="{'show': loaded}">
     <div class="store-list-header">
-      <router-link class="store-list-return" to="/"><span></span></router-link>
+      <!--<router-link class="store-list-return" to="/"><span></span></router-link>-->
       <h1>{{title}}</h1>
       <!-- <div class="tip"></div> -->
       <div class="search" v-bind:class="{'active': isSearchActive}" v-on:click="searchActive">
@@ -21,19 +21,21 @@
     </div>
     <div class="store-list-body">
       <ul>
-        <li v-for="item in data" >
-          <div class="title-container" v-on:click="$router.push('/storeDetail/'+item.id);">
-            <h2>{{item.name}}</h2>
-            <span>{{convertToFloat(item.score)}}</span>
-          </div>
-          <ul class="tags" v-on:click="$router.push('/storeDetail/'+item.id);">
-            <li v-for="item2 in item.tags">{{item2[0]}}</li>
-          </ul>
+        <li v-for="item in data" class="store-info-item">
           <ul class="pic" v-on:click="$router.push('/storeDetail/'+item.id);">
-            <li v-for="(item3, index) in item.picURLs.slice(0,3)">
+            <li v-for="(item3, index) in item.picURLs.slice(0,1)">
               <img v-bind:src="item3.msrc" class="preview-img" />
             </li>
           </ul>
+          <div class="store-info-item-right">
+            <div class="title-container" v-on:click="$router.push('/storeDetail/'+item.id);">
+              <h2>{{item.name}}</h2>
+              <span>{{convertToFloat(item.score)}}</span>
+            </div>
+            <ul class="tags" v-on:click="$router.push('/storeDetail/'+item.id);">
+              <li v-for="item2 in item.tags">{{item2[0]}}</li>
+            </ul>
+          </div>
         </li>
       </ul>
       <div class="mask" v-bind:style="{display: isMenuActive ? 'block' : 'none'}"></div>
@@ -81,7 +83,7 @@ div.store-list-header div.search{
   font-size: 0;
   margin:0.95rem 0;
   position: absolute;
-  right:2rem;
+  right:1rem;
 }
 div.store-list-header div.search>button{
   width:1rem;
@@ -125,7 +127,7 @@ div.store-list-header div.search>input{
   float: right;
 }
 div.store-list-header div.menu{
-  display: inline-block;
+  display: none;
   vertical-align: middle;
   position: absolute;
   right:0;
@@ -159,6 +161,7 @@ div.store-list-header div.menu.active>ul{
   transform: scale(1);
 }
 div.store-list-header div.menu>ul{
+  display: none;
   background: #FFF;
   width:6rem;
   text-align: center;
@@ -216,7 +219,7 @@ div.store-list-root h1{
   display: inline-block;
   color:#FFF;
   font-weight: 400;
-  margin:1rem 0;
+  margin:1rem 2rem;
   vertical-align: top;
   line-height: 1rem;
   width:5rem;
@@ -250,8 +253,7 @@ div.store-list-body>ul{
   width:100%;
 }
 div.store-list-body>ul>li{
-  display: block;
-  margin:0 1rem;
+  margin:0 0.6rem;
   box-sizing: border-box;
   padding:0 1rem;
   border-bottom: 1px solid #bbb;
@@ -270,15 +272,15 @@ div.store-list-body>ul div.title-container>span{
   float: right;
   font-size: 0.8rem;
   font-weight: 300;
-  height: 1.2rem;
-  line-height: 1.2rem;
+  height: 1.4rem;
+  line-height: 1.4rem;
   width:2rem;
 }
 div.store-list-body>ul ul.tags{
   padding:0 0.2rem;
-  max-height:1.2rem;
+  max-height:1.4rem;
   overflow: hidden;
-  margin: 0.2rem 0 0.5rem 0;
+  margin: 0.3rem 0 0.5rem 0;
   font-size: 0;
 }
 div.store-list-body>ul ul.tags>li:nth-child(4n+1){
@@ -295,9 +297,9 @@ div.store-list-body>ul ul.tags>li:nth-child(4n+4){
 }
 div.store-list-body>ul ul.tags>li{
   display: inline-block;
-  height:1.2rem;
+  height:1.4rem;
   font-size: 0.7rem;
-  line-height: 1.2rem;
+  line-height: 1.4rem;
   text-align: center;
   padding:0 0.3rem;
   background: #4F5E93;
@@ -313,7 +315,8 @@ div.store-list-body>ul ul.pic>li{
   width:5rem;
   font-size: 0.6rem;
   line-height: 1.2rem;
-  margin:0 0.3rem 0.6rem 0;
+  margin:1rem 0.3rem 0.6rem 0.3rem;
+  /* margin: auto; */
 }
 div.store-list-footer>a{
   line-height: 100%;
@@ -353,6 +356,16 @@ div.mask{
   height: 100%;
   position: absolute;
   top: 0;
+}
+.store-info-item-right {
+  flex: 1;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 4rem;
+}
+
+.store-info-item {
+  display: flex;
 }
 </style>
 <script>

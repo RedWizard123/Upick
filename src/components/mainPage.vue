@@ -1,10 +1,8 @@
 <template>
   <div class="mainpage-root" v-bind:class="{'show':loaded}">
-    <div style="display: none;">
-      <img src="../assets/mainpage/title_share.png"/>
-    </div>
     <div class="mainpage-header">
       <img src="../assets/mainpage/xingxing.png" style="display: none;" id="xingxing"/>
+      <img src="../assets/mainpage/wave.png" style="display: none;" id="wave"/>
       <canvas v-bind:width="canvasWidth" v-bind:height="canvasHeight"></canvas>
       <h1>Upick</h1>
       <div class="search">
@@ -453,6 +451,22 @@ module.exports = {
       }
       a.target.parentNode.classList.add('active');
     },
+    draw: function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#343856';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      var img1 = document.getElementById('xingxing');
+      if (!img1) {
+        return;
+      }
+      ctx.drawImage(img1, 0, 0, img1.width, img1.height, 0, 0, canvas.width, canvas.width * img1.height / img1.width);
+      var img2 = document.getElementById('wave');
+      if (!img2) {
+        return;
+      }
+      ctx.drawImage(img2, 0, 0, img2.width, img2.height, 0, canvas.height * 0.1, canvas.width, canvas.width * img2.height / img2.width);
+    },
     loop: function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#343856';
@@ -463,7 +477,7 @@ module.exports = {
       }
       ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.width * img.height / img.width);
 
-      step += 2;
+      step += 130;
 
       var dd = canvas.width / 50;
       for (var j = 0; j < meteor.length; j++) {
@@ -501,16 +515,7 @@ module.exports = {
         ctx.closePath();
         ctx.fill();
       }
-      handle = requestAnimFrame(this.loop);
-    }
-  },
-  watch: {
-    '$route': function () {
-      /* var vueThis = this;
-      if (vueThis.$route.path.includes('storeList') && vueThis.$route.path.includes('search')) {
-
-      }
-      cancelAnimFrame(handle); */
+      // handle = requestAnimFrame(this.loop);
     }
   },
   mounted: function () {
@@ -527,8 +532,11 @@ module.exports = {
     }
     window.cancelAnimFrame(handle);
     var vueThis = this;
+
     document.getElementById('xingxing').onload = function () {
-      vueThis.loop();
+      document.getElementById('wave').onload = function () {
+        vueThis.draw();
+      };
     };
     vueThis.rem = parseInt(window.getComputedStyle(document.documentElement)['fontSize']);
     var img1 = (new Image());

@@ -51,6 +51,12 @@
               </span>
             </div>
             <p>{{item2.value}}</p>
+            <ul class="comment-images-ul" v-if="item2.img && item2.img.length > 0">
+              <li v-for="src in item2.img" class="comment-images-li">
+                <img :src="src" class="comment-image"></img>
+              </li>
+              <li v-for="fix in Array(3 - item2.img.length)" class="comment-images-li"></li>
+            </ul>
           </li>
         </ul>
       </div>
@@ -167,6 +173,7 @@ module.exports = {
       .then(function (response) {
         response = response.data;
         vueThis.detail.comments = response.data;
+        // vueThis.detail.comments[0].img = ['/static/img/icon.png', '/static/img/icon.png'];
         axios.get('is_commented?id=' + vueThis.detail.name)
           .then(function (response) {
             response = response.data;
@@ -542,5 +549,24 @@ div.store-detail-footer>a>span {
   background-size: 1rem auto;
   vertical-align:middle;
   margin:0 0.5rem
+}
+
+.comment-images-ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+}
+
+.comment-images-li {
+  width: 4rem;
+  height: 4rem;
+  display: inline-block;
+}
+.comment-image {
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -28,6 +28,7 @@
       <div class="input-area">
         <textarea placeholder="请说出你的故事(限200字以内)" v-model="text"></textarea>
         <ul class="input-area-upload">
+          <input type="file" ref="imageSelector" multiple/>          
           <li v-for="(image, i) in imagesToUpload" class="images-to-upload">
             <img :src="image.src" class=""/>
             <a @click="imagesToUpload.splice(i, 1); imagesURLToUpload.splice(i, 1); $refs.imageSelector.value = ''" class="image-upload-delete">+</a>
@@ -38,9 +39,9 @@
               src="../assets/comment/upload.png"
               v-on:click="selectImg"
             />
-            <input type="file" ref="imageSelector" multiple/>
             <canvas ref="imageCanvas"></canvas>
           </li>
+          <li v-for="fix in Array(Math.max(3 - imagesToUpload.length - 1, 0))" ></li>
         </ul>        
       </div>
     </div>
@@ -311,12 +312,13 @@ div.alert{
   margin: 0.5rem 0.5rem 0.7rem;
   list-style: none;
   /* text-align: center; */
+  display: flex;
+  justify-content: space-between;
 }
 .input-area-upload > li {
   width: 4.3rem;
   height: 4.3rem;
   display: inline-block;
-  margin-right: 0.6rem;
   position: relative;
 }
 .input-area-upload .choose-image {
@@ -425,6 +427,7 @@ module.exports = {
     },
     selectImg: function () {
       this.$refs.imageSelector.click();
+      console.log(this.$refs.imageSelector);
     }
   },
   watch: {
@@ -499,8 +502,10 @@ module.exports = {
             };
           });
         })(i).then(function (data) {
-          return axios.post('comments/images', {
-            image: data.src
+          return axios.post('comments/images', 'image=' + encodeURIComponent(data.src.split(',')[1]), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
           }).then(function (response) {
             if (vueThis.imagesToUpload.find(function (image) { return (image.id === data.id) })) {
               vueThis.imagesURLToUpload.push(response.data.url);

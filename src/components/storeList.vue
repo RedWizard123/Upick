@@ -263,17 +263,18 @@ div.store-list-body>ul h2{
   font-weight: 400;
   margin: 0;
   display: inline-block;
-  width: calc(100% - 2rem);
+  width: 8rem;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 div.store-list-body>ul div.title-container{
   padding:0.5rem 0 0.2rem 0;
+  width: 100%;
 }
 div.store-list-body>ul div.title-container>span{
   float: right;
   font-size: 0.8rem;
   font-weight: 300;
   height: 1.4rem;
-  line-height: 1.4rem;
   width:2rem;
 }
 div.store-list-body>ul ul.tags{

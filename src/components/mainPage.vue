@@ -557,7 +557,6 @@ module.exports = {
         if (n >= 4) { vueThis.loaded = true; }
         axios.get('http://weixin.bigtech.cc/service/jssdk_config?url=' + encodeURIComponent('http://weixin.bigtech.cc/upick/index.html'))
           .then(function (response) {
-            console.log(vueThis.$route.path);
             response = response.data;
             wx.config({
               debug: false,

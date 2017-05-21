@@ -24,7 +24,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/comments/images': 'http://127.0.0.1:5050/',
+      // '/comments/images': 'http://127.0.0.1:5050/',
+      '/comments/images': 'http://202.114.18.13/',
       '/index': 'http://202.114.18.13/',
       '/comment_data': 'http://202.114.18.13/',
       '/store_detail': 'http://202.114.18.13/',

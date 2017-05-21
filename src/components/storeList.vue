@@ -22,9 +22,9 @@
     <div class="store-list-body">
       <ul>
         <li v-for="item in data" class="store-info-item">
-          <ul class="pic" v-on:click="$router.push('/storeDetail/'+item.id);">
+          <ul class="pic" >
             <li v-for="(item3, index) in item.picURLs.slice(0,1)">
-              <img v-bind:src="item3.msrc" class="preview-img" />
+              <img v-bind:src="item3.msrc" class="preview-img" v-on:click="$preview.open(index, item.picURLs)"/>
             </li>
           </ul>
           <div class="store-info-item-right">

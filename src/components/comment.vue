@@ -45,7 +45,7 @@
       </div>
     </div>
     <div class="comment-footer">
-      <a v-if="imagesUploading"> 正在上传图片... </a>
+      <a v-if="imagesUploading"> 稍等，正在上传图片~ </a>
       <a v-if="!imagesUploading" v-on:click="next"><span></span>下一步 </a>
     </div>
   </div>
@@ -483,26 +483,28 @@ module.exports = {
               img.onload = function () {
                 // compress img when it is too big (> 1000x1000)
                 if (img.width > 1000 || img.height > 1000) {
-                  vueThis.$refs.imageCanvas.width = img.width / 2;
-                  vueThis.$refs.imageCanvas.height = img.height / 2;
+                  vueThis.$refs.imageCanvas.width = 1000;
+                  vueThis.$refs.imageCanvas.height = Math.round(1000 / img.width * img.height);
                   var ctx = vueThis.$refs.imageCanvas.getContext('2d');
-                  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, img.width / 2, img.height / 2);
+                  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 1000, Math.round(1000 / img.width * img.height));
                   result = vueThis.$refs.imageCanvas.toDataURL();
                 }
-                vueThis.imagesToUpload.push({
+                var data = {
+                  'id': Math.round(1 + Math.random() * 1000000),
                   'src': result
-                });
-                resolve(result);
+                }
+                vueThis.imagesToUpload.push(data);
+                resolve(data);
               }
             };
           });
-        })(i).then(function (src) {
+        })(i).then(function (data) {
           return axios.post('comments/images', {
-            image: src
+            image: data.src
           }).then(function (response) {
-            vueThis.imagesURLToUpload.push({
-              'src': response.data.url
-            });
+            if (vueThis.imagesToUpload.find(function (image) { return (image.id === data.id) })) {
+              vueThis.imagesURLToUpload.push(response.data.url);
+            }
           });
         }));
       }

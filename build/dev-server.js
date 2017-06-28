@@ -13,6 +13,7 @@ var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
+var fakeData = require('./fake-data');
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -40,6 +41,9 @@ compiler.plugin('compilation', function (compilation) {
     cb()
   })
 })
+
+// fake data used when backend unavailable
+app.use('/api', fakeData)
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {

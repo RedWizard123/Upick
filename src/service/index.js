@@ -3,6 +3,8 @@
  */
 import http from '../plugins/http/index'
 
+const root = '/api/v2'
+
 const objectToCamel = (obj) => {
   function type () {
     return Object.prototype.toString.call(this).slice(8, -1)
@@ -41,37 +43,48 @@ const objectToCamel = (obj) => {
   return (copy(obj))
 }
 
-export default {
-  // 检查是否登录
-  async checkLoginStatus () {
-    return await http.get('/api/v2/users/status').then(data => data.status)
-  },
-  // 获取主页内容
-  async getIndex () {
-    return await http.get('/api/v2/index').then(objectToCamel)
-  },
-  // 获取某类型店铺列表信息
-  async getShopsBySubtype (subtype) {
-    return await http.post('/api/v2/shops/list', {
-      'request_type': 2,
-      'shop_type': subtype
-    }, {
-      headers: {
-        'content-type': 'application/json'
+// 检查是否登录
+export async function checkLoginStatus () {
+  return await http.get(`${root}/users/status`).then(data => data.status)
+}
+// 获取主页内容
+export async function getIndex () {
+  return await http.get(`${root}/index`).then(objectToCamel)
+}
+// 获取某类型店铺列表信息
+export async function getShopsBySubtype (subtype) {
+  return await http.post(`${root}/shops/list`, {
+    'request_type': 2,
+    'shop_type': subtype
+  }, {
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(objectToCamel)
+}
+// 根据关键词搜索店铺
+export async function searchShops (keyword) {
+  return await http.post(`${root}/shops/list`, {
+    'request_type': 3,
+    'keyword': keyword
+  }, {
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
+    .then(objectToCamel)
+}
+export async function waitImageToLoad (imageNode) {
+  return new Promise((resolve, reject) => {
+    if (imageNode.complete) {
+      resolve(imageNode)
+    } else {
+      imageNode.onload = () => {
+        resolve(imageNode)
       }
-    })
-      .then(objectToCamel)
-  },
-  // 根据关键词搜索店铺
-  async searchShops (keyword) {
-    return await http.post('/api/v2/shops/list', {
-      'request_type': 3,
-      'keyword': keyword
-    }, {
-      headers: {
-        'content-type': 'application/json'
+      imageNode.onerror = (error) => {
+        reject(error)
       }
-    })
-      .then(objectToCamel)
-  }
+    }
+  })
 }

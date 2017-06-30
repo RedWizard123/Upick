@@ -3,7 +3,7 @@
  */
 import http from '../plugins/http/index'
 
-const root = '/api/v2'
+const root = 'api/v2'
 
 const objectToCamel = (obj) => {
   function type () {
@@ -73,6 +73,22 @@ export async function searchShops (keyword) {
     }
   })
     .then(objectToCamel)
+}
+// 根据前缀获取店铺
+/**
+ * @param prefix
+ * @returns {Promise.<Object>}
+ */
+export async function getShopsByPrefix (prefix) {
+  return await http.post(`${root}/shops/list`, {
+    'request_type': 4,
+    'prefix': prefix
+  }, {
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(objectToCamel)
+  // 转换成驼峰式
 }
 export async function waitImageToLoad (imageNode) {
   return new Promise((resolve, reject) => {

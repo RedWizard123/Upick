@@ -36,7 +36,7 @@ export default {
           .then(resBodyHandler)
       },
       post (url, data, ...params) {
-        return axios.get(url, data, ...params)
+        return axios.post(url, data, ...params)
           .then(not200Handler)
           .then(resBodyHandler)
       }
@@ -54,7 +54,7 @@ export default {
       .then(resBodyHandler)
   },
   post (url, data, ...params) {
-    return axios.get(url, data, ...params)
+    return axios.post(url, data, ...params)
       .then(not200Handler)
       .then(resBodyHandler)
   }

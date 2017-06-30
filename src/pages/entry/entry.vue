@@ -9,9 +9,9 @@
     </div>
     <div class="header-title">
       <img class="bg-wave" src="./wave.png"/>
-      <h1 class="title"> Upick </h1>
+      <h1 class="title" @click="$tip.open('暂未开发！')"> Upick </h1>
       <div class="search-icon">
-        <router-link to="/"><span class="icon"></span></router-link>
+        <router-link to="/search"><span class="icon"></span></router-link>
       </div>
     </div>
     <div class="classify" ref="typeRoot">
@@ -30,7 +30,7 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" to="/" @click="$tip.open('暂未开发！')">
+            <router-link v-if="index % 2 === 1" to="/">
               <div class="type-img" ref="typeImages"></div>
               <h4>{{line[(index - 1) / 2].typeName}}</h4>
             </router-link>
@@ -65,12 +65,20 @@ export default {
     }
   },
   async mounted () {
+    // 加载信息
     let { slogan, shopTypes, popularShops } = await getIndex()
+    // 生成图片加载的 Promise
     const images = Array.from(document.querySelectorAll('.img-to-load > img'))
     const imagesLoadPromise = images.map((image) => {
       return waitImageToLoad(image)
     })
-    await Promise.all(imagesLoadPromise)
+    // 等待图片加载的 Promise resolve
+    try {
+      await Promise.all(imagesLoadPromise)
+    } catch (error) {
+      this.$tip.open('加载失败！请刷新')
+      throw error
+    }
     window.closeLoading()
     this.slogan = slogan
     this.hotShops = popularShops
@@ -101,7 +109,6 @@ export default {
     this.$nextTick(resizeTypeImages)
   }
 }
-
 </script>
 <style scoped lang="stylus">
 h2, h3, h4 {

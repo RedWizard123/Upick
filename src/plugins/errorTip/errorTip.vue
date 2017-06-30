@@ -26,7 +26,7 @@ export default {
     }
   },
   methods: {
-    async open (msg, color = '#bb1111', timeToStay = 1500) {
+    async open (msg, color = '#FF305D', timeToStay = 1500) {
       this.msg = msg
       this.color = color
       this.show = true

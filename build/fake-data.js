@@ -11,7 +11,6 @@ function parseBodyJSON (req, res, next) {
     data += chunk;
   });
   req.on('end', () => {
-    console.log(1);
     req.body = JSON.parse(data);
     next();
   });
@@ -33,7 +32,7 @@ router.get(`/${v}/users/status`, (req, res) => {
     }
   });
 });
-router.get(`/${v}/index`, wait(2000), (req, res) => {
+router.get(`/${v}/index`, (req, res) => {
   res.status(200).json({
     'status': 200,
     'data': {
@@ -167,13 +166,13 @@ router.post(`/${v}/shops/list`, parseBodyJSON, (req, res, next) => {
         ]
       }
     });
-  } else {
+  } else if (reqJSON.request_type === 3) {
     res.status(200).json({
       'status': 200,
       'data': {
         'shop_list': [
           {
-            'shop_name': '店铺名称',
+            'shop_name': reqJSON.keyword,
             'shop_area': '店铺所在区域',
             'shop_address': '店铺地址',
             'open_time': '营业时间',
@@ -186,7 +185,11 @@ router.post(`/${v}/shops/list`, parseBodyJSON, (req, res, next) => {
                 'height': 200
               }
             ],
-            'shop_tags': ['店铺标签']
+            'shop_tags': [
+              { 'tag_name': '难吃', 'positive': false },
+              { 'tag_name': '不好玩', 'positive': false },
+              { 'tag_name': '好吃', 'positive': false }
+            ]
           },
           {
             'shop_name': 'asfgdgdgf',
@@ -202,7 +205,27 @@ router.post(`/${v}/shops/list`, parseBodyJSON, (req, res, next) => {
                 'height': 200
               }
             ],
-            'shop_tags': ['店铺标签']
+            'shop_tags': [
+              { 'tag_name': '难吃', 'positive': false },
+              { 'tag_name': '不好玩', 'positive': true },
+              { 'tag_name': '好吃', 'positive': false }
+            ]
+          }
+        ]
+      }
+    });
+  } else if (reqJSON.request_type === 4) {
+    res.status(200).json({
+      'status': 200,
+      'data': {
+        'shop_list': [
+          {
+            'shop_name': '韵苑大酒店',
+            'shop_score': 9
+          },
+          {
+            'shop_name': '韵苑自行车',
+            'shop_score': 8.7
           }
         ]
       }

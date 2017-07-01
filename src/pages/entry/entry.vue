@@ -30,7 +30,7 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" to="/">
+            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2].typeName}/default`">
               <div class="type-img" ref="typeImages"></div>
               <h4>{{line[(index - 1) / 2].typeName}}</h4>
             </router-link>
@@ -65,27 +65,27 @@ export default {
     }
   },
   async mounted () {
-    // 加载信息
-    let { slogan, shopTypes, popularShops } = await getIndex()
-    // 生成图片加载的 Promise
-    const images = Array.from(document.querySelectorAll('.img-to-load > img'))
-    const imagesLoadPromise = images.map((image) => {
-      return waitImageToLoad(image)
-    })
-    // 等待图片加载的 Promise resolve
     try {
+      // 加载信息
+      let { slogan, shopTypes, popularShops } = await getIndex()
+      // 生成图片加载的 Promise
+      const images = Array.from(document.querySelectorAll('.img-to-load > img'))
+      const imagesLoadPromise = images.map((image) => {
+        return waitImageToLoad(image)
+      })
+      // 等待图片加载的 Promise resolve
       await Promise.all(imagesLoadPromise)
+      window.closeLoading()
+      this.slogan = slogan
+      this.hotShops = popularShops
+      let i = 0
+      let n = shopTypes.length
+      while (i < n) {
+        this.shopTypes.push(shopTypes.slice(i, i += 3))
+      }
     } catch (error) {
       this.$tip.open('加载失败！请刷新')
       throw error
-    }
-    window.closeLoading()
-    this.slogan = slogan
-    this.hotShops = popularShops
-    let i = 0
-    let n = shopTypes.length
-    while (i < n) {
-      this.shopTypes.push(shopTypes.slice(i, i += 3))
     }
     const resizeTypeImages = () => {
       this.typeLineHeight = this.$refs.line[0].clientHeight
@@ -241,7 +241,7 @@ h2, h3, h4 {
           display flex
           flex-direction column
           .type-img {
-            margin-top 0.1rem
+            margin-top 0.6rem
             flex-grow 1
             background-image url('./types.png')
             background-clip content-box
@@ -270,7 +270,7 @@ h2, h3, h4 {
         margin-bottom 0.5rem
         .shop {
           display inline-block
-          padding 0 0.3rem
+          padding 0 0.7rem
           margin 0 0.5rem
           height (h = 1.3)rem
           font-size 0.65rem

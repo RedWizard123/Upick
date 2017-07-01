@@ -24,7 +24,7 @@ function wait(time) {
   }
 }
 
-router.get(`/${v}/users/status`, (req, res) => {
+router.get(`/${v}/users/status`, wait(100), (req, res) => {
   res.status(200).json({
     'status': 200 ,
     'data': {
@@ -32,7 +32,7 @@ router.get(`/${v}/users/status`, (req, res) => {
     }
   });
 });
-router.get(`/${v}/index`, (req, res) => {
+router.get(`/${v}/index`, wait(100), (req, res) => {
   res.status(200).json({
     'status': 200,
     'data': {
@@ -85,13 +85,55 @@ router.get(`/${v}/index`, (req, res) => {
   });
 });
 
-router.post(`/${v}/shops/list`, parseBodyJSON, (req, res, next) => {
+router.post(`/${v}/shops/list`, wait(100), parseBodyJSON, (req, res, next) => {
   const reqJSON = req.body;
   if (reqJSON.request_type === 1) {
     res.status(200).json({
       'status': 200,
       'data': {
-        'subtypes': ['自行车', '文印店', '电器维修', '理发店', '眼镜店']
+        'subtypes': ['自行车', '文印店', '电器维修', '理发店', '眼镜店', '自行车', '文印店', '电器维修', '理发店'],
+        'shop_list': [
+          {
+            'shop_name': reqJSON.keyword,
+            'shop_area': '店铺所在区域',
+            'shop_address': '店铺地址',
+            'open_time': '营业时间',
+            'shop_score': 0,
+            'img_urls': [
+              {
+                'src': '',
+                'msrc': '',
+                'width': 100,
+                'height': 200
+              }
+            ],
+            'shop_tags': [
+              { 'tag_name': '难吃', 'positive': false },
+              { 'tag_name': '不好玩', 'positive': false },
+              { 'tag_name': '好吃', 'positive': false }
+            ]
+          },
+          {
+            'shop_name': 'asfgdgdgf',
+            'shop_area': '店铺所在区域',
+            'shop_address': '店铺地址',
+            'open_time': '营业时间',
+            'shop_score': 0,
+            'img_urls': [
+              {
+                'src': '',
+                'msrc': '',
+                'width': 200,
+                'height': 200
+              }
+            ],
+            'shop_tags': [
+              { 'tag_name': '难吃', 'positive': false },
+              { 'tag_name': '不好玩', 'positive': true },
+              { 'tag_name': '好吃', 'positive': false }
+            ]
+          }
+        ]
       }
     });
   } else if (reqJSON.request_type === 2) {

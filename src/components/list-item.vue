@@ -66,13 +66,13 @@ a {
       font-size 0.8rem
       display flex
       flex-direction row
+      font-weight 500
       .name-left {
         flex-grow 1
       }
       .score-right {
         flex-shrink 0
         color #FF841B
-        font-weight 500
       }
     }
     .tags-list {

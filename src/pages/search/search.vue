@@ -32,12 +32,24 @@
         </li>
       </ul>
     </div>
-    <router-view :shops="shops"></router-view>
+    <router-view v-if="showShopList" :keyword="$route.params.keyword" @loaded="catchNoShopError($event)"></router-view>
+    <result v-if="!showShopList"
+            headText="没有找到该店铺哦～"
+            text="到添加新店里提醒我们吧"
+            buttonText="添加新店"
+    >
+    </result>
   </div>
 </template>
 <script>
-import { getShopsByPrefix, searchShops } from '../../service'
+import ShopList from '../../components/shop-list.vue'
+import result from '../../pages/result/result.vue'
+import { getShopsByPrefix } from '../../service'
 export default {
+  components: {
+    ShopList,
+    result
+  },
   data () {
     return {
       keyword: '',
@@ -45,7 +57,8 @@ export default {
       previews: [],
       shops: [],
       hot: [],
-      history: []
+      history: [],
+      showShopList: true
     }
   },
   watch: {
@@ -58,21 +71,22 @@ export default {
           }
         }, 200)
       }
-    },
-    async '$route' (to) {
-      if (to.params.keyword) {
-        this.keyword = to.params.keyword
-        this.shops = (await searchShops(this.keyword)).shopList
-      }
     }
   },
   async mounted () {
     window.closeLoading()
     if (this.$route.params.keyword) {
       this.keyword = this.$route.params.keyword
-      this.shops = (await searchShops(this.keyword)).shopList
     } else {
-      this.$refs.input.focus()
+      // this.$refs.input.focus()
+    }
+  },
+  methods: {
+    catchNoShopError (n) {
+      if (n <= 0) {
+        // todo
+        this.showShopList = false
+      }
     }
   }
 }
@@ -137,6 +151,7 @@ yellow_op = rgba(255, 172, 0, 0.8)
   input {
     flex-grow 1
     height h rem
+    line-height h rem
     border none
     border-radius (h / 2)rem
     background-color #E0E0E0
@@ -145,7 +160,7 @@ yellow_op = rgba(255, 172, 0, 0.8)
     color #717171
   }
   button {
-    width 2.8rem
+    width 3.4rem
     height h rem
     border none
     border-radius (h / 2)rem

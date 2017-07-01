@@ -2,7 +2,7 @@
  * Created by faraway on 17-6-10.
  */
 import http from '../plugins/http/index'
-
+import store from '../store'
 const root = 'api/v2'
 
 const objectToCamel = (obj) => {
@@ -53,26 +53,73 @@ export async function getIndex () {
 }
 // 获取某类型店铺列表信息
 export async function getShopsBySubtype (subtype) {
-  return await http.post(`${root}/shops/list`, {
-    'request_type': 2,
-    'shop_type': subtype
-  }, {
-    headers: {
-      'content-type': 'application/json'
-    }
-  }).then(objectToCamel)
+  const query = store.state.cachedRequest.filter(res => {
+    return res.requestType === 2 && res.shopType === subtype
+  })
+  if (query.length > 0) {
+    return query[0].res
+  }
+  let res
+  try {
+    res = await http.post(`${root}/shops/list`, {
+      'request_type': 2,
+      'shop_type': subtype
+    }, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(objectToCamel)
+    store.state.cachedRequest.push({
+      requestType: 2,
+      shopType: subtype,
+      res
+    })
+    store.state.cachedShops.push(...res.shopList)
+  } catch (e) {
+    throw e
+  }
+  return res
+}
+export async function getShopsByType (type) {
+  const query = store.state.cachedRequest.filter(res => {
+    return res.requestType === 1 && res.shopType === type
+  })
+  if (query.length > 0) {
+    return query[0].res
+  }
+  let res
+  try {
+    res = await http.post(`${root}/shops/list`, {
+      'request_type': 1,
+      'shop_type': type
+    }, {
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(objectToCamel)
+    store.state.cachedRequest.push({
+      requestType: 1,
+      shopType: type,
+      res
+    })
+  } catch (e) {
+    throw e
+  }
+  // store.state.cachedShops.push(...res.shopList)
+  return res
 }
 // 根据关键词搜索店铺
 export async function searchShops (keyword) {
-  return await http.post(`${root}/shops/list`, {
+  let res = await http.post(`${root}/shops/list`, {
     'request_type': 3,
     'keyword': keyword
   }, {
     headers: {
       'content-type': 'application/json'
     }
-  })
-    .then(objectToCamel)
+  }).then(objectToCamel)
+  store.state.cachedShops.push(...res.shopList)
+  return res
 }
 // 根据前缀获取店铺
 /**
@@ -103,4 +150,11 @@ export async function waitImageToLoad (imageNode) {
       }
     }
   })
+}
+export async function getShopByName (name) {
+  let shop = store.state.cachedShops.filter(shop => shop.shopName === name)
+  if (shop.length <= 0) {
+    // todo
+  }
+  return shop[0]
 }

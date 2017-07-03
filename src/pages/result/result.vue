@@ -2,7 +2,7 @@
   <div class="result">
     <div class="image">
       <img src="./bad.png" v-if="succeed">
-      <img src="./bad.png" v-if="!succeed">
+      <img src="./success.png" v-if="!succeed">
     </div>
     <div class="text">
       <h1 v-if="headText">{{headText}}</h1>

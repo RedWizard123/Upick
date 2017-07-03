@@ -5,6 +5,8 @@ import entry from '../pages/entry/entry.vue'
 import search from '../pages/search/search.vue'
 import shopList from '../components/shop-list.vue'
 import list from '../pages/list/list.vue'
+import comment from '../pages/comment/comment.vue'
+import result from '../pages/result/result.vue'
 
 Vue.use(Router)
 
@@ -13,10 +15,6 @@ export default new Router({
     {
       path: '/',
       component: entry
-    },
-    {
-      path: '/search',
-      component: search
     },
     {
       path: '/search',
@@ -37,6 +35,14 @@ export default new Router({
           component: shopList
         }
       ]
+    },
+    {
+      path: '/comment/:name',
+      component: comment
+    },
+    {
+      path: '/result/:status',
+      component: result
     }
   ]
 })

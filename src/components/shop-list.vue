@@ -25,7 +25,7 @@ export default {
     }
   },
   mounted () {
-    // this.loadShops()
+    this.loadShops()
   },
   methods: {
     async loadShops () {
@@ -66,6 +66,7 @@ export default {
 }
 ul {
   list-style none
+  overflow auto
   margin 0
   padding 0
   flex-grow 1
@@ -78,5 +79,6 @@ ul:after {
   font-size 0.7rem
   color #AAAAAA
   text-align center
+  margin-bottom 3rem
 }
 </style>

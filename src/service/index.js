@@ -158,3 +158,57 @@ export async function getShopByName (name) {
   }
   return shop[0]
 }
+
+export async function searchHistory () {
+  return await http.get(`${root}/shops/search_history`).then(objectToCamel)
+}
+
+export async function hotRecords () {
+  return await http.get(`${root}/shops/search_history/hot_records`).then(objectToCamel)
+}
+
+export async function getAllTags (name) {
+  return await http.post(`${root}/shops/tags`, {
+    'shop_name': name
+  }, {
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(objectToCamel)
+}
+
+export async function uploadImage (imageBase64String) {
+  return await http.post(`${root}/comments/images`, {
+    'image': imageBase64String
+  }, {
+    headers: {
+      'content-type': 'application/json'
+    }
+  }).then(objectToCamel)
+}
+/**
+ * @param {String} shopName
+ * @param {Number} shopScore
+ * @param {String} commentText
+ * @param {Array<String>} shopTags
+ * @param {Array<String>} imagesURL
+ * @returns {Promise<Object>}
+ */
+export async function addComment (shopName, shopScore, commentText, shopTags, imagesURL) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 1,
+    'shop_name': shopName,
+    'shop_score': shopScore,
+    'comment_text': commentText,
+    'shop_tags': shopTags,
+    'img_urls': imagesURL
+  }).then(objectToCamel)
+}
+
+export async function wait (time) {
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      resolve()
+    }, time)
+  })
+}

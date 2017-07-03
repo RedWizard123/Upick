@@ -276,4 +276,72 @@ router.post(`/${v}/shops/list`, wait(100), parseBodyJSON, (req, res, next) => {
   next();
 });
 
+router.get(`/${v}/shops/search_history`, wait(100), (req, res, next) => {
+  res.status(200).json({
+    'status': 200,
+    'data': {
+      "search_history": "搜索历史店铺列表".split('')
+    }
+  })
+  next()
+})
+router.get(`/${v}/shops/search_history/hot_records`, wait(100), (req, res, next) => {
+  res.status(200).json({
+    'status': 200,
+    'data': {
+      "hot_records": "搜索历史店铺列表".split('').reverse()
+    }
+  })
+  next()
+})
+router.post(`/${v}/shops/tags`, wait(100), (req, res, next) => {
+  res.status(200).json({
+    'status':200,
+    'data': {
+      'shop_tags': [
+        { 'tag_name': '南昌', 'positive': false },
+        { 'tag_name': '安达市', 'positive': false },
+        { 'tag_name': '阿萨德撒', 'positive': false },
+        { 'tag_name': '啊啊', 'positive': false },
+        { 'tag_name': '是否', 'positive': false },
+        { 'tag_name': '大概', 'positive': false },
+        { 'tag_name': '阿萨德撒', 'positive': false },
+        { 'tag_name': '啊啊s', 'positive': false },
+        { 'tag_name': '是否安达市', 'positive': false },
+        { 'tag_name': '大概时代', 'positive': false },
+        { 'tag_name': '是否阿萨', 'positive': false },
+        { 'tag_name': '大概十大', 'positive': false },
+        { 'tag_name': '阿萨德撒', 'positive': false },
+        { 'tag_name': '啊啊啊', 'positive': false },
+        { 'tag_name': '是否安达市', 'positive': false },
+        { 'tag_name': '是否安达市', 'positive': false },
+        { 'tag_name': '是否安达市', 'positive': false },
+        { 'tag_name': '是否安达市', 'positive': false },
+        { 'tag_name': '大概时代', 'positive': false }
+      ]
+    }
+  })
+  next()
+})
+
+router.post(`/${v}/comments/images`, wait(15000), parseBodyJSON, (req, res, next) => {
+  res.status(200).json({
+    'status': 200,
+    'data': {
+      "url": "https://pic2.zhimg.com/v2-70e3d3bccaba6e58d9f379eacb0f92b1_xl.jpg",
+      "simg_url": "https://pic2.zhimg.com/v2-70e3d3bccaba6e58d9f379eacb0f92b1_xl.jpg",
+      "height": 200,
+      "width": 200
+    }
+  })
+  next()
+})
+
+router.post(`/${v}/shops/comments`, wait(1000), (req, res, next) => {
+  res.status(200).json({
+    'status': 200,
+    'data': ''
+  })
+  next()
+})
 module.exports = router;

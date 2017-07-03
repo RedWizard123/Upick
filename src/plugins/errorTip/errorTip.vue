@@ -30,14 +30,22 @@ export default {
       this.msg = msg
       this.color = color
       this.show = true
-      await Promise.race([
-        wait(timeToStay),
-        new Promise((resolve) => {
+      if (timeToStay === 0) {
+        await new Promise((resolve) => {
           this.close = () => {
             resolve()
           }
         })
-      ])
+      } else {
+        await Promise.race([
+          wait(timeToStay),
+          new Promise((resolve) => {
+            this.close = () => {
+              resolve()
+            }
+          })
+        ])
+      }
       this.show = false
       // will then when tips close
     },

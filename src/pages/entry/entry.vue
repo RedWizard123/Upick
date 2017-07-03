@@ -101,7 +101,7 @@ export default {
             bgWidth + 'px',
             typeImage.clientHeight + 'px'
           ].join(' ')
-          typeImage.style.backgroundPositionX = i * bgWidth / n + 'px'
+          typeImage.style.backgroundPositionX = -i * bgWidth / n + 'px'
         })
       })
     }

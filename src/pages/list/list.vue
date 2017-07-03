@@ -14,6 +14,10 @@
       </div>
     </div>
     <router-view :shops="shops" :subtype="$route.params.subtype"></router-view>
+    <button class="float-button">
+      <span class="vertical-line"></span>
+      <span class="horizontal-line"></span>
+    </button>
   </div>
 </template>
 <script>
@@ -89,5 +93,42 @@ export default {
       }
     }
   }
+}
+.float-button {
+  position fixed
+  bottom 2rem
+  right 1rem
+  display block
+  border none
+  width (w = 4)rem
+  height w rem
+  border-radius (w / 2) rem
+  background-color #ffac00
+  transition all 0.5s
+  box-shadow rgba(215, 142, 37, 0.40) 0 0 0.5rem 0.05rem
+  span {
+    display inline-block
+    background-color #FFFFFF
+    border-radius 0.1rem
+    position absolute
+    margin auto
+    top 0
+    bottom 0
+    right 0
+    left 0
+  }
+  w = 1.8
+  .vertical-line {
+    width w rem
+    height 0.2rem
+  }
+  .horizontal-line {
+    width 0.2rem
+    height w rem
+  }
+}
+.float-button:active {
+  background-color rgba(255, 172, 0, 0.6)
+  box-shadow rgba(215, 142, 37, 0.40) 0 0 0.7rem 0.05rem
 }
 </style>

@@ -3,23 +3,23 @@
     <div class="input">
       <input placeholder="请输入搜索内容"
              ref="input" v-model="keyword"
-             @keyup.enter="$router.push(`/search/${keyword}`)"
+             @keyup.enter="$router.replace(`/search/${keyword}`)"
       />
       <button :disabled="!keyword"
-              @click="$router.push(`/search/${keyword}`)"
+              @click="$router.replace(`/search/${keyword}`)"
       >搜索</button>
     </div>
     <div v-if="keyword === '' && !$route.params.keyword" class="hot-history">
       <div class="hot-search" v-if="hot.length > 0">
         <h2>热门搜索</h2>
         <ul class="hot-search-list">
-          <li v-for="keyword in hot">{{keyword}}</li>
+          <li v-for="keyword in hot" @click="$router.push(`/search/${keyword}`)">{{keyword}}</li>
         </ul>
       </div>
       <div class="history" v-if="history.length > 0">
         <h2>历史记录</h2>
         <ul class="hot-search-list">
-          <li v-for="keyword in hot">{{keyword}}</li>
+          <li v-for="keyword in history" @click="$router.push(`/search/${keyword}`)">{{keyword}}</li>
         </ul>
       </div>
     </div>
@@ -32,7 +32,10 @@
         </li>
       </ul>
     </div>
-    <router-view v-if="showShopList" :keyword="$route.params.keyword" @loaded="catchNoShopError($event)"></router-view>
+    <router-view v-if="showShopList"
+                 :keyword="$route.params.keyword"
+                 @loaded="catchNoShopError($event)"
+    ></router-view>
     <result v-if="!showShopList"
             headText="没有找到该店铺哦～"
             text="到添加新店里提醒我们吧"
@@ -44,7 +47,7 @@
 <script>
 import ShopList from '../../components/shop-list.vue'
 import result from '../../pages/result/result.vue'
-import { getShopsByPrefix } from '../../service'
+import { getShopsByPrefix, searchHistory, hotRecords } from '../../service'
 export default {
   components: {
     ShopList,
@@ -69,7 +72,7 @@ export default {
           if (this.keyword) {
             this.previews = (await getShopsByPrefix(this.keyword)).shopList
           }
-        }, 200)
+        }, 300)
       }
     }
   },
@@ -79,6 +82,8 @@ export default {
       this.keyword = this.$route.params.keyword
     } else {
       // this.$refs.input.focus()
+      this.history = (await searchHistory()).searchHistory
+      this.hot = (await hotRecords()).hotRecords
     }
   },
   methods: {

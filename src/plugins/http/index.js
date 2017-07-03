@@ -48,11 +48,22 @@ export default {
     Vue.post = post
     Vue.http = { get, post }
   },
+  /**
+   * @param {string} url
+   * @param params
+   * @returns {Promise<Object>}
+   */
   get (url, ...params) {
     return axios.get(url, ...params)
       .then(not200Handler)
       .then(resBodyHandler)
   },
+  /**
+   * @param {string} url
+   * @param {any} data
+   * @param params
+   * @returns {Promise<Object>}
+   */
   post (url, data, ...params) {
     return axios.post(url, data, ...params)
       .then(not200Handler)

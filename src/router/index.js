@@ -7,6 +7,7 @@ import shopList from '../components/shop-list.vue'
 import list from '../pages/list/list.vue'
 import comment from '../pages/comment/comment.vue'
 import result from '../pages/result/result.vue'
+import detail from '../pages/detail/detail.vue'
 
 Vue.use(Router)
 
@@ -43,6 +44,10 @@ export default new Router({
     {
       path: '/result/:status/:name',
       component: result
+    },
+    {
+      path: '/detail/:name',
+      component: detail
     }
   ]
 })

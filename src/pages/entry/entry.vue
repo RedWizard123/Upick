@@ -47,7 +47,7 @@
       </h2>
       <ul>
         <li v-for="hotShop in hotShops">
-          <router-link to="/" class="shop" >{{hotShop.shopName}}</router-link>
+          <router-link :to="`/detail/${hotShop.shopName}`" class="shop" >{{hotShop.shopName}}</router-link>
         </li>
       </ul>
     </div>

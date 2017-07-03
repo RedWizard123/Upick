@@ -14,7 +14,7 @@
       </div>
     </div>
     <router-view :shops="shops" :subtype="$route.params.subtype"></router-view>
-    <button class="float-button">
+    <button class="float-button" @click="$tip.open('即将上线，敬请期待！')">
       <span class="vertical-line"></span>
       <span class="horizontal-line"></span>
     </button>

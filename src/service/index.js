@@ -154,9 +154,12 @@ export async function waitImageToLoad (imageNode) {
 export async function getShopByName (name) {
   let shop = store.state.cachedShops.filter(shop => shop.shopName === name)
   if (shop.length <= 0) {
-    // todo
+    return await http.post(`${root}/shops`, {
+      'shop_name': name
+    }).then(objectToCamel)
+  } else {
+    return shop[0]
   }
-  return shop[0]
 }
 
 export async function searchHistory () {
@@ -211,4 +214,46 @@ export async function wait (time) {
       resolve()
     }, time)
   })
+}
+/**
+ * @param {string} shopName
+ * @returns {Promise.<Array.<Object>>}
+ */
+export async function getComments (shopName) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 2,
+    'shop_name': shopName
+  }).then(objectToCamel)
+}
+
+export async function likeComment (authorOpenid, issueTime) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 3,
+    'author_openid': authorOpenid,
+    'issue_time': issueTime
+  }).then(objectToCamel)
+}
+
+export async function cancelLikeComment (authorOpenid, issueTime) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 5,
+    'author_openid': authorOpenid,
+    'issue_time': issueTime
+  }).then(objectToCamel)
+}
+
+export async function dislikeComment (authorOpenid, issueTime) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 4,
+    'author_openid': authorOpenid,
+    'issue_time': issueTime
+  }).then(objectToCamel)
+}
+
+export async function cancelDislikeComment (authorOpenid, issueTime) {
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 6,
+    'author_openid': authorOpenid,
+    'issue_time': issueTime
+  }).then(objectToCamel)
 }

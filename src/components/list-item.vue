@@ -1,6 +1,6 @@
 <template>
   <li class="list-item">
-    <router-link to="/">
+    <router-link :to="`/detail/${shopName}`">
       <img :src="iconSrc" />
       <div class="text">
         <h2>

@@ -82,10 +82,11 @@ export default {
   },
   async mounted () {
     window.closeLoading()
-    document.title = this.$route.params.name
+    document.title = '评价'
     this.$nextTick(() => {
       this.rem = this.$refs.line.clientHeight
       this.lineWidth = this.$refs.line.clientWidth - this.$refs.block.clientWidth
+      this.offset = this.lineWidth / 2
     })
     this.allTags = (await getAllTags(this.$route.params.name)).shopTags
     this.$nextTick(() => {
@@ -105,7 +106,6 @@ export default {
         this.startX = touch.clientX
         this.offset = touch.clientX - this.rem * 2.5
         this.offsetBackup = touch.clientX - this.rem * 2.5
-        this.currentMark = (this.offset / this.lineWidth * 10)
       }
     },
     touchmove (touches) {
@@ -118,7 +118,6 @@ export default {
           } else if (this.offset <= 0) {
             this.offset = 0
           }
-          this.currentMark = (this.offset / this.lineWidth * 10)
         }
       }
     },
@@ -154,6 +153,11 @@ export default {
         let i = this.activeTags.findIndex(active => active === index)
         this.activeTags.splice(i, 1)
       }
+    }
+  },
+  watch: {
+    offset () {
+      this.currentMark = (this.offset / this.lineWidth * 10)
     }
   }
 }
@@ -335,7 +339,7 @@ export default {
     border 0
     width 100%
     resize none
-    font-size 0.6rem
+    font-size 0.7rem
     color #717171
     margin-bottom 0.5rem
   }

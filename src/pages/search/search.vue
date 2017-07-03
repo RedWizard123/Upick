@@ -40,7 +40,7 @@
             headText="没有找到该店铺哦～"
             text="到添加新店里提醒我们吧"
             buttonText="添加新店"
-            @buttonClick="$router.push('/')"
+            @buttonClick="$tip.open('即将上线，敬请期待！')"
     >
     </result>
   </div>

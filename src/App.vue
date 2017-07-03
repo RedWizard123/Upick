@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="root">
     <transition :name="transitionName">
       <keep-alive>
         <router-view></router-view>
@@ -16,7 +16,13 @@ export default {
       transitionName: 'slide-right'
     }
   },
-  mounted () {},
+  mounted () {
+    this.$nextTick(() => {
+      console.log('aaaa')
+      console.log(window.innerHeight)
+      this.$refs.root.style.height = window.innerHeight + 'px'
+    })
+  },
   watch: {
     '$route' (to, from) {
       const toDepth = to.path.split('/').filter(t => t !== '').length
@@ -32,7 +38,7 @@ export default {
   transform translateX(-100%)
 }
 .slide-right-enter-active, .slide-left-enter-active {
-  transition transform 0.15s
+  transition transform 0.3s
 }
 .slide-left-enter {
   transform translateX(100%)

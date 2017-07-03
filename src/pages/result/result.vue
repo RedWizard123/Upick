@@ -4,7 +4,7 @@
           :buttonText="buttonText"
           :linkText="linkText"
           :linkTo="linkTo"
-          @buttonClick="$router.go(-1)"
+          @buttonClick="$router.push(`/detail/${$route.params.name}`)"
   ></result>
 </template>
 <script>
@@ -20,18 +20,17 @@ export default {
       headText: '感谢您的评价！',
       buttonText: '返回店铺',
       linkText: '返回首页',
-      linkTo: `/detail/${this.$route.params.name}`
+      linkTo: '/'
     }
   },
   mounted () {
+    window.closeLoading()
     if (this.$route.params.status === 'comment-success') {
       // do nothing
+      document.title = '评价成功'
     } else {
       // todo
     }
   }
 }
 </script>
-<style>
-
-</style>

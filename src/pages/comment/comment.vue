@@ -82,6 +82,7 @@ export default {
   },
   async mounted () {
     window.closeLoading()
+    document.title = this.$route.params.name
     this.$nextTick(() => {
       this.rem = this.$refs.line.clientHeight
       this.lineWidth = this.$refs.line.clientWidth - this.$refs.block.clientWidth
@@ -141,6 +142,7 @@ export default {
         images.map(resp => resp.url)
       )])
       await this.$tip.open('提交成功！', '#50d467', 1000)
+      this.$router.push(`/result/comment-success/${this.$route.params.name}`)
     },
     isActive (index) {
       return this.activeTags.find(active => active === index) !== undefined

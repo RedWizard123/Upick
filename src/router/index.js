@@ -41,7 +41,7 @@ export default new Router({
       component: comment
     },
     {
-      path: '/result/:status',
+      path: '/result/:status/:name',
       component: result
     }
   ]

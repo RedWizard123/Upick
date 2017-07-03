@@ -40,13 +40,14 @@
             headText="没有找到该店铺哦～"
             text="到添加新店里提醒我们吧"
             buttonText="添加新店"
+            @buttonClick="$router.push('/')"
     >
     </result>
   </div>
 </template>
 <script>
 import ShopList from '../../components/shop-list.vue'
-import result from '../../pages/result/result.vue'
+import result from '../../components/result.vue'
 import { getShopsByPrefix, searchHistory, hotRecords } from '../../service'
 export default {
   components: {

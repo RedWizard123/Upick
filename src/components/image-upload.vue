@@ -2,16 +2,16 @@
   <div>
     <input type="file" placeholder="Choose A File" ref="image" multiple/>
     <div class="images-display">
-      <div v-for="i in imageFiles.length" class="image-wrapper">
-        <img ref="images" src=""/>
+      <div v-for="i in imageBase64s.length" class="image-wrapper">
+        <img :src="imageBase64s[i - 1]"/>
         <span class="remove" @click="removeImage(i)">+</span>
       </div>
       <img src="./album.png"
-           v-if="imageFiles.length !== count"
+           v-if="imageBase64s.length !== count"
            @click="loadImage"
       >
-      <template v-if="count - 1 - imageFiles.length > 0">
-        <div v-for="i in count - 1 - imageFiles.length"
+      <template v-if="count - 1 - imageBase64s.length > 0">
+        <div v-for="i in count - 1 - imageBase64s.length"
              class="image-wrapper"
         >
         </div>
@@ -30,7 +30,7 @@ import { uploadImage } from '../service'
 export default {
   data () {
     return {
-      imageFiles: [],
+      imageBase64s: [],
       uploadPromises: []
     }
   },
@@ -45,16 +45,12 @@ export default {
           resolve(e.target.files)
         }
       })).splice(0, this.count)
-      let preCount = this.imageFiles.length
-      this.imageFiles.push(...files)
-      this.$nextTick(async () => {
-        for (let i = 0;
-             i < Math.min(this.count - preCount, files.length);
-             i++) {
-          let b64 = await this.fileToBase64(files[i])
-          this.$refs.images[i + preCount].src = b64
-          this.uploadPromises.push(uploadImage(b64))
-        }
+      files.forEach(async file => {
+        let index = this.imageBase64s.push('') - 1
+        this.imageBase64s[index] = await this.fileToBase64(file)
+        this.$forceUpdate()
+        this.uploadPromises.push(uploadImage(this.imageBase64s[index]))
+        console.log(this.imageBase64s)
       })
     },
     /**
@@ -112,12 +108,16 @@ export default {
       return await Promise.all(this.uploadPromises)
     },
     getImagesCount () {
-      return this.imageFiles.length
+      return this.imageBase64s.length
     },
     removeImage (index) {
-      this.imageFiles.splice(index - 1, 1)
+      this.imageBase64s.splice(index - 1, 1)
       this.uploadPromises.splice(index - 1, 1)
+      console.log(this.imageBase64s)
     }
+  },
+  watch: {
+
   }
 }
 </script>

@@ -79,6 +79,7 @@ export default {
   },
   async mounted () {
     window.closeLoading()
+    document.title = '搜索'
     if (this.$route.params.keyword) {
       this.keyword = this.$route.params.keyword
     } else {

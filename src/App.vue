@@ -1,9 +1,7 @@
 <template>
   <div id="app" ref="root">
     <transition :name="transitionName">
-      <keep-alive>
         <router-view></router-view>
-      </keep-alive>
     </transition>
   </div>
 </template>
@@ -18,8 +16,6 @@ export default {
   },
   mounted () {
     this.$nextTick(() => {
-      console.log('aaaa')
-      console.log(window.innerHeight)
       this.$refs.root.style.height = window.innerHeight + 'px'
     })
   },

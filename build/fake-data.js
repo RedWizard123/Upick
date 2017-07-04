@@ -320,7 +320,7 @@ router.post(`/${v}/shops/tags`, wait(100), (req, res, next) => {
   })
   next()
 })
-router.post(`/${v}/comments/images`, wait(15000), parseBodyJSON, (req, res, next) => {
+router.post(`/${v}/comments/images`, wait(5000), parseBodyJSON, (req, res, next) => {
   res.status(200).json({
     'status': 200,
     'data': {

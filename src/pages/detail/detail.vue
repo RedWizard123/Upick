@@ -299,7 +299,7 @@ export default {
   flex-direction column
   .top-bar {
     flex-shrink 0
-    padding 0 1.5rem 0.3rem
+    padding 0 1.5rem 8px
     height 1.2rem
     border-bottom 1px #f2f2f2 solid
     span {
@@ -321,9 +321,9 @@ export default {
       font-size 0.74rem
       line-height 1.2rem
       text-align center
-      padding-bottom 0.2rem
+      padding-bottom 6px
       &.active {
-        border-bottom #FFAC00 solid 0.1rem
+        border-bottom #FFAC00 solid 2px
       }
     }
   }
@@ -378,20 +378,21 @@ export default {
     .icon {
       display inline-block
       height 1.2rem
-      width 1.1rem
+      width 1.08rem
       background-size auto 100%
       background-image url('./icons.png')
+      background-repeat no-repeat
       &.like {
-        background-position ((-4) * 1.09 + 0.05)rem
+        background-position ((-4) * 1.0948 + 0.05)rem
       }
       &.dislike {
-        background-position ((-6) * 1.09 + 0.05)rem
+        background-position ((-6) * 1.0948 + 0.05)rem
       }
       &.liked {
-        background-position ((-3) * 1.09 + 0.05)rem
+        background-position ((-3) * 1.0948)rem
       }
       &.disliked {
-        background-position ((-5) * 1.09 + 0.05)rem
+        background-position ((-5) * 1.0948 + 0.05)rem
       }
     }
     .value {

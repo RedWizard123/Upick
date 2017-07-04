@@ -44,7 +44,7 @@
     </div>
     <div class="desc">
       <textarea v-model="text" placeholder="亲，店家服务、环境怎么样？发布图文点评吧！(不超过 200 字)"></textarea>
-      <image-upload :count="4" ref="upload"></image-upload>
+      <image-upload :count="3" ref="upload"></image-upload>
     </div>
   </div>
 </template>
@@ -344,5 +344,4 @@ export default {
     margin-bottom 0.5rem
   }
 }
-/** *** **/
 </style>

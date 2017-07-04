@@ -16,6 +16,12 @@
         >
         </div>
       </template>
+      <template v-if="4 - count > 0">
+        <div v-for="i in 4 - count"
+             class="image-wrapper"
+        >
+        </div>
+      </template>
     </div>
   </div>
 </template>
@@ -92,7 +98,7 @@ export default {
           image.height,
           0, 0,
           canvas.width,
-          canvas.height00
+          canvas.height
         )
         base64String = canvas.toDataURL()
       }
@@ -121,7 +127,7 @@ input {
 }
 .images-display {
   flex-shrink 0
-  height (h = 4)rem
+  height (h = 3.8)rem
   display flex
   flex-direction row
   justify-content space-between

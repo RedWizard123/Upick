@@ -1,15 +1,14 @@
 <template>
-  <ul>
-    <transition-group>
-      <list-item v-for="(shop, index) in shopsToDisplay"
-                 :key="index"
-                 :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
-                 :shopName="shop.shopName"
-                 :tags="shop.shopTags"
-                 :score="shop.shopScore"
-      >
-      </list-item>
-    </transition-group>
+  <ul @scroll="lazyLoadCheck">
+    <list-item v-for="(shop, index) in shopsToDisplay"
+               :key="index"
+               ref="listItems"
+               :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
+               :shopName="shop.shopName"
+               :tags="shop.shopTags"
+               :score="shop.shopScore"
+    >
+    </list-item>
   </ul>
 </template>
 <script>
@@ -21,7 +20,8 @@ export default {
   },
   data () {
     return {
-      shopsToDisplay: []
+      shopsToDisplay: [],
+      scrollEventHandler: 0
     }
   },
   mounted () {
@@ -36,7 +36,18 @@ export default {
       } else if (this.shops && this.shops.length > 0) {
         this.shopsToDisplay = this.shops
       }
-      this.$emit('loaded', (this.shopsToDisplay || []).length)
+      this.$nextTick(() => {
+        this.$emit('loaded', (this.shopsToDisplay || []).length)
+        this.lazyLoadCheck()
+      })
+    },
+    lazyLoadCheck () {
+      clearTimeout(this.scrollEventHandler)
+      this.scrollEventHandler = setTimeout(() => {
+        this.$refs.listItems.forEach((listItem) => {
+          listItem.checkLazyLoad()
+        })
+      }, 100)
     }
   },
   props: {

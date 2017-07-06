@@ -3,6 +3,7 @@ require('./check-versions')()
 process.env.NODE_ENV = 'production'
 
 var ora = require('ora')
+var fs = require('fs')
 var rm = require('rimraf')
 var path = require('path')
 var chalk = require('chalk')
@@ -25,7 +26,17 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       chunks: false,
       chunkModules: false
     }) + '\n\n')
-
+    fs.readFile(config.build.assetsRoot + '/static/css/app.css', function (err, data) {
+      if (err)
+        throw err;
+      else {
+        data = data.toString();
+        data = data.replace(/static\//g, '../');
+        fs.writeFile(config.build.assetsRoot + '/static/css/app.css', data, function () {
+          console.log(chalk.cyan('  Rewrite CSS successfully!\n'))
+        })
+      }
+    })
     console.log(chalk.cyan('  Build complete.\n'))
     console.log(chalk.yellow(
       '  Tip: built files are meant to be served over an HTTP server.\n' +

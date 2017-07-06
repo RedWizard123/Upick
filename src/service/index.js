@@ -80,6 +80,7 @@ export async function getShopsBySubtype (subtype) {
   }
   return res
 }
+// 根据大类获取
 export async function getShopsByType (type) {
   const query = store.state.cachedRequest.filter(res => {
     return res.requestType === 1 && res.shopType === type
@@ -137,6 +138,7 @@ export async function getShopsByPrefix (prefix) {
   }).then(objectToCamel)
   // 转换成驼峰式
 }
+// 等待图片加载
 export async function waitImageToLoad (imageNode) {
   return new Promise((resolve, reject) => {
     if (imageNode.complete) {
@@ -222,10 +224,12 @@ export async function getComments (shopName) {
 }
 
 export async function likeComment (authorOpenid, issueTime) {
-  return await http.post(`${root}/shops/comments`, {
-    'request_type': 3,
-    'author_openid': authorOpenid,
-    'issue_time': issueTime
+  return await http.get(`${root}/shops/comments`, {
+    params: {
+      'request_type': 3,
+      'author_openid': authorOpenid,
+      'issue_time': issueTime
+    }
   }).then(objectToCamel)
 }
 

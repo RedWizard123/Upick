@@ -49,7 +49,7 @@
   </div>
 </template>
 <script>
-import { getAllTags, addComment, wait } from '../../service'
+import { getAllTags, addComment } from '../../service'
 import { Swipe, SwipeItem } from 'vue-swipe'
 import ImageUpload from '../../components/image-upload.vue'
 export default {
@@ -130,16 +130,26 @@ export default {
       let images = []
       if (this.$refs.upload.getImagesCount() !== 0) {
         this.$tip.open('正在上传图片，请等待...', '#50d467', 0)
-        images = await this.$refs.upload.getUploadResult()
+        try {
+          images = await this.$refs.upload.getUploadResult()
+        } catch (e) {
+          await this.$tip.open('上传失败！', 'rgb(255,48,93)', 1500)
+          throw e
+        }
       }
       this.$tip.open('正在提交评论...', '#50d467', 0)
-      await Promise.race([wait(500), addComment(
-        this.$route.params.name,
-        this.currentMark,
-        this.text,
-        this.activeTags.map(i => this.allTags[i].tagName),
-        images.map(resp => resp.url)
-      )])
+      try {
+        await addComment(
+          this.$route.params.name,
+          this.currentMark,
+          this.text,
+          this.activeTags.map(i => this.allTags[i].tagName),
+          images.map(resp => resp.url)
+        )
+      } catch (e) {
+        this.$tip.open('评论失败！请刷新', 'rgb(255,48,93)', 1500)
+        throw e
+      }
       await this.$tip.open('提交成功！', '#50d467', 1000)
       this.$router.push(`/result/comment-success/${this.$route.params.name}`)
     },

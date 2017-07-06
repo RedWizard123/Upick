@@ -123,6 +123,7 @@ export default {
     this.imgURLs = detail.imgs
     this.tags = detail.shopTags
     this.comments = (await getComments(this.$route.params.name)).commentList
+    console.log(this.comments)
     this.sortByDate(this.comments)
   },
   methods: {
@@ -142,6 +143,7 @@ export default {
         wrapper.scrollTop > wrapper.firstElementChild.clientHeight * 3
     },
     updateOperation (comment, operation) {
+      console.log(comment)
       if (comment.operation === operation) {
         comment.operation = -1
         if (operation === 0) {

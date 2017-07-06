@@ -64,11 +64,11 @@
 
 基本上没有可以复用的东西
 
-* 店家列表项： listItem，1h
-* 可预览图片（组）: imagePreview，1h
-* 分类组件： shopSubType (预留位置选择器)，1h
-* 评论列表项： commentItem，1h
-* 浮动圆按钮： floatButton，1h
+* 店家列表项： listItem, 1h
+* 可预览图片（组）: imagePreview, 1h
+* 分类组件： shopSubType (预留位置选择器), 1h
+* 评论列表项： commentItem, 1h
+* 浮动圆按钮： floatButton, 1h
 * Banner： banner (预留)
 * 红色浮动提示标签：errorTips (**done**)
 * http 网络模块 (**done**)

@@ -3,7 +3,7 @@
     <transition-group>
       <list-item v-for="(shop, index) in shopsToDisplay"
                  :key="index"
-                 :iconSrc="shop.imgUrls[0].msrc"
+                 :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
                  :shopName="shop.shopName"
                  :tags="shop.shopTags"
                  :score="shop.shopScore"

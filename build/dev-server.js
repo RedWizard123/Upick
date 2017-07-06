@@ -43,8 +43,12 @@ compiler.plugin('compilation', function (compilation) {
 })
 
 // fake data used when backend unavailable
-app.use('/api', fakeData)
-
+// app.use('/api', fakeData)
+app.use((req, res, next) => {
+  // console.log(req)
+  req.headers.host = 'debug.upick.hustonline.net'
+  next()
+})
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]

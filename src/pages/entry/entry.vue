@@ -30,9 +30,9 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2].typeName}/default`">
+            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/default`">
               <div class="type-img" ref="typeImages"></div>
-              <h4>{{line[(index - 1) / 2].typeName}}</h4>
+              <h4>{{line[(index - 1) / 2]}}</h4>
             </router-link>
             <div class="divider" v-else></div>
           </div>
@@ -46,7 +46,7 @@
         <span></span>
       </h2>
       <ul>
-        <li v-for="hotShop in hotShops">
+        <li v-for="hotShop in hotShops.slice(0,6)">
           <router-link :to="`/detail/${hotShop.shopName}`" class="shop" >{{hotShop.shopName}}</router-link>
         </li>
       </ul>
@@ -84,6 +84,7 @@ export default {
       while (i < n) {
         this.shopTypes.push(shopTypes.slice(i, i += 3))
       }
+      console.log(this.shopTypes)
     } catch (error) {
       this.$tip.open('加载失败！请刷新')
       throw error

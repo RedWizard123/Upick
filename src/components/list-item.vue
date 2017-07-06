@@ -11,7 +11,7 @@
           <li v-for="tag in tags"
               :class="{ 'positive': tag.positive, 'negative': !tag.positive }"
           >
-            {{tag.tagName}}
+            {{tag.tagName ? tag.tagName : tag}}
           </li>
         </ul>
       </div>

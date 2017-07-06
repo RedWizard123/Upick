@@ -154,9 +154,7 @@ export async function waitImageToLoad (imageNode) {
 export async function getShopByName (name) {
   let shop = store.state.cachedShops.filter(shop => shop.shopName === name)
   if (shop.length <= 0) {
-    return await http.post(`${root}/shops`, {
-      'shop_name': name
-    }).then(objectToCamel)
+    return await http.get(`${root}/shops?shop_name=${name}`).then(objectToCamel)
   } else {
     return shop[0]
   }
@@ -171,18 +169,15 @@ export async function hotRecords () {
 }
 
 export async function getAllTags (name) {
-  return await http.post(`${root}/shops/tags`, {
-    'shop_name': name
-  }, {
-    headers: {
-      'content-type': 'application/json'
-    }
-  }).then(objectToCamel)
+  return await http.get(`${root}/shops/tags?shop_name=${name}`).then(objectToCamel)
 }
-
+/**
+ * @param {string} imageBase64String
+ * @returns {Promise.<Object>}
+ */
 export async function uploadImage (imageBase64String) {
   return await http.post(`${root}/comments/images`, {
-    'image': imageBase64String
+    'image': imageBase64String.split(',')[1]
   }, {
     headers: {
       'content-type': 'application/json'

@@ -1,5 +1,9 @@
 <template>
   <div class="detail">
+    <div class="images-to-load">
+      <img src="./button.png" />
+      <img src="./icons.png" />
+    </div>
     <div class="title">
       <h1>
         <span>{{$route.params.name}}</span>
@@ -30,7 +34,7 @@
         <li class="tag"
             v-for="tag in tags"
             :class="{ 'negative': !tag.positive }"
-        >{{tag.tagName}}</li>
+        >{{tag.tagName ? tag.tagName : tag}}</li>
       </ul>
     </div>
     <div class="comments">
@@ -53,7 +57,7 @@
               <div class="name-date">
                 <span class="span-name">{{comment.authorNickname}}</span>
                 <span class="span-date">
-                  {{(new Date(comment.issueTime)).toLocaleDateString()}}
+                  {{(new Date(comment.issueTime * 1000)).toLocaleDateString()}}
                 </span>
               </div>
               <div class="like" @click="updateOperation(comment, 0)"
@@ -87,7 +91,8 @@ import {
   likeComment,
   dislikeComment,
   cancelDislikeComment,
-  cancelLikeComment
+  cancelLikeComment,
+  waitImageToLoad
 } from '../../service'
 export default {
   data () {
@@ -103,15 +108,22 @@ export default {
     }
   },
   async mounted () {
+    const images = Array.from(document.querySelectorAll('.img-to-load > img'))
+    const imagesLoadPromise = images.map((image) => {
+      return waitImageToLoad(image)
+    })
+    // 等待图片加载的 Promise resolve
+    await Promise.all(imagesLoadPromise)
     window.closeLoading()
     document.title = '商家详情'
     let detail = await getShopByName(this.$route.params.name)
     this.shopScore = detail.shopScore
     this.openTime = detail.openTime
     this.shopAddress = detail.shopAddress
-    this.imgURLs = detail.imgUrls
+    this.imgURLs = detail.imgs
     this.tags = detail.shopTags
-    this.comments = await getComments(this.$route.params.name)
+    this.comments = (await getComments(this.$route.params.name)).commentList
+    this.sortByDate(this.comments)
   },
   methods: {
     sortByDate (array) {
@@ -127,7 +139,7 @@ export default {
     checkScroll (e) {
       const wrapper = e.target
       this.shrink =
-        wrapper.scrollTop > wrapper.firstElementChild.clientHeight
+        wrapper.scrollTop > wrapper.firstElementChild.clientHeight * 3
     },
     updateOperation (comment, operation) {
       if (comment.operation === operation) {
@@ -168,6 +180,9 @@ export default {
 }
 </script>
 <style scoped lang="stylus">
+.images-to-load {
+  display none
+}
 .detail {
   height 100%
   display flex

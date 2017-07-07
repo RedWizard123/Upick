@@ -30,7 +30,7 @@
       <img :src="img.src" v-for="img in imgURLs">
     </div>
     <div class="tags" :style="{'height': shrink ? 0 : ''}">
-      <ul>
+      <ul v-if="tags && tags.length > 0">
         <li class="tag"
             v-for="tag in tags"
             :class="{ 'negative': !tag.positive }"
@@ -62,11 +62,11 @@
               </div>
               <div class="like" @click="updateOperation(comment, 0)"
               >
-                <span class="icon like" :class="{ 'liked': getOperationValue(comment, 0) }"></span>
+                <span class="icon like" :class="{ 'liked': getOperationValue(comment, 0) === 1 }"></span>
                 <span class="value">{{comment.likeNumber + getOperationValue(comment, 0)}}</span>
               </div>
               <div class="dislike" @click="updateOperation(comment, 1)">
-                <span class="icon dislike" :class="{ 'disliked': getOperationValue(comment, 1) }"></span>
+                <span class="icon dislike" :class="{ 'disliked': getOperationValue(comment, 1) === 1 }"></span>
                 <span class="value">{{comment.dislikeNumber + getOperationValue(comment, 1)}}</span>
               </div>
             </div>
@@ -143,7 +143,6 @@ export default {
         wrapper.scrollTop > wrapper.firstElementChild.clientHeight * 3
     },
     updateOperation (comment, operation) {
-      console.log(comment)
       if (comment.operation === operation) {
         comment.operation = -1
         if (operation === 0) {

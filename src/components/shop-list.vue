@@ -44,9 +44,11 @@ export default {
     lazyLoadCheck () {
       clearTimeout(this.scrollEventHandler)
       this.scrollEventHandler = setTimeout(() => {
-        this.$refs.listItems.forEach((listItem) => {
-          listItem.checkLazyLoad()
-        })
+        if (this.shopsToDisplay && this.shopsToDisplay.length > 0) {
+          this.$refs.listItems.forEach((listItem) => {
+            listItem.checkLazyLoad()
+          })
+        }
       }, 100)
     }
   },

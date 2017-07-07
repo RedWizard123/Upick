@@ -97,6 +97,7 @@ a {
     padding 0.2rem 0 0.3rem 1rem
     flex-grow 1
     position relative
+    overflow hidden
     h2 {
       margin 0
       font-size 0.8rem
@@ -104,11 +105,16 @@ a {
       flex-direction row
       font-weight 500
       .name-left {
+        padding-right 1rem
         flex-grow 1
+        white-space nowrap
+        overflow hidden
+        text-overflow ellipsis
       }
       .score-right {
         flex-shrink 0
         color #FF841B
+        width 2.4rem
       }
     }
     .tags-list {

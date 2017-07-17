@@ -25,7 +25,7 @@
     </div>
     <div class="preview" v-else-if="!$route.params.keyword">
       <ul>
-        <li v-for="preview in previews">
+        <li v-for="preview in previews" @click="$router.push(`/search/${keyword}`)">
           <img class="search-icon" src="./search.png">
           <span>{{preview.shopName}}</span>
           <span>{{preview.shopScore.toPrecision(2) + '分'}}</span>
@@ -33,7 +33,7 @@
       </ul>
     </div>
     <router-view v-if="showShopList"
-                 :keyword="$route.params.keyword"
+                 :keyword="[$route.params.keyword]"
                  @loaded="catchNoShopError($event)"
     ></router-view>
     <result v-if="!showShopList"

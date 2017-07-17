@@ -13,7 +13,7 @@
         </div>
       </div>
     </div>
-    <router-view :shops="shops" :subtype="$route.params.subtype"></router-view>
+    <router-view :shops="shops" :subtype="subtypes"></router-view>
     <button class="float-button" @click="$tip.open('即将上线，敬请期待！')">
       <span class="vertical-line"></span>
       <span class="horizontal-line"></span>

@@ -224,12 +224,10 @@ export async function getComments (shopName) {
 }
 
 export async function likeComment (authorOpenid, issueTime) {
-  return await http.get(`${root}/shops/comments`, {
-    params: {
-      'request_type': 3,
-      'author_openid': authorOpenid,
-      'issue_time': issueTime
-    }
+  return await http.post(`${root}/shops/comments`, {
+    'request_type': 3,
+    'author_openid': authorOpenid,
+    'issue_time': issueTime
   }).then(objectToCamel)
 }
 

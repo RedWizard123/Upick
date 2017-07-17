@@ -38,13 +38,17 @@ export default {
   methods: {
     checkLazyLoad () {
       let ele = this.$refs.li
-      let bottomNum = ele.offsetTop - window.screen.availHeight
+      /*
+      let bottomNum = ele.offsetTop - ele.parentNode.clientHeight
       let top = ele.offsetTop
+      */
       // 当滚动的距离等于bottomNum的时候说明这个元素已经
       // 被滚动到浏览器底部，当等于to的时候，说明元素顶部已
       // 经在浏览器顶部（如果需要计算完全显示完全隐藏可以把
       // 元素的高度也计算在内）
-      if (bottomNum < ele.parentNode.scrollTop && ele.parentNode.scrollTop < top) {
+      // console.log(top, bottomNum, ele.parentNode.scrollTop)
+      // if (bottomNum < ele.parentNode.scrollTop && ele.parentNode.scrollTop < top) {
+      if (ele.getBoundingClientRect().top >= ele.parentNode.getBoundingClientRect().top) {
         this.needToLoadImage = true
       } else {
         this.needToLoadImage = this.imageLoaded

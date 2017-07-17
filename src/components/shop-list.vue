@@ -1,51 +1,64 @@
 <template>
-  <ul @scroll="lazyLoadCheck">
-    <list-item v-for="(shop, index) in shopsToDisplay"
-               :key="index"
-               ref="listItems"
-               :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
-               :shopName="shop.shopName"
-               :tags="shop.shopTags"
-               :score="shop.shopScore"
-    >
-    </list-item>
-  </ul>
+  <swipe :auto="0" :continous="false" ref="swipe" :showIndicators="false">
+    <swipe-item v-for="(shopsInSubtype, i) in shopsInSubtypes" :key="i">
+      <ul @scroll="lazyLoadCheck(i)" :style="{ 'height': initialHeight }">
+        <list-item v-for="(shop, index) in shopsInSubtype"
+                   :key="index"
+                   :ref="'listItems' + i"
+                   :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
+                   :shopName="shop.shopName"
+                   :tags="shop.shopTags"
+                   :score="shop.shopScore"
+        >
+        </list-item>
+      </ul>
+    </swipe-item>
+  </swipe>
 </template>
 <script>
+import { Swipe, SwipeItem } from 'vue-swipe'
 import { searchShops, getShopsBySubtype } from '../service'
 import ListItem from './list-item'
 export default {
   components: {
-    ListItem
+    ListItem,
+    Swipe,
+    SwipeItem
   },
   data () {
     return {
-      shopsToDisplay: [],
-      scrollEventHandler: 0
+      scrollEventHandler: 0,
+      initialHeight: undefined,
+      shopsInSubtypes: []
     }
   },
   mounted () {
     this.loadShops()
+    this.$nextTick(() => {
+      this.initialHeight = this.$refs.swipe.$el.clientHeight + 'px'
+    })
   },
   methods: {
     async loadShops () {
       if (this.keyword) {
-        this.shopsToDisplay = (await searchShops(this.keyword)).shopList
+        // this.shopsToDisplay = (await searchShops(this.keyword)).shopList
+        this.shopsInSubtypes = (await Promise.all(this.keyword.map(searchShops))).map(result => result.shopList)
       } else if (this.subtype && this.subtype !== 'default') {
-        this.shopsToDisplay = (await getShopsBySubtype(this.subtype)).shopList
+        // this.shopsToDisplay = (await getShopsBySubtype(this.subtype)).shopList
+        this.shopsInSubtypes = (await Promise.all(this.subtype.map(getShopsBySubtype))).map(result => result.shopList)
       } else if (this.shops && this.shops.length > 0) {
-        this.shopsToDisplay = this.shops
+        this.shopsInSubtypes = this.shops
       }
       this.$nextTick(() => {
-        this.$emit('loaded', (this.shopsToDisplay || []).length)
-        this.lazyLoadCheck()
+        this.$emit('loaded', (this.shopsInSubtypes || []).length)
+        this.lazyLoadCheck(0)
       })
     },
-    lazyLoadCheck () {
+    lazyLoadCheck (i) {
       clearTimeout(this.scrollEventHandler)
       this.scrollEventHandler = setTimeout(() => {
-        if (this.shopsToDisplay && this.shopsToDisplay.length > 0) {
-          this.$refs.listItems.forEach((listItem) => {
+        if (this.shopsInSubtypes && this.shopsInSubtypes.length > 0) {
+          this.$refs['listItems' + i].forEach((listItem) => {
             listItem.checkLazyLoad()
           })
         }
@@ -54,8 +67,8 @@ export default {
   },
   props: {
     shops: Array,
-    keyword: String,
-    subtype: String
+    keyword: Array,
+    subtype: Array
   },
   watch: {
     keyword () {
@@ -66,6 +79,10 @@ export default {
     },
     shops () {
       this.loadShops()
+    },
+    $route (to) {
+      let a = this.subtype.findIndex(ele => ele === to.params.subtype)
+      console.log(a)
     }
   }
 }

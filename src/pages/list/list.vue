@@ -6,6 +6,7 @@
         <div class="wrapper">
           <div v-for="subtypeName in subtypes"
                class="subtype"
+               ref="subtypeSelectors"
                :class="{ 'active': $route.params.subtype === subtypeName }"
                @click="$router.replace(subtypeName)">
             {{subtypeName}}
@@ -13,7 +14,7 @@
         </div>
       </div>
     </div>
-    <router-view :shops="shops" :subtype="subtypes"></router-view>
+    <router-view :shops="shops" :subtype="subtypes" @pageChange="handlePageChange($event)"></router-view>
     <button class="float-button" @click="$tip.open('即将上线，敬请期待！')">
       <span class="vertical-line"></span>
       <span class="horizontal-line"></span>
@@ -36,14 +37,17 @@ export default {
   async mounted () {
     try {
       let typeData = await getShopsByType(this.$route.params.type)
+      /*
       if (this.$route.params.subtype === 'default') {
         this.shops = typeData.shopList
         if (!this.shops) {
           this.$tip.open('加载失败！请刷新')
         }
       } else {
-        this.$router.push(typeData.subtypes[0])
+        this.$router.replace(typeData.subtypes[0])
       }
+      */
+      this.$router.replace(typeData.subtypes[0])
       this.subtypes = typeData.subtypes
     } catch (e) {
       this.$tip.open('加载失败！请刷新')
@@ -51,6 +55,12 @@ export default {
     }
     document.title = this.$route.params.type
     window.closeLoading()
+  },
+  methods: {
+    handlePageChange (index) {
+      this.$refs.subtypeSelectors[index].scrollIntoView()
+      this.$refs.subtypeSelectors[index].click()
+    }
   }
 }
 </script>
@@ -106,6 +116,7 @@ export default {
   background-color #ffac00
   transition all 0.5s
   box-shadow rgba(215, 142, 37, 0.40) 0 0 0.5rem 0.05rem
+  z-index 999
   span {
     display inline-block
     background-color #FFFFFF

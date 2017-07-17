@@ -48,7 +48,9 @@ export default {
       // 元素的高度也计算在内）
       // console.log(top, bottomNum, ele.parentNode.scrollTop)
       // if (bottomNum < ele.parentNode.scrollTop && ele.parentNode.scrollTop < top) {
-      if (ele.getBoundingClientRect().top >= ele.parentNode.getBoundingClientRect().top) {
+      const rect = ele.getBoundingClientRect()
+      const parentRect = ele.parentNode.getBoundingClientRect()
+      if (rect.top >= parentRect.top && rect.top <= parentRect.top + parentRect.height) {
         this.needToLoadImage = true
       } else {
         this.needToLoadImage = this.imageLoaded

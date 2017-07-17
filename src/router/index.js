@@ -32,6 +32,10 @@ export default new Router({
       component: list,
       children: [
         {
+          path: '/',
+          component: shopList
+        },
+        {
           path: ':subtype',
           component: shopList
         }

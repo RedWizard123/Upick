@@ -1,42 +1,73 @@
 <template>
-  <swipe :auto="0" :continous="false" ref="swipe" :showIndicators="false">
-    <swipe-item v-for="(shopsInSubtype, i) in shopsInSubtypes" :key="i">
-      <ul @scroll="lazyLoadCheck(i)" :style="{ 'height': initialHeight }">
-        <list-item v-for="(shop, index) in shopsInSubtype"
-                   :key="index"
-                   :ref="'listItems' + i"
-                   :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
-                   :shopName="shop.shopName"
-                   :tags="shop.shopTags"
-                   :score="shop.shopScore"
-        >
-        </list-item>
-      </ul>
-    </swipe-item>
-  </swipe>
+  <div class="root" ref="root">
+    <swiper ref="swiper" :options="swiperOption">
+      <swiper-slide v-for="(shopsInSubtype, i) in shopsInSubtypes" :key="i">
+        <ul @scroll="lazyLoadCheck(i)" :style="{ 'height': initialHeight }">
+          <list-item v-for="(shop, index) in shopsInSubtype"
+                     :key="index"
+                     :ref="'listItems' + i"
+                     :iconSrc="shop.imgs[0].msrc ? shop.imgs[0].msrc : shop.imgs[0].src"
+                     :shopName="shop.shopName"
+                     :tags="shop.shopTags"
+                     :score="shop.shopScore"
+          >
+          </list-item>
+        </ul>
+      </swiper-slide>
+    </swiper>
+  </div>
 </template>
 <script>
-import { Swipe, SwipeItem } from 'vue-swipe'
+// import { Swipe, SwipeItem } from 'vue-swipe'
+
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+
 import { searchShops, getShopsBySubtype } from '../service'
 import ListItem from './list-item'
 export default {
   components: {
     ListItem,
-    Swipe,
-    SwipeItem
+    swiper,
+    swiperSlide
   },
   data () {
     return {
       scrollEventHandler: 0,
       initialHeight: undefined,
-      shopsInSubtypes: []
+      shopsInSubtypes: [],
+      swiperOption: {
+        // NotNextTick is a component's own property, and if notNextTick is set to true, the component will not instantiate the swiper through NextTick, which means you can get the swiper object the first time (if you need to use the get swiper object to do what Things, then this property must be true)
+        // notNextTick是一个组件自有属性，如果notNextTick设置为true，组件则不会通过NextTick来实例化swiper，也就意味着你可以在第一时间获取到swiper对象，假如你需要刚加载遍使用获取swiper对象来做什么事，那么这个属性一定要是true
+        notNextTick: true,
+        // swiper configs 所有的配置同swiper官方api配置
+        // grabCursor: true,
+        // setWrapperSize: true,
+        autoHeight: true,
+        // pagination: '.swiper-pagination',
+        // paginationClickable: true,
+        // prevButton: '.swiper-button-prev',
+        // nextButton: '.swiper-button-next',
+        // scrollbar: '.swiper-scrollbar',
+        // mousewheelControl: true,
+        // observeParents: true,
+        // if you need use plugins in the swiper, you can config in here like this
+        // 如果自行设计了插件，那么插件的一些配置相关参数，也应该出现在这个对象中，如下debugger
+        // swiper callbacks
+        // swiper的各种回调函数也可以出现在这个对象中，和swiper官方一样
+        // more Swiper configs and callbacks...
+        // ...
+        onSlideChangeEnd () {}
+      }
     }
   },
   mounted () {
-    this.loadShops()
-    this.$nextTick(() => {
-      this.initialHeight = this.$refs.swipe.$el.clientHeight + 'px'
-    })
+    setTimeout(() => {
+      // this.loadShops()
+      this.$nextTick(() => {
+        this.initialHeight = this.$refs.root.clientHeight + 'px'
+        this.$refs.swiper.options.onSlideChangeEnd = this.onSlideChangeEnd
+      })
+    }, 4000)
   },
   methods: {
     async loadShops () {
@@ -58,11 +89,21 @@ export default {
       clearTimeout(this.scrollEventHandler)
       this.scrollEventHandler = setTimeout(() => {
         if (this.shopsInSubtypes && this.shopsInSubtypes.length > 0) {
-          this.$refs['listItems' + i].forEach((listItem) => {
+          (this.$refs['listItems' + i] || []).forEach((listItem) => {
             listItem.checkLazyLoad()
           })
         }
       }, 100)
+    },
+    onSlideChangeEnd (swiper) {
+      const index = swiper.activeIndex
+      this.lazyLoadCheck(index)
+      /**
+       * 换页事件
+       */
+      window.requestAnimationFrame(() => {
+        this.$emit('pageChange', index)
+      })
     }
   },
   props: {
@@ -75,19 +116,25 @@ export default {
       this.loadShops()
     },
     subtype () {
-      this.loadShops()
+      setTimeout(() => {
+        this.loadShops()
+      }, 300)
     },
     shops () {
       this.loadShops()
     },
     $route (to) {
-      let a = this.subtype.findIndex(ele => ele === to.params.subtype)
-      console.log(a)
+      let a = (this.subtype || []).findIndex(ele => ele === to.params.subtype)
+      this.$refs.swiper.swiper.slideTo(a)
     }
   }
 }
 </script>
 <style scoped lang="stylus">
+.root {
+  width 100%
+  flex-grow 1
+}
 .fade-enter {
   opacity 0
 }

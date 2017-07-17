@@ -30,7 +30,7 @@
                v-for="index in line.length * 2 - 1"
                :style="{'height': typeLineHeight + 'px'}"
           >
-            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/default`">
+            <router-link v-if="index % 2 === 1" :to="`/list/${line[(index - 1) / 2]}/`">
               <div class="type-img" ref="typeImages"></div>
               <h4>{{line[(index - 1) / 2]}}</h4>
             </router-link>

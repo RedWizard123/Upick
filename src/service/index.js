@@ -5,6 +5,8 @@ import http from '../plugins/http/index'
 import store from '../store'
 const root = 'api/v2'
 
+const shopsByType = []
+
 const objectToCamel = (obj) => {
   function type () {
     return Object.prototype.toString.call(this).slice(8, -1)
@@ -53,6 +55,7 @@ export async function getIndex () {
 }
 // 获取某类型店铺列表信息
 export async function getShopsBySubtype (subtype) {
+  /*
   const query = store.state.cachedRequest.filter(res => {
     return res.requestType === 2 && res.shopType === subtype
   })
@@ -78,7 +81,10 @@ export async function getShopsBySubtype (subtype) {
   } catch (e) {
     throw e
   }
-  return res
+  */
+  return {
+    shopList: shopsByType.filter(shop => shop.subtype === subtype)
+  }
 }
 // 根据大类获取
 export async function getShopsByType (type) {
@@ -98,6 +104,7 @@ export async function getShopsByType (type) {
         'content-type': 'application/json'
       }
     }).then(objectToCamel)
+    shopsByType.unshift(...res.shopList)
     store.state.cachedRequest.push({
       requestType: 1,
       shopType: type,

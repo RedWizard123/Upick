@@ -67,7 +67,7 @@ export default {
         this.initialHeight = this.$refs.root.clientHeight + 'px'
         this.$refs.swiper.options.onSlideChangeEnd = this.onSlideChangeEnd
       })
-    }, 4000)
+    }, 100)
   },
   methods: {
     async loadShops () {
@@ -118,14 +118,14 @@ export default {
     subtype () {
       setTimeout(() => {
         this.loadShops()
-      }, 300)
+      }, 400)
     },
     shops () {
       this.loadShops()
     },
     $route (to) {
       let a = (this.subtype || []).findIndex(ele => ele === to.params.subtype)
-      this.$refs.swiper.swiper.slideTo(a)
+      this.$refs.swiper.swiper.slideTo(a = a === -1 ? 0 : a)
     }
   }
 }
@@ -134,6 +134,7 @@ export default {
 .root {
   width 100%
   flex-grow 1
+  // overflow hidden
 }
 .fade-enter {
   opacity 0

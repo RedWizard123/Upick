@@ -120,7 +120,7 @@ export async function getShopsByType (type) {
 export async function searchShops (keyword) {
   let res = await http.post(`${root}/shops/list`, {
     'request_type': 3,
-    'keyword': keyword
+    'key_word': keyword
   }, {
     headers: {
       'content-type': 'application/json'

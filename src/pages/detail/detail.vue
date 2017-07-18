@@ -160,6 +160,7 @@ export default {
         }
         // submit
       }
+      this.$forceUpdate()
     },
     getOperationValue (comment, type) {
       if (comment.operation === type) {

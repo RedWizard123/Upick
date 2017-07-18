@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="file" accept="video/*" capture="camcorder" ref="image">
+    <input type="file" ref="image">
     <!--<input type="file" placeholder="Choose A File" ref="image" multiple/>-->
     <div class="images-display">
       <div v-for="i in imageBase64s.length" class="image-wrapper">
@@ -43,7 +43,6 @@ export default {
       this.$refs.image.click()
       let files = Array.from(await new Promise((resolve) => {
         this.$refs.image.onchange = (e) => {
-          alert(e.target.files[0].size)
           resolve(e.target.files)
         }
       })).splice(0, this.count)
@@ -117,9 +116,6 @@ export default {
       this.uploadPromises.splice(index - 1, 1)
       console.log(this.imageBase64s)
     }
-  },
-  watch: {
-
   }
 }
 </script>
